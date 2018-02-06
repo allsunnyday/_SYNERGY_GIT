@@ -119,7 +119,7 @@ public class AddInfoFragment extends DialogFragment {
         img = (ImageView) view.findViewById(R.id.additem_imagethumb);
         Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ imgurl).into(img);
         categorytext.setText(category);
-        Log.d("Here", "Runing");
+        Log.d("Here", "Runingsssssss");
 /*
         //Picasso.with(context).load("http://218.38.52.180/Android_files/"+ imgurl)
         try {
