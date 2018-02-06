@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="400dp"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+    <ImageView
+        android:id="@+id/additem_imagethumb"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:layout_gravity="center"
+        android:src="@drawable/tempimg" />
+
+    <!--
+	<TextView
+	    android:id="@+id/select_type"
+	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:hint="Clothing type" />
+        -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/catagorytext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="10dp"
+            android:text="카테고리"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/categorytext2"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tagtext"
+            android:layout_alignParentEnd="true"
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:singleLine="true"
+
+            android:textSize="15dp"
+            tools:ignore="NotSibling" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/seasontext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="계절"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/seasonspinner"
+            android:layout_width="240dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="155dp"
+            android:textColor="#000000"
+            android:entries="@array/season"
+            android:touchscreenBlocksFocus="false"
+            android:transitionGroup="true" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tagtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="태그"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/AddPost_HashTag_Edittext"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tagtext"
+            android:layout_alignParentEnd="true"
+            android:hint="#데이트룩, #러블리, ..."
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:singleLine="true"
+            android:textColor="#b3b3b3"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="40dp"
+
+            android:background="#0070C0"
+            android:text="취소"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/additem_insertbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="40dp"
+            android:background="#0070C0"
+            android:text="편집"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</LinearLayout>

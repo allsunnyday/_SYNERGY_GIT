@@ -1,0 +1,73 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.example.geehy.hangerapplication.Fragments.DashFragment">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/dash_fbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="72dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="0.03"
+        android:src="@drawable/ic_add_black_24dp"
+        app:background="@color/colorPrimary"
+        app:backgroundTint="#0070C0"
+        app:elevation="5dp"
+        app:fabSize="normal"
+        app:rippleColor="#000000" />
+
+
+
+
+    <ImageView
+        android:id="@+id/dashimgtemp5"
+        android:layout_width="160dp"
+        android:layout_height="210dp"
+
+        app:srcCompat="@drawable/tem6" />
+
+
+        <LinearLayout
+            android:id="@+id/dash_insert_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/selimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="#0070C0"
+                android:text="♡Select♡"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/uploadimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="#0070C0"
+                android:text="♡Upload♡"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+
+
+</FrameLayout>
+

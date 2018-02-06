@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.geehy.hangerapplication.MainActivity">
+    <item
+        android:id="@+id/navigationcloset"
+        android:icon="@drawable/hangericon"
+        android:title="옷장" />
+
+    <item
+        android:id="@+id/navigationcoordy"
+        android:icon="@drawable/coordyicon"
+        android:title="코디" />
+
+    <item
+        android:id="@+id/navigationcalendar"
+        android:icon="@drawable/calendaricon"
+        android:title="달력" />
+
+    <item
+        android:id="@+id/navigationfavorite"
+        android:icon="@drawable/ic_favorite_border_black_24dp"
+        android:title="추천" />
+
+    <item
+        android:id="@+id/navigationsetting"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="설정" />
+</menu>

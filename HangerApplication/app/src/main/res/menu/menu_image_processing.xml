@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.dxd.bgeraser.ImageProcessing">
+    <item android:id="@+id/action_save"
+        android:title="Photo Edit"
+        app:showAsAction="always"
+        android:background="#0070C0"
+        />
+</menu>

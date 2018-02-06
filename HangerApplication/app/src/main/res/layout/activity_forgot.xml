@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:gravity="center"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.geehy.hangerapplication.LoginActivity"
+    tools:showIn="@layout/activity_forgot">
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_weight="0.32"
+        android:gravity="center|bottom"
+        app:srcCompat="@drawable/question"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="61dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="147dp"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.27"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="Forgot your passward?"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="354dp" />
+
+        <TextView
+            android:id="@+id/editText3"
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.00"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="등록하신 이메일로"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="413dp" />
+
+        <TextView
+            android:id="@+id/editText7"
+            android:layout_width="238dp"
+            android:layout_height="29dp"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="비밀번호를 보내드렸습니다."
+            tools:layout_editor_absoluteX="86dp"
+            tools:layout_editor_absoluteY="431dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="등록하신 이메일을 입력해주세요."
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_mail_outline_black_24dp"
+                    android:imeActionId="@+id/login"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="132dp"
+        android:layout_weight="0.16"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/loginagain_button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#0070C0"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:text="Login Again"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="105dp"
+            tools:layout_editor_absoluteY="100dp" />
+    </LinearLayout>
+
+</LinearLayout>

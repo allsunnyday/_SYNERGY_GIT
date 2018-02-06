@@ -1,0 +1,182 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.geehy.hangerapplication.Fragments.AccFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/Setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Setting"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|left"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/logoutnext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/logout"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="#0070C0"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="#0070C0"
+                android:text="로그아웃"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#99999999" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/logoutnext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/logout"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="#0070C0"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/logoutnext"
+                android:background="#0070C0"
+                android:text="회원탈퇴"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#99999999" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/logoutnext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/logout"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="#0070C0"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/logoutnext"
+                android:background="#0070C0"
+                android:text="회원 정보 수정"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#99999999" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/logoutnext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/logout"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="#0070C0"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/logoutnext"
+                android:background="#0070C0"
+                android:text="문의/건의하기"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/underline"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#99999999" />
+
+
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:gravity="center"
+            android:text="version 1.0..0" />
+
+    </LinearLayout>
+
+</FrameLayout>

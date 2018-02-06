@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.example.geehy.hangerapplication.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:orientation="vertical"
+        android:layout_weight="0.09"></LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="357dp"
+        android:layout_height="198dp"
+        app:srcCompat="@drawable/emailicon"
+        android:layout_weight="0.11" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="147dp"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:layout_weight="0.28">
+
+        <TextView
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.27"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="메일을 확인해 주세요"
+            android:textSize="30dp"
+
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="26dp"
+            tools:layout_editor_absoluteY="354dp" />
+
+        <TextView
+            android:id="@+id/editText3"
+            android:layout_width="209dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.00"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="등록하신 이메일로"
+            tools:layout_editor_absoluteX="101dp"
+            tools:layout_editor_absoluteY="413dp" />
+
+        <TextView
+            android:id="@+id/editText7"
+            android:layout_width="238dp"
+            android:layout_height="29dp"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="인증번호를 보내드렸습니다."
+            tools:layout_editor_absoluteX="86dp"
+            tools:layout_editor_absoluteY="431dp" />
+
+        <Button
+            android:id="@+id/loginagain_button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#0070C0"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:text="Login"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="105dp"
+            tools:layout_editor_absoluteY="100dp" />
+    </LinearLayout>
+
+
+</LinearLayout>
