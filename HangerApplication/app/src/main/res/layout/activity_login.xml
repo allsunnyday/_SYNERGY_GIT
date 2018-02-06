@@ -71,7 +71,13 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
-
+            <CheckBox
+                android:id="@+id/autoLoginCheck"
+                android:text="자동 로그인"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                />
             <Button
                 android:id="@+id/email_sign_in_button"
                 android:layout_width="120dp"

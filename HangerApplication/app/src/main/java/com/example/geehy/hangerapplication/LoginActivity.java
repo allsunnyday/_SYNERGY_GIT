@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,19 +23,31 @@ public class LoginActivity extends AppCompatActivity {
     private EditText pwtext;
     private Button sign;
     private TextView forgotpw;
+    private CheckBox autoLogin;
     private TextView signup;
     private SharedPreferences appData;
     private String email;
     private String id;
+    private boolean loginChecked;
     BackgroundTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // 설정값 불러오기
+
+        //설정값 불러오기
         appData = getSharedPreferences("appData", MODE_PRIVATE);
-        load();
+        loginChecked = appData.getBoolean("autologin", false);//자동로그인 여부 검사
+
+        if(loginChecked){ //자동 로그인
+            id = appData.getString("ID", "");//아이디 가져오기
+            Toast.makeText(getApplication(), "♥" + id + "님 반갑습니다♥", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), MainPageActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         init();
         findpw();
         signup();
@@ -46,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         emailtext = (EditText) findViewById(R.id.Login_email_edittext);
         pwtext = (EditText) findViewById(R.id.Login_password_edittext);
         sign = (Button) findViewById(R.id.email_sign_in_button);
-
+        autoLogin = (CheckBox) findViewById(R.id.autoLoginCheck);
     }
 
 
@@ -75,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//아이디&비밀번호 json으로 보내기
+    //아이디&비밀번호 json으로 보내기
     private String sendObject(){
         emailtext = (EditText) findViewById(R.id.Login_email_edittext);
         pwtext = (EditText) findViewById(R.id.Login_password_edittext);
@@ -95,20 +109,12 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = appData.edit();
         // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
         // 저장시킬 이름이 이미 존재하면 덮어씌움
-     //   editor.putBoolean("SAVE_LOGIN_DATA", checkBox.isChecked());
+        editor.putBoolean("autologin", autoLogin.isChecked());
         editor.putString("ID", username);
-    //    editor.putString("PWD", pwtext.getText().toString().trim());
+        //    editor.putString("PWD", pwtext.getText().toString().trim());
         // apply, commit 을 안하면 변경된 내용이 저장되지 않음
         editor.apply();
         Log.d("username",username);
-    }
-
-    // 설정값을 불러오는 함수
-    private void load() {
-        // SharedPreferences 객체.get타입( 저장된 이름, 기본값 )
-        // 저장된 이름이 존재하지 않을 시 기본값
-        id = appData.getString("ID", "");
-   //    pwd = appData.getString("PWD", "");
     }
 
 
@@ -161,7 +167,15 @@ public class LoginActivity extends AppCompatActivity {
                 task = new BackgroundTask();
                 task.execute();
             }
-        });}
+        });
+
+        autoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+    }
 }
 
 

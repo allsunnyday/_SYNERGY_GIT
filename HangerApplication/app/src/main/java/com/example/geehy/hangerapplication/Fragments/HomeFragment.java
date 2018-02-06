@@ -4,12 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +34,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.geehy.hangerapplication.CameraActivity;
 import com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment;
-import com.example.geehy.hangerapplication.MainActivity;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
 import com.example.geehy.hangerapplication.UploadImageInterface;
 import com.example.geehy.hangerapplication.UploadObject;
 import com.example.geehy.hangerapplication.gridview_home.dressItem;
-import com.squareup.picasso.Picasso;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +61,7 @@ import static com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class HomeFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
     final static int SIGNAL_toGallery = 4004;
     final static int SIGNAL_toCamera = 4005;
@@ -95,8 +90,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private String path = "";
     private JSONArray photos = null;
     private int index =0 ;
+    private boolean isChaged;
     BackgroundTask task;
-
 
     public HomeFragment() {
     }
@@ -187,12 +182,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int id, long position) { //position
-                Toast.makeText(getContext(), "ID" + id, Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
-                //bundle.putInt("id", id);
                 //bundle.putString("imgURL", "ddddd");
-
-
                 //dressItem item = (dressItem)adapter.getItem(id);
                 //bundle.putSerializable("dressItem", item);
                 Log.d("Test Layout", "Show Fragment");
@@ -201,6 +192,9 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 //FragmentTransaction ft = manager.beginTransaction();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
 
+                if(isChaged){  //dialog에서 edit한 경우
+                    getimg();
+                }
             }
         });
     }
@@ -221,7 +215,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
                 //파일 서버로 업로드 start
                 uri = data.getData();
-
                 if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     String filePath = getRealPathFromURIPath(uri, getActivity());
                     File file = new File(filePath);
@@ -340,7 +333,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         }
 
     }
-
 
     //파일 업로드 부분
     private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
@@ -502,7 +494,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
     }
 
-    private void getimg(){
+    public void getimg(){
         task = new BackgroundTask();
         task.execute();
     }
@@ -534,13 +526,11 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         }
         public View getView(int position, View convertView, ViewGroup parent){ //항목의 수만큼 반복해서 호출 맨천음 호출했을 떄는 position이 0 그리드뷰 0번째 항목모양리턴
 
-
             if(convertView == null) {
                 convertView = layoutInflater.inflate(layout, null);
             }
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.homeitem);
-
 
             final dressItem di = list.get(position);
 
@@ -570,7 +560,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 }
             }
             tempString += "\n";
-               tempString += ("해쉬태그: " + di.getDressTag()+ "\n" );
+            tempString += ("해쉬태그: " + di.getDressTag()+ "\n" );
             tv.setText(tempString);
             ImageView iv = (ImageView) convertView.findViewById(R.id.homeitem);
 
@@ -578,7 +568,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 imageView.setImageResource(R.drawable.tempimg);
             }else{
                 Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ di.getImgURL()).into(imageView);//보여줄 이미지 파일
-                //
 
             }
         /*    imageView.setOnClickListener(new View.OnClickListener() {

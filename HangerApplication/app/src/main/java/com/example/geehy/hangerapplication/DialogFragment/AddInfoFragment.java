@@ -3,20 +3,18 @@ package com.example.geehy.hangerapplication.DialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,57 +22,53 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.graphics.Palette;
-import android.graphics.drawable.Drawable;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.Target;
-
 
 import com.bumptech.glide.Glide;
 import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.GrabcutActivity;
-import com.example.geehy.hangerapplication.MainActivity;
 import com.example.geehy.hangerapplication.R;
+import com.example.geehy.hangerapplication.RequestActivity;
 import com.example.geehy.hangerapplication.gridview_home.dressItem;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.io.IOError;
-import java.io.IOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static com.squareup.picasso.Picasso.*;
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class AddInfoFragment extends DialogFragment {
+    private SharedPreferences appData;
     private Dialog dialog;
     private View view;
     private FragmentManager manager;
     ArrayList<dressItem> mlist;
     private Button CompleteBTN;
     private Button CancelBTN;
-    private Spinner spinner;
+    private Spinner seasonSpinner;
     private ImageView img;
-    private int id;
     private EditText addTag;
     private EditText categorytext;
+    private EditText colortext;
+    private String id;
+    private String item;
     static String imgurl;
     static String category;
+    boolean isChanged;
     private int flagWho;
-    private Bitmap bitmap;
+    BackgroundTask task;
+
 
     public static AddInfoFragment newInstance(dressItem ds) {
         AddInfoFragment addInfoFragment = new AddInfoFragment();
         //  Supply items as an argument.
         Bundle args = new Bundle();
-        args.putSerializable("dress", ds);
-        imgurl = ds.getImgURL();
-        category = ds.getCat1();
+        args.putSerializable("dress", ds);//homefragment에서 받아온 dress list
+        imgurl = ds.getImgURL();//사진 img
+        category = ds.getCat1();//카테고리 내용
         addInfoFragment.setArguments(args);
-
 
         return addInfoFragment;
     }
@@ -83,69 +77,33 @@ public class AddInfoFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Context c = getActivity().getApplicationContext();
 
         dialog = super.onCreateDialog(savedInstanceState);
         dialog.setCanceledOnTouchOutside(false);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.activity_edit_closet, null);
         dialog.setContentView(view);
-        //Log.d("AddInfoFragment", "AddinfoFragment Runing");
-        /*String tempString;
-        String stirng [] = tempString.split(", ");
-        list = ((MainPageActivity)getActivity()).getList();*/
-        //list;
 
-
-        Spinner seasonSpinner = (Spinner) view.findViewById(R.id.seasonspinner);
+        seasonSpinner = (Spinner) view.findViewById(R.id.seasonspinner);
         ArrayAdapter seasonAdapter = ArrayAdapter.createFromResource(getActivity().getApplication(),
                 R.array.season, android.R.layout.simple_spinner_item);
         seasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         seasonSpinner.setAdapter(seasonAdapter);
-        init(c);
-
-
-
+        init();
         return dialog;
-
-
     }
 
-    private void init(Context context) {
+    private void init() {
 
         CompleteBTN = (Button) view.findViewById(R.id.additem_insertbutton);
         CancelBTN = (Button) view.findViewById(R.id.cancel_button);
         categorytext = (EditText)view.findViewById(R.id.categorytext2);
+        colortext = (EditText)view.findViewById(R.id.color_Edittext);
+
         img = (ImageView) view.findViewById(R.id.additem_imagethumb);
-        Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ imgurl).into(img);
+        Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ imgurl).into(img);//image set
         categorytext.setText(category);
-        Log.d("Here", "Runingss");
-/*
-        //Picasso.with(context).load("http://218.38.52.180/Android_files/"+ imgurl)
-        try {
-            bitmap = BitmapFactory.
-        }catch (IOException e){
-        }
-
-        Palette.from(bitmap)
-                .generate(new Palette.PaletteAsyncListener() {
-                    @Override
-                    public void onGenerated(Palette palette) {
-                        Palette.Swatch textSwatch = palette.getVibrantSwatch();
-                        if(textSwatch == null){
-                            Log.d("Here", "null Runing");
-                            return;
-                        }
-                        categorytext.setBackgroundColor(textSwatch.getRgb());
-                        Log.d("Here2", "null Runing");
-                    }
-                });
-        // Log.d("Here", "Runing");
-
-
-*/
         Event();
-
     }
 
     private void Event() {
@@ -153,9 +111,8 @@ public class AddInfoFragment extends DialogFragment {
         CompleteBTN.setOnClickListener(new View.OnClickListener() {//편집 버튼
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(getContext(), "저장완료", Toast.LENGTH_SHORT).show();
-                dismiss();
+                task = new BackgroundTask();
+                task.execute();
             }
         });
 
@@ -163,7 +120,7 @@ public class AddInfoFragment extends DialogFragment {
         CancelBTN.setOnClickListener(new View.OnClickListener() {//취소 버튼
             @Override
             public void onClick(View view) {
-                dismiss();
+                dismiss(); //화면 닫기
             }
         });
 
@@ -179,8 +136,66 @@ public class AddInfoFragment extends DialogFragment {
             }
 
         });
+        seasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
 
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                item = (String) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    private String sendObject(){ //편집할 내용 json으로
+        JSONObject jsonpost = new JSONObject();
+        try{
+            appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
+            id = appData.getString("ID", "");//username 받아오기
+            jsonpost.put("Username", id);//username
+            jsonpost.put("Imgurl", imgurl);//imgUrl
+            jsonpost.put("Category", categorytext.getText());//카테고리
+            jsonpost.put("Color", colortext.getText());//색깔
+            jsonpost.put("Season",item);//계절
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return jsonpost.toString();
+    }
+
+
+    class BackgroundTask extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
+        String url = "http://218.38.52.180/addinfo.php";
+        String json=sendObject();//편집할 내용 받아옴
+
+        @Override
+        protected String doInBackground (String...params){
+
+            String result; // 요청 결과를 저장할 변수.
+            RequestActivity requestHttpURLConnection = new RequestActivity();
+            result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute (String s) {
+            super.onPostExecute(s); //서버 결과
+            if (s.equals("성공")) {
+                isChanged = true;
+                Toast.makeText(getContext(), "저장 완료", Toast.LENGTH_SHORT).show();
+
+                ///////homefragment로 보내기
+
+            }else{
+                Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Nullable
