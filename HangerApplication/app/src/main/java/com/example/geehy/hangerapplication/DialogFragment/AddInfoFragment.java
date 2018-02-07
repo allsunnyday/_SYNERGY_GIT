@@ -3,6 +3,7 @@ package com.example.geehy.hangerapplication.DialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -189,8 +190,11 @@ public class AddInfoFragment extends DialogFragment {
             if (s.equals("성공")) {
                 isChanged = true;
                 Toast.makeText(getContext(), "저장 완료", Toast.LENGTH_SHORT).show();
+                dismiss();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content, new HomeFragment())
+                        .commit();
 
-                ///////homefragment로 보내기
 
             }else{
                 Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();

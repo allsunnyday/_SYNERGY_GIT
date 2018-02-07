@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -90,7 +91,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private String path = "";
     private JSONArray photos = null;
     private int index =0 ;
-    private boolean isChaged;
     BackgroundTask task;
 
     public HomeFragment() {
@@ -113,9 +113,9 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         load();
 
         change();//이미지 경로가 이미 있는 경우 path에 저장
-        if(path.equals("")) { //true인 경우 -> 로그인 후 앱 메인화면 처음 켜지는 경우만 서버에서 이미지를 가져온다.
+        if(path.equals("") ) { // 로그인 후 앱 메인화면 처음 켜지는 경우 서버에서 이미지를 가져온다.
             getimg();//이미지 가져오기
-        }
+    }
         init();
         adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);//그리드 뷰의 디자인의 객체를 생성
         gridView.setAdapter(adapter);//그리드 뷰의 객체에 그리드 뷰의 디자인을 적용
@@ -189,14 +189,14 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 Log.d("Test Layout", "Show Fragment");
                 AddInfoFragment addfragment = newInstance(list.get(id));
                 manager = getFragmentManager();
-                //FragmentTransaction ft = manager.beginTransaction();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
+                appData.edit().remove("Path").commit();
+               // getimg();
+                //adapter.notifyDataSetChanged();
 
-                if(isChaged){  //dialog에서 edit한 경우
-                    getimg();
-                }
             }
         });
+
     }
 
     //파일 업로드

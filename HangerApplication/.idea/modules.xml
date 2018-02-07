@@ -3,10 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HangerApplication.iml" filepath="$PROJECT_DIR$/HangerApplication.iml" />
-      <module fileurl="file://C:\Users\MIN\Documents\GitHub\_SYNERGY_GIT\HangerApplication\HangerApplication.iml" filepath="C:\Users\MIN\Documents\GitHub\_SYNERGY_GIT\HangerApplication\HangerApplication.iml" />
       <module fileurl="file://C:\Users\LG\Documents\GitHub\_SYNERGY_GIT\HangerApplication\HangerApplication.iml" filepath="C:\Users\LG\Documents\GitHub\_SYNERGY_GIT\HangerApplication\HangerApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\MIN\Documents\GitHub\_SYNERGY_GIT\HangerApplication\app\app.iml" filepath="C:\Users\MIN\Documents\GitHub\_SYNERGY_GIT\HangerApplication\app\app.iml" />
       <module fileurl="file://C:\Users\LG\Documents\GitHub\_SYNERGY_GIT\HangerApplication\app\app.iml" filepath="C:\Users\LG\Documents\GitHub\_SYNERGY_GIT\HangerApplication\app\app.iml" />
     </modules>
   </component>
