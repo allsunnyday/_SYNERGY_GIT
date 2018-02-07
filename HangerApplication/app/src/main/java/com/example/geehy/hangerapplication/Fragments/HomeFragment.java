@@ -1,3 +1,5 @@
+//옷장 메뉴
+
 package com.example.geehy.hangerapplication.Fragments;
 
 import android.Manifest;
@@ -124,11 +126,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
     public void init() {
-        /*
-        for (int i = 0; i < imgarr.length; i++) {
-            imgarr[i] = " ";
-        }//초기화
-        */
         isVisible = false; //F : 안보임 T : 보임
         gridView = (GridView) view.findViewById(R.id.home_gridview);//그리드 뷰의 객체를 가져오기
 
@@ -461,9 +458,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     class BackgroundTask extends AsyncTask<String, Integer, String> {
-        //progressDIalof 를 멤버로 넣어줌
         String url = "http://218.38.52.180/getimgpath2.php";//원래는 getimgpath.php
-        String json=sendObject();
+        String json=sendObject();//username
 
         @Override
         protected  void onPreExecute(){
