@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,6 @@ public class AccFragment extends Fragment {
     public void init() {
 
         logoutbtn = (Button) view.findViewById(R.id.logout);
-         logoutbtn = (Button) view.findViewById(R.id.logout);
         editbtn = (Button) view.findViewById(R.id.edit);
         unregisterbtn = (Button) view.findViewById(R.id.unregister);
         qnabtn = (Button) view.findViewById(R.id.unregister);
@@ -71,7 +71,7 @@ public class AccFragment extends Fragment {
 
 
     public void event() {
-        logoutbtn.setOnClickListener(new View.OnClickListener() {
+        logoutbtn.setOnClickListener(new View.OnClickListener() {//로그아웃
             @Override
             public void onClick(View view) {
                 appData.edit().clear().apply();//sharedpreference에 저장된 값 삭제하기
@@ -81,18 +81,20 @@ public class AccFragment extends Fragment {
             }
         });
 
-        unregisterbtn.setOnClickListener(new View.OnClickListener() {
+        unregisterbtn.setOnClickListener(new View.OnClickListener() {//회원탈퇴
             @Override
             public void onClick(View view) {
                 unregister();
             }
         });
 
-        editbtn.setOnClickListener(new View.OnClickListener() {
+        editbtn.setOnClickListener(new View.OnClickListener() {//회원정보 수정
             @Override
-            public void onClick(View view) {
-            //회원 정보 수정 페이지로 이동
+            public void onClick(View view) { //회원 정보 수정 페이지(EditInfoFragment)로 이동
 
+                EditInfoFragment editInfofragment = new EditInfoFragment();
+                manager = getFragmentManager();
+                editInfofragment.show(getActivity().getSupportFragmentManager(), "editInfoFragment");//dialogfragment 띄우기
             }
         });
 
@@ -107,7 +109,7 @@ public class AccFragment extends Fragment {
 
     public void unregister(){//회원 탈퇴하기
         task = new BackgroundTask();
-        task.execute();
+      //  task.execute();
     }
 
     //sharedpreference에 저장되었던 username 서버로 보내기

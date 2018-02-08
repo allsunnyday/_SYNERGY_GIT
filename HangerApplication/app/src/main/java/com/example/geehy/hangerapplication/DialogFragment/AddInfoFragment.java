@@ -57,7 +57,6 @@ public class AddInfoFragment extends DialogFragment {
     private String item;
     static String imgurl;
     static String category;
-    boolean isChanged;
     private int flagWho;
     BackgroundTask task;
 
@@ -188,7 +187,6 @@ public class AddInfoFragment extends DialogFragment {
         protected void onPostExecute (String s) {
             super.onPostExecute(s); //서버 결과
             if (s.equals("성공")) {
-                isChanged = true;
                 Toast.makeText(getContext(), "저장 완료", Toast.LENGTH_SHORT).show();
                 dismiss();
                 getFragmentManager().beginTransaction()

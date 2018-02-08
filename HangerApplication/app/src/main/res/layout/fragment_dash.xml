@@ -24,14 +24,6 @@
 
 
 
-    <ImageView
-        android:id="@+id/dashimgtemp5"
-        android:layout_width="160dp"
-        android:layout_height="210dp"
-
-        app:srcCompat="@drawable/tem6" />
-
-
         <LinearLayout
             android:id="@+id/dash_insert_layout"
             android:layout_width="match_parent"
