@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="400dp"
@@ -52,7 +53,8 @@
             android:lines="1"
             android:singleLine="true"
 
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            tools:ignore="NotSibling" />
 
 
     </RelativeLayout>
@@ -89,14 +91,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:background="#ffffff"
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/colortext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/colorText"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="10dp"
@@ -105,22 +109,47 @@
             android:textSize="15dp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/color_Edittext"
+        <TableRow
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/tagtext"
             android:layout_alignParentEnd="true"
-            android:lines="1"
-            android:singleLine="true"
-            android:textColor="#000000"
-            android:textSize="15dp" />
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/colorText"
+            android:stretchColumns="0,1,2"
+            >
+
+            <TextView
+                android:id="@+id/colorview1"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/color_Edittext"
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/colorview1"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textSize="15dp" />
+
+        </TableRow>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="50dp"
         android:background="#ffffff"
         android:padding="5dp">
 
@@ -129,12 +158,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/colortext"
+            android:layout_below="@+id/colorText"
             android:padding="10dp"
             android:text="태그"
             android:textColor="#000000"
             android:textSize="15dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="NotSibling" />
 
         <EditText
             android:id="@+id/AddPost_HashTag_Edittext"
@@ -147,14 +177,16 @@
             android:lines="1"
             android:singleLine="true"
             android:textColor="#b3b3b3"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            tools:ignore="NotSibling" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="153dp"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
         android:background="#ffffff"
-        android:padding="5dp">
+        android:padding="10dp">
 
         <Button
             android:id="@+id/additem_insertbutton"
@@ -162,10 +194,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="left"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
 
-            android:background="#0070C0"
+            android:background="#9848d1"
             android:text="편집"
             android:textColor="#ffffff"
             android:textStyle="bold" />
@@ -177,9 +209,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="right"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginRight="30dp"
-            android:background="#0070C0"
+            android:background="#9848d1"
             android:text="취소"
             android:textColor="#ffffff"
             android:textStyle="bold" />

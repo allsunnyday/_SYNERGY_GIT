@@ -188,6 +188,9 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 manager = getFragmentManager();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
                 appData.edit().remove("Path").commit();
+               // getimg();
+                //adapter.notifyDataSetChanged();
+
             }
         });
 

@@ -8,7 +8,7 @@ public class dressItem implements Serializable{
 
     //안보여지는것
     private String dressName;
-    private String[] dressColor;
+    private String dressColor;
     private String[] dressTag;
 
     private String Cat1;
@@ -28,7 +28,7 @@ public class dressItem implements Serializable{
 
     }
 
-    public dressItem(String iu, String dN, String[] dC, String[] dT, String c1, String c2, int[] sn, boolean isc, boolean iso){
+    public dressItem(String iu, String dN, String dC, String[] dT, String c1, String c2, int[] sn, boolean isc, boolean iso){
         this.imgURL = iu;
         this.dressName = dN;
         this.dressColor = dC;
@@ -53,11 +53,11 @@ public class dressItem implements Serializable{
         this.dressName = dressName;
     }
 
-    public String[] getDressColor() {
+    public String getDressColor() {
         return dressColor;
     }
 
-    public void setDressColor(String[] dressColor) {
+    public void setDressColor(String dressColor) {
         this.dressColor = dressColor;
     }
 
