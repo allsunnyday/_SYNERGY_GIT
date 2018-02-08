@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +38,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.geehy.hangerapplication.CameraActivity;
 import com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
@@ -233,7 +238,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
                             //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
                             Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
-
                             getimg();
 
                         }
@@ -431,6 +435,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 di.setSeason(new int[]{1, 2});
                 di.setCat1(c.getString("category"));
                 di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
+                di.setDressColor(c.getString("color"));
+                Log.d("why why 2", di.getDressColor());
                 list.add(di);
                 ((MainPageActivity) getActivity()).setList(list);
             }
@@ -458,7 +464,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     class BackgroundTask extends AsyncTask<String, Integer, String> {
-        String url = "http://218.38.52.180/getimgpath2.php";//원래는 getimgpath.php
+        String url = "http://218.38.52.180/getimgpath3.php";//원래는 getimgpath.php
         String json=sendObject();//username
 
         @Override
@@ -535,7 +541,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             String tempString = "";
 
             tempString+= ("카테고리 : " + di.getCat1() + "\n");
-            tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
+            //tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
             tempString+= ("계절 : ");
             int[] tempSeason = di.getSeason();
             for(int i = 0 ; i< tempSeason.length ; i++){
@@ -558,21 +564,28 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             tempString += "\n";
             tempString += ("해쉬태그: " + di.getDressTag()+ "\n" );
             tv.setText(tempString);
+
             ImageView iv = (ImageView) convertView.findViewById(R.id.homeitem);
 
             if(di.getImgURL().equals("") || di.getImgURL() == null){
                 imageView.setImageResource(R.drawable.tempimg);
             }else{
                 Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ di.getImgURL()).into(imageView);//보여줄 이미지 파일
-
             }
-        /*    imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "옷 명칭 : " + di.getDressName(), Toast.LENGTH_SHORT).show();
-                    Log.d("Home Gride Item", "Select Postion : " + position +" / Select Dress Name : " + di.getDressName());
-                }
-            });*/
+            TextView color1 = convertView.findViewById(R.id.home_colorView1);
+            TextView color2 = convertView.findViewById(R.id.home_colorView2);
+
+
+            if (di.getDressColor() != "null") {
+                String colorStr[] = di.getDressColor().split(",");
+                int v = Integer.parseInt(colorStr[0]);
+                int m = Integer.parseInt(colorStr[1]);
+                color1.setBackgroundColor(v);
+                color2.setBackgroundColor(m);
+            }
+
+
+
 
             return convertView;
         }

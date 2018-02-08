@@ -10,21 +10,20 @@ public class dressItem implements Serializable{
     private String dressName;
     private String dressColor;
     private String[] dressTag;
-
     private String Cat1;
-
     private int season[]; // spring 0 summer 1 fall 2 winter 3
-
+    private int colorFlag;
 
 
 
     public dressItem(){
         this.imgURL = "";
         this.dressName = "";
-        this.dressColor = null;
+        this.dressColor = "";
         this.dressTag = null;
         this.Cat1 = "";
         this.season = null;
+        this.colorFlag=0; // 0이면 색 X
 
     }
 
@@ -37,6 +36,13 @@ public class dressItem implements Serializable{
         this.season = sn;
     }
 
+    public int getColorFlag() {
+        return colorFlag;
+    }
+
+    public void setColorFlag(int colorFlag) {
+        this.colorFlag = colorFlag;
+    }
     public String getImgURL() {
         return imgURL;
     }
