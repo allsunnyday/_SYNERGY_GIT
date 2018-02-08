@@ -11,7 +11,7 @@
         android:id="@+id/homeitem"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:srcCompat="@drawable/default1" />
+        app:srcCompat="@drawable/tempimg" />
 
     <TextView
         android:id="@+id/item_clothesname"
@@ -19,29 +19,33 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <RelativeLayout
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2">
 
         <TextView
             android:id="@+id/home_colorView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="98dp"
-            android:text="☆☆" />
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:text="" />
 
         <TextView
             android:id="@+id/home_colorView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="78dp"
-            android:text="☆☆"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat" />
-
-    </RelativeLayout>
+    </TableRow>
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.GrabcutActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -183,11 +185,7 @@ public class AddInfoFragment extends DialogFragment {
         }
 
 
-
-
         categorytext.setText(category);
-
-
         Event();
     }
 
@@ -199,7 +197,7 @@ public class AddInfoFragment extends DialogFragment {
             public void onClick(View view) {
                 task = new BackgroundTask();
                 task.execute();
-                dismiss();
+                //dismiss();
             }
         });
 
@@ -277,9 +275,15 @@ public class AddInfoFragment extends DialogFragment {
         protected void onPostExecute (String s) {
             super.onPostExecute(s); //서버 결과
             if (s.equals("성공")) {
+                /////성공할 시에 서버에 결과를 보낸다
+                //isChanged = true;
                 Toast.makeText(getContext(), "저장 서공", Toast.LENGTH_SHORT).show();
+                dismiss();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content, new HomeFragment())
+                        .commit();
 
-                ///////homefragment로 보내기
+
 
             }else{
                 Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();

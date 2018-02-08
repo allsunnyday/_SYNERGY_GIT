@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.DialogInterface;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -97,6 +98,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private String id;
     private String path = "";
     private JSONArray photos = null;
+   // private boolean isChanged;
     private int index =0 ;
     BackgroundTask task;
 
@@ -118,11 +120,10 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         // 설정값 불러오기
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
         load();
-
         change();//이미지 경로가 이미 있는 경우 path에 저장
         if(path.equals("") ) { // 로그인 후 앱 메인화면 처음 켜지는 경우 서버에서 이미지를 가져온다.
             getimg();//이미지 가져오기
-    }
+         }
         init();
         adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);//그리드 뷰의 디자인의 객체를 생성
         gridView.setAdapter(adapter);//그리드 뷰의 객체에 그리드 뷰의 디자인을 적용
@@ -185,9 +186,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int id, long position) { //position
                 Bundle bundle = new Bundle();
-                //bundle.putString("imgURL", "ddddd");
-                //dressItem item = (dressItem)adapter.getItem(id);
-                //bundle.putSerializable("dressItem", item);
                 Log.d("Test Layout", "Show Fragment");
                 AddInfoFragment addfragment = newInstance(list.get(id));
                 manager = getFragmentManager();
