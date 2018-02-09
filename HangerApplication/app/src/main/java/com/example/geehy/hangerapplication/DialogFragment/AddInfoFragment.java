@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.GrabcutActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -44,6 +46,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AddInfoFragment extends DialogFragment {
     private static dressItem dress;
+    //rivate static int dressFlag;
     private SharedPreferences appData;
     private Dialog dialog;
     private View view;
@@ -67,6 +70,7 @@ public class AddInfoFragment extends DialogFragment {
     static String category;
     private int flagWho;
     BackgroundTask task;
+    BackgroundTask2 task2;
     private Bitmap bitmap;
 
 
@@ -78,6 +82,7 @@ public class AddInfoFragment extends DialogFragment {
         imgurl = ds.getImgURL();//사진 img
         category = ds.getCat1();//카테고리 내용
         dressColor = ds.getDressColor();
+        //dressFlag = ds.getColorFlag();
         addInfoFragment.setArguments(args);
         dress = new dressItem();
         dress = ds;
@@ -119,117 +124,80 @@ public class AddInfoFragment extends DialogFragment {
 
         img = (ImageView) view.findViewById(R.id.additem_imagethumb);
         Glide.with(getActivity())
-                .load("http://218.38.52.180/Android_files/"+ imgurl)
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        img.setImageBitmap(resource);
-                        if(dressColor == null){
-                            try{ //로드한 이미지로부터 dominant colors 추출
+                .load("http://218.38.52.180/Android_files/"+imgurl)
+                .into(img);
 
-                                Glide.with(getActivity())
-                                        .load("http://218.38.52.180/Android_files/"+imgurl)
-                                        .asBitmap()
-                                        .into(new SimpleTarget<Bitmap>(){
-                                            @Override
-                                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                                Palette.from(resource).generate(new Palette.PaletteAsyncListener(){
-                                                    @Override
-                                                    public void onGenerated(Palette palette) {
-                                                        int defaultValue = 0x000000;
-                                                        int vibrant = palette.getVibrantColor(defaultValue);
-                                                        int muted = palette.getMutedColor(defaultValue);
+        if( dressColor == "null"){
+            //try{ //로드한 이미지로부터 dominant colors 추출
+                Glide.with(getActivity())
+                        .load("http://218.38.52.180/Android_files/"+imgurl)
+                        .asBitmap()
+                        .into(new SimpleTarget<Bitmap>(){
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                                                        vibantColor = String.format("#%06X", (0xFFFFFF & vibrant));
-                                                        mutedColor = String.format("#%06X", (0xFFFFFF & muted));
-                                                        // #000000 이런 식으로 값을 변환 -> 서버에 스트링으로 저장할 수 있음
-                                                        Log.d("color value", vibantColor);
-                                                        Log.d("color value", mutedColor);
+                                Palette.from(resource).generate(new Palette.PaletteAsyncListener(){
+                                    @Override
+                                    public void onGenerated(Palette palette) {
+                                        int defaultValue = 0x000000;
+                                        int vibrant = palette.getVibrantColor(defaultValue);
+                                        int muted = palette.getMutedColor(defaultValue);
 
-                                                        colorView1.setBackgroundColor(vibrant);
-                                                        colorView1.setText(vibantColor);
-                                                        colortext.setText(mutedColor);
-                                                        colortext.setBackgroundColor(muted);
-                                                        dress.setDressColor(vibrant+","+muted);
+                                        vibantColor = String.format("#%06X", (0xFFFFFF & vibrant));
+                                        mutedColor = String.format("#%06X", (0xFFFFFF & muted));
+                                        // #000000 이런 식으로 값을 변환 -> 서버에 스트링으로 저장할 수 있음
+                                        Log.d("color value", vibantColor);
+                                        Log.d("color value", mutedColor);
 
-                                                    }
-                                                });
-                                            }
-                                        } );
+                                        colorView1.setBackgroundColor(vibrant);
+                                        colorView1.setText(vibantColor);
+                                        colortext.setText(mutedColor);
+                                        colortext.setBackgroundColor(muted);
+                                        dress.setDressColor(vibrant+","+muted);
+                                        Log.d("why why why ", dress.getDressColor());
+                                        task2 = new BackgroundTask2();
+                                        task2.execute();
 
-                            }catch (NullPointerException e){
-                                Log.d("Bitmap","비트맵에러");
-                                return;
+                                    }
+                                });
                             }
+                        } );
 
-                        }
-                        else{
-                            //int defaultValue = 0x000000;
-                            int vibant;
-                            String colorStr[] = dressColor.split(",");
-                            vibantColor = String.format("#%06X", (0xFFFFFF & Integer.parseInt(colorStr[0])));
-                            mutedColor = String.format("#%06X", (0xFFFFFF & Integer.parseInt(colorStr[1])));
-                            colorView1.setText(vibantColor);
-                            colortext.setText(mutedColor);
-                            colorView1.setBackgroundColor(Integer.parseInt(colorStr[0]));
-                            colortext.setBackgroundColor(Integer.parseInt(colorStr[1]));
-                            Log.d("color setting","already set color");
-                        }
-                    }
-                });        //image set
+          // }catch (NullPointerException e){
+          //      Log.d("Bitmap","비트맵에러");
+          //      return;
+          //  }
+        }
+        else if(dressColor != "null") {
+            //int defaultValue = 0x000000;
+            //int vibant;
+            String colorStr[] = dressColor.split(",");
+            int v = Integer.parseInt(colorStr[0]);
+            int m = Integer.parseInt(colorStr[1]);
+            vibantColor = String.format("#%06X", v);
+            mutedColor = String.format("#%06X", m);
+            colorView1.setText(vibantColor);
+            colortext.setText(mutedColor);
+            colorView1.setBackgroundColor(v);
+            colortext.setBackgroundColor(m);
+            Log.d("color setting","already set color");
+
+        }
+
 
         categorytext.setText(category);
-
-
-/*
-
-        try{ //로드한 이미지로부터 dominant colors 추출
-
-            Glide.with(getActivity())
-                    .load("http://218.38.52.180/Android_files/"+imgurl)
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>(){
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener(){
-                                @Override
-                                public void onGenerated(Palette palette) {
-                                    int defaultValue = 0x000000;
-                                    int vibrant = palette.getVibrantColor(defaultValue);
-                                    int muted = palette.getMutedColor(defaultValue);
-                                    vibantColor = String.format("#%06X", (0xFFFFFF & vibrant));
-                                    mutedColor = String.format("#%06X", (0xFFFFFF & muted));
-                                    // #000000 이런 식으로 값을 변환 -> 서버에 스트링으로 저장할 수 있음
-                                    Log.d("color value", vibantColor);
-                                    Log.d("color value", mutedColor);
-
-                                    colorView1.setBackgroundColor(vibrant);
-                                    colorView1.setText(vibantColor);
-                                    colortext.setText(mutedColor);
-                                    colortext.setBackgroundColor(muted);
-                                    dress.setDressColor(vibantColor+","+mutedColor);
-
-                                }
-                            });
-                        }
-                    } );
-
-        }catch (NullPointerException e){
-            Log.d("Bitmap","비트맵에러");
-            return;
-        }
-*/
         Event();
     }
 
     private void Event() {
+
 
         CompleteBTN.setOnClickListener(new View.OnClickListener() {//편집 버튼
             @Override
             public void onClick(View view) {
                 task = new BackgroundTask();
                 task.execute();
+                //dismiss();
             }
         });
 
@@ -275,17 +243,18 @@ public class AddInfoFragment extends DialogFragment {
         try{
             appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
             id = appData.getString("ID", "");//username 받아오기
-            String colorSum = vibantColor + ","+ mutedColor;
+            //String colorSum = vibantColor + ","+ mutedColor;
             jsonpost.put("Username", id);//username
             jsonpost.put("Imgurl", imgurl);//imgUrl
             jsonpost.put("Category", categorytext.getText());//카테고리
-            jsonpost.put("Color", colorView1.getText());//색깔
+            jsonpost.put("Color", dressColor);//색깔
             jsonpost.put("Season",item);//계절
         }catch (JSONException e){
             e.printStackTrace();
         }
         return jsonpost.toString();
     }
+
 
 
     class BackgroundTask extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
@@ -306,15 +275,53 @@ public class AddInfoFragment extends DialogFragment {
         protected void onPostExecute (String s) {
             super.onPostExecute(s); //서버 결과
             if (s.equals("성공")) {
-                Toast.makeText(getContext(), "저장 완료", Toast.LENGTH_SHORT).show();
+                /////성공할 시에 서버에 결과를 보낸다
+                //isChanged = true;
+                Toast.makeText(getContext(), "저장 서공", Toast.LENGTH_SHORT).show();
+                dismiss();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content, new HomeFragment())
+                        .commit();
 
-                ///////homefragment로 보내기
+
 
             }else{
                 Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+
+    private String sendObject_color(){ //편집할 내용 json으로
+        JSONObject jsonpost2 = new JSONObject();
+        try{
+            appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
+            id = appData.getString("ID", "");//username 받아오기
+            String colorSum = vibantColor + ","+ mutedColor;
+            jsonpost2.put("Username", id);//username
+            jsonpost2.put("Imgurl", imgurl);//imgUrl
+            jsonpost2.put("Color", dress.getDressColor());//색깔
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return jsonpost2.toString();
+    }
+    class BackgroundTask2 extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
+        String url2 = "http://218.38.52.180/addcolor.php";
+        String json2= sendObject_color();//편집할 내용 받아옴
+
+        @Override
+        protected String doInBackground (String...params){
+            String result; // 요청 결과를 저장할 변수.
+            RequestActivity requestHttpURLConnection = new RequestActivity();
+            result = requestHttpURLConnection.request(url2, json2); // 해당 URL로 부터 결과물을 얻어온다.
+            return result;
+
+        }
+
+
+    }
+
 
     @Nullable
     @Override

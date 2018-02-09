@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +36,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.DialogInterface;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.geehy.hangerapplication.CameraActivity;
 import com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
@@ -92,6 +98,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private String id;
     private String path = "";
     private JSONArray photos = null;
+   // private boolean isChanged;
     private int index =0 ;
     BackgroundTask task;
 
@@ -113,11 +120,10 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         // 설정값 불러오기
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
         load();
-
         change();//이미지 경로가 이미 있는 경우 path에 저장
         if(path.equals("") ) { // 로그인 후 앱 메인화면 처음 켜지는 경우 서버에서 이미지를 가져온다.
             getimg();//이미지 가져오기
-    }
+         }
         init();
         adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);//그리드 뷰의 디자인의 객체를 생성
         gridView.setAdapter(adapter);//그리드 뷰의 객체에 그리드 뷰의 디자인을 적용
@@ -180,9 +186,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int id, long position) { //position
                 Bundle bundle = new Bundle();
-                //bundle.putString("imgURL", "ddddd");
-                //dressItem item = (dressItem)adapter.getItem(id);
-                //bundle.putSerializable("dressItem", item);
                 Log.d("Test Layout", "Show Fragment");
                 AddInfoFragment addfragment = newInstance(list.get(id));
                 manager = getFragmentManager();
@@ -233,7 +236,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
                             //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
                             Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
-
                             getimg();
 
                         }
@@ -431,6 +433,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 di.setSeason(new int[]{1, 2});
                 di.setCat1(c.getString("category"));
                 di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
+                di.setDressColor(c.getString("color"));
+                Log.d("why why 2", di.getDressColor());
                 list.add(di);
                 ((MainPageActivity) getActivity()).setList(list);
             }
@@ -458,7 +462,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     class BackgroundTask extends AsyncTask<String, Integer, String> {
-        String url = "http://218.38.52.180/getimgpath2.php";//원래는 getimgpath.php
+        String url = "http://218.38.52.180/getimgpath3.php";//원래는 getimgpath.php
         String json=sendObject();//username
 
         @Override
@@ -478,7 +482,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
-            Log.d("getimgtest:",s);
+           // Log.d("getimgtest:",s);
             //Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();
             if(!(s.equals("no path"))) {
                 save(s);
@@ -535,7 +539,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             String tempString = "";
 
             tempString+= ("카테고리 : " + di.getCat1() + "\n");
-            tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
+            //tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
             tempString+= ("계절 : ");
             int[] tempSeason = di.getSeason();
             for(int i = 0 ; i< tempSeason.length ; i++){
@@ -558,21 +562,39 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             tempString += "\n";
             tempString += ("해쉬태그: " + di.getDressTag()+ "\n" );
             tv.setText(tempString);
+
             ImageView iv = (ImageView) convertView.findViewById(R.id.homeitem);
 
             if(di.getImgURL().equals("") || di.getImgURL() == null){
                 imageView.setImageResource(R.drawable.tempimg);
             }else{
                 Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ di.getImgURL()).into(imageView);//보여줄 이미지 파일
+            }
+            TextView color1 = convertView.findViewById(R.id.home_colorView1);
+            TextView color2 = convertView.findViewById(R.id.home_colorView2);
+            int defaultValue = 0x000000;
+
+
+            if (di.getDressColor() != "null") {
+                try {
+                    String colorStr[] = di.getDressColor().split(",");
+                    int v = Integer.parseInt(colorStr[0]);
+                    int m = Integer.parseInt(colorStr[1]);
+                    color1.setBackgroundColor(v);
+                    color2.setBackgroundColor(m);
+                }catch (NullPointerException e){
+                    Log.d("eeeeee","getDressColor null");
+                }
+            }
+            else{
+                color1.setBackgroundColor(defaultValue);
+                color2.setBackgroundColor(defaultValue);
 
             }
-        /*    imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "옷 명칭 : " + di.getDressName(), Toast.LENGTH_SHORT).show();
-                    Log.d("Home Gride Item", "Select Postion : " + position +" / Select Dress Name : " + di.getDressName());
-                }
-            });*/
+
+
+
+
 
             return convertView;
         }
