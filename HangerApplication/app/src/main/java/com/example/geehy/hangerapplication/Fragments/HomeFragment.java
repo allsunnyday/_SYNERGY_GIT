@@ -576,7 +576,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
             if (di.getDressColor() != "null") {
-                try {
+                try { //null point exection 추가
                     String colorStr[] = di.getDressColor().split(",");
                     int v = Integer.parseInt(colorStr[0]);
                     int m = Integer.parseInt(colorStr[1]);
