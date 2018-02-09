@@ -482,7 +482,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
-            Log.d("getimgtest:",s);
+           // Log.d("getimgtest:",s);
             //Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();
             if(!(s.equals("no path"))) {
                 save(s);
@@ -572,15 +572,26 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             }
             TextView color1 = convertView.findViewById(R.id.home_colorView1);
             TextView color2 = convertView.findViewById(R.id.home_colorView2);
+            int defaultValue = 0x000000;
 
 
             if (di.getDressColor() != "null") {
-                String colorStr[] = di.getDressColor().split(",");
-                int v = Integer.parseInt(colorStr[0]);
-                int m = Integer.parseInt(colorStr[1]);
-                color1.setBackgroundColor(v);
-                color2.setBackgroundColor(m);
+                try {
+                    String colorStr[] = di.getDressColor().split(",");
+                    int v = Integer.parseInt(colorStr[0]);
+                    int m = Integer.parseInt(colorStr[1]);
+                    color1.setBackgroundColor(v);
+                    color2.setBackgroundColor(m);
+                }catch (NullPointerException e){
+                    Log.d("eeeeee","getDressColor null");
+                }
             }
+            else{
+                color1.setBackgroundColor(defaultValue);
+                color2.setBackgroundColor(defaultValue);
+
+            }
+
 
 
 
