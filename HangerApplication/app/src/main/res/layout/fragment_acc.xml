@@ -40,7 +40,7 @@
                 android:layout_alignBottom="@+id/logout"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
             <Button
@@ -50,7 +50,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/logoutnext"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 android:text="로그아웃"
                 android:textColor="#ffffff" />
         </RelativeLayout>
@@ -75,7 +75,7 @@
                 android:layout_alignBottom="@+id/unregister"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
             <Button
@@ -85,7 +85,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/unregisternext"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 android:text="회원탈퇴"
                 android:textColor="#ffffff" />
 
@@ -111,7 +111,7 @@
                 android:layout_alignBottom="@+id/edit"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
             <Button
@@ -121,7 +121,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/editnext"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 android:text="회원 정보 수정"
                 android:textColor="#ffffff" />
 
@@ -146,7 +146,7 @@
                 android:layout_alignBottom="@+id/qna"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
             <Button
@@ -156,7 +156,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_toStartOf="@+id/qnanext"
-                android:background="#0070C0"
+                android:background="#9848d1"
                 android:text="문의/건의하기"
                 android:textColor="#ffffff" />
         </RelativeLayout>

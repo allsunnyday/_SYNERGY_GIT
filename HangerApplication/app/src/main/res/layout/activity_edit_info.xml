@@ -48,7 +48,7 @@
 
         <EditText
             android:id="@+id/username_edittext"
-            android:layout_width="230dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tagtext"
             android:layout_alignParentEnd="true"
@@ -80,7 +80,7 @@
 
         <EditText
             android:id="@+id/Pw_edittext"
-            android:layout_width="230dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tagtext"
             android:layout_alignParentEnd="true"
@@ -94,12 +94,52 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/newpwtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="NewPassword"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/newpw_edittext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tagtext"
+            android:layout_alignParentEnd="true"
+            android:imeOptions="actionDone"
+            android:lines="1"
+            android:singleLine="true"
+
+            android:textSize="15dp" />
+
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="70dp"
         android:background="#ffffff"
         android:padding="5dp">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:background="#ffffff"
+        android:padding="10dp">
 
         <Button
             android:id="@+id/finish_button"
@@ -107,10 +147,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="left"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
 
-            android:background="#0070C0"
+            android:background="#9848d1"
             android:text="완료"
             android:textColor="#ffffff"
             android:textStyle="bold" />
@@ -122,9 +162,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="right"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginRight="30dp"
-            android:background="#0070C0"
+            android:background="#9848d1"
             android:text="취소"
             android:textColor="#ffffff"
             android:textStyle="bold" />

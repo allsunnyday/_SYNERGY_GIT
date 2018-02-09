@@ -11,7 +11,7 @@ android:weightSum="1">
     <ImageView
         android:id="@+id/calendar_img"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="300dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
@@ -41,16 +41,25 @@ android:weightSum="1">
             android:singleLine="true"
             android:textColor="#000000"
             android:textAlignment="center"
-            android:textSize="20dp" />
+            android:textSize="17dp" />
 
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="40dp"
         android:background="#ffffff"
         android:padding="5dp">
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:background="#ffffff"
+        android:padding="10dp">
 
         <Button
             android:id="@+id/ok_button"
@@ -60,8 +69,8 @@ android:weightSum="1">
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="27dp"
-            android:background="#0070C0"
+            android:layout_marginBottom="10dp"
+            android:background="#9848d1"
             android:text="확인"
             android:textColor="#ffffff"
             android:textStyle="bold" />
