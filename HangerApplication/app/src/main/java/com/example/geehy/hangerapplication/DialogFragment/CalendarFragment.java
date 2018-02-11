@@ -21,18 +21,6 @@ public class CalendarFragment extends DialogFragment {
     private ImageView img;
     private EditText datetext;
     private String date;
-/*
-    public static CalendarFragment newInstance(String getdate) {
-        CalendarFragment calendarFragment = new CalendarFragment();
-        //  Supply items as an argument.
-        Bundle args = new Bundle();
-        args.putSerializable("Date", date);
-        date = getdate;
-        calendarFragment.setArguments(args);
-
-        return calendarFragment;
-    }
-*/
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -11,7 +11,7 @@
         android:id="@+id/accitem"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:srcCompat="@drawable/default1" />
+        />
 
     <TextView
         android:id="@+id/item_accname"
