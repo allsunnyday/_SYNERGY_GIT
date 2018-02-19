@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="400dp"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+
+    <TextView
+        android:id="@+id/showWeather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="♡ 오늘의 추천 ♡"
+        android:textSize="21dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/weather"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="left"
+        android:padding="10dp"
+        android:text="현재 날씨 : "
+        android:textColor="#000000"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/weather_top"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:text="TOP"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+
+        <TextView
+            android:id="@+id/weather_bottom"
+            android:layout_width="170dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:text="BOTTOM"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="170dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/default1"/>
+
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/default1"/>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#ffffff"
+        android:padding="5dp"></RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:background="#ffffff"
+        android:padding="10dp">
+
+    <Button
+        android:id="@+id/ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:background="#9848d1"
+        android:text="확인"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+    </RelativeLayout>
+
+    </LinearLayout>

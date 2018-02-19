@@ -190,8 +190,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 manager = getFragmentManager();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
                 appData.edit().remove("Path").commit();
-                getimg();
-                adapter.notifyDataSetChanged();
 
             }
         });
@@ -460,7 +458,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     class BackgroundTask extends AsyncTask<String, Integer, String> {
-        String url = "http://218.38.52.180/getimgpath3.php";//원래는 getimgpath.php
+        String url = "http://218.38.52.180/getimgpath3.php";
         String json=sendObject();//username
 
         @Override

@@ -2,8 +2,10 @@
 
 package com.example.geehy.hangerapplication.DialogFragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -13,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,16 +37,17 @@ public class CalendarFragment extends DialogFragment {
     private Dialog dialog;
     private View view;
     private Button okBTN;
+    private ImageButton delBTN;
     private TextView datetext;
     private String date;
     private String temp;
-    private String category;
+    private  boolean isSelected = false;
     private int index;
-    private String img;
     private JSONArray calendar = null;
     private GridAdapter adapter;
     private GridView gridView;
     private ArrayList<dressItem> list = new ArrayList<>();
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,6 +72,7 @@ public class CalendarFragment extends DialogFragment {
     private void init() {
 
         okBTN = (Button) view.findViewById(R.id.ok_button);
+        delBTN = (ImageButton) view.findViewById(R.id.delete_btn);
         datetext = (TextView) view.findViewById(R.id.date_text);
         gridView = (GridView) view.findViewById(R.id.calendar_gridview);//그리드 뷰의 객체를 가져오기
         datetext.setText(date); //해당 날짜 set
@@ -83,8 +89,54 @@ public class CalendarFragment extends DialogFragment {
             }
         });
 
+        delBTN.setOnClickListener(new View.OnClickListener() {//삭제 버튼
+
+            @Override
+            public void onClick(View view) {
+
+                if(isSelected){ //체크박스가 선택됐을 때
+                    delete_show(); //삭제 확인 Alert창
+                }else{ //선택 안됐을 때
+                    alert_show();//선택하라는 Alert창
+                }
+
+
+            }
+        });
     }
 
+    void delete_show()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("삭제하시겠습니까?");
+        builder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        builder.setPositiveButton("확인",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //**************서버연결*******************
+                        //  adapter.notifyDataSetChanged();
+                    }
+                });
+
+        builder.show();
+    }
+
+    void alert_show()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("삭제할 코디를 선택해주세요 ");
+        builder.setPositiveButton("확인",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        builder.show();
+    }
 
     public void getcoodi(){
 
@@ -118,6 +170,7 @@ public class CalendarFragment extends DialogFragment {
         private Context context;
         private int layout;
         private ArrayList<dressItem> list;
+        private CheckBox checkBox;
 
         public GridAdapter(Context context,int layout,ArrayList<dressItem> list){
             this.context = context;
@@ -142,6 +195,8 @@ public class CalendarFragment extends DialogFragment {
                 convertView = layoutInflater.inflate(layout, null);
             }
 
+
+           CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.check);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.item_calendar2);
             TextView tv = (TextView) convertView.findViewById(R.id.item_calendar1);//카테고리 textview
             final dressItem di = list.get(position);

@@ -218,6 +218,9 @@ public class AddInfoFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 dismiss(); //화면 닫기
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content, new HomeFragment())
+                        .commit();
             }
         });
 /*
@@ -289,7 +292,7 @@ public class AddInfoFragment extends DialogFragment {
             if (s.equals("성공")) {
                 /////성공할 시에 서버에 결과를 보낸다
                 //isChanged = true;
-                Toast.makeText(getContext(), "저장 서공", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
                 dismiss();
                 getFragmentManager().beginTransaction()
                         .replace(R.id.content, new HomeFragment())

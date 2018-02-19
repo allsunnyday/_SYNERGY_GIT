@@ -98,7 +98,7 @@ public class CodiInfoFragment extends DialogFragment{
         likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likes.setImageResource(R.drawable.like);
+                likes.setImageResource(R.drawable.like_magenta);
 
             }
         });

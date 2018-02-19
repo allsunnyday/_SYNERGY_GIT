@@ -69,7 +69,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/likebtn"
+            android:layout_toEndOf="@+id/likebtn"
             android:background="@android:color/white"
             app:srcCompat="@android:drawable/ic_menu_edit" />
 

@@ -116,6 +116,7 @@ public class DressFragment extends Fragment {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                     dressinsert.setVisibility(View.VISIBLE);   //날짜 클릭시 메뉴 버튼 보여준다
                     date = year+"/"+(month+1)+"/"+dayOfMonth;
+
             }
 
         });
