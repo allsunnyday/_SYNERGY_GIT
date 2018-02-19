@@ -21,6 +21,7 @@ import java.util.List;
 
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -42,17 +43,20 @@ public class AddClothesFragment  extends DialogFragment {
     private View view;
     private Button cancelBTN;
     private Button okBTN;
-    private ListView listView;
+    private ListView listView1;
+    private ListView listView2;
     private ImageView iv;
     private String date;
     private String path;
-    private String imgpath="";
+    private String imgnow="";
+    private String category="";
+    private String temp="";
     private String id;
-    private ListAdapter adapter;
-    private ArrayAdapter new_adapter;
+    private ListAdapter2 adapter;
+    private ListAdapter1 new_adapter;
     static final String[] listmenu = {"OUTER","TOP", "BOTTOM","DRESS","ACC"} ;
     static final String[] outermenu = {"OUTER","bomber", "blazer","cardigan","coat","jacket","jersey","parka","poncho","precoat","robe","TOP", "BOTTOM","DRESS","ACC"} ;
-    static final String[] topmenu = {"OUTER","TOP","blouse","henley","hoodie","shirt","skirt","tank","tee","top","tuterleneck", "BOTTOM","DRESS","ACC"} ;
+    static final String[] topmenu = {"OUTER","TOP","blouse","henley","hoodie","shirt","tank","tee","top","tuterleneck", "BOTTOM","DRESS","ACC"} ;
     static final String[] bottommenu = {"OUTER","TOP","BOTTOM","chinos","jeans","leggings","long","mideum","short","skirt","sourt","wide","DRESS","ACC" } ;
     static final String[] dressmenu = {"OUTER","TOP","BOTTOM","DRESS","dress","homewear","jumpsuit","kimono","sarong","ACC"} ;
     String[] imgarr = new String[500];
@@ -81,15 +85,14 @@ public class AddClothesFragment  extends DialogFragment {
     private void init() {
 
         //리스트뷰와 리스트를 연결하기 위해 사용되는 어댑터
-    //    adapter = new ListAdapter(getActivity(), R.layout.item_dress_listview, listmenu);
-        new_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listmenu);
+        new_adapter = new ListAdapter1(getActivity(), R.layout.simple_list_item, listmenu);
 
-        listView = (ListView) view.findViewById(R.id.listview1);
+        listView1 = (ListView) view.findViewById(R.id.listview1);//카테고리(글씨) 보여주는 listview
+        listView2 = (ListView) view.findViewById(R.id.listview2);//옷(이미지) 보여주는 listview
         okBTN = (Button) view.findViewById(R.id.finish_button);
         cancelBTN = (Button) view.findViewById(R.id.cancel_button);
         iv = (ImageView) view.findViewById(R.id.add_dress);
-        //listView.setAdapter(adapter) ;//adapter 연결
-        listView.setAdapter(new_adapter) ;//adapter 연결
+        listView1.setAdapter(new_adapter) ;//adapter 연결
 
         // 설정값 불러오기
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
@@ -99,50 +102,69 @@ public class AddClothesFragment  extends DialogFragment {
 
     private void Event() {
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() { //카테고리 listview 클릭한 경우
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get TextView's Text.
                 String strText = (String) parent.getItemAtPosition(position);
 
                 if (strText == "OUTER") {//기본 카테고리
-                    new_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, outermenu);
-                    listView.setAdapter(new_adapter) ;//adapter 연결
+                    new_adapter = new ListAdapter1(getActivity(), R.layout.simple_list_item, outermenu);
+                    listView1.setAdapter(new_adapter) ;//OUTER에 속하는 카테고리 보여준다
+
                 } else if (strText == "TOP") {
-                    new_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, topmenu);
-                    listView.setAdapter(new_adapter) ;//adapter 연결
+                    new_adapter = new ListAdapter1(getActivity(), R.layout.simple_list_item,topmenu);
+                    listView1.setAdapter(new_adapter) ;//TOP에 속하는 카테고리 보여준다
+
                 } else if (strText == "BOTTOM") {
-                    new_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, bottommenu);
-                    listView.setAdapter(new_adapter) ;//adapter 연결
+                    new_adapter = new ListAdapter1(getActivity(), R.layout.simple_list_item,bottommenu);
+                    listView1.setAdapter(new_adapter) ;//BOTTOM에 속하는 카테고리 보여준다
+
                 } else if (strText == "DRESS") {
-                    new_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, dressmenu);
-                    listView.setAdapter(new_adapter) ;//adapter 연결
+                    new_adapter = new ListAdapter1(getActivity(), R.layout.simple_list_item, dressmenu);
+                    listView1.setAdapter(new_adapter) ;//DRESS에 속하는 카테고리 보여준다
+
                 } else if (strText == "ACC") {
+                    temp = "acc";
+                    getList("ACC/");
+                    adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
+                    listView2.setAdapter(adapter) ;//카테고리에 속하는 옷 보여주기 위해 두번째 listview에 adapter를 set
 
                 } else if (strText == "bomber" || strText =="blazer" || strText =="cardigan"|| strText =="coat"|| strText =="jacket"|| strText =="jersey"|| strText =="parka"|| strText =="poncho"|| strText =="precoat"|| strText =="robe") {//OUTER 메뉴에서 세부 카테고리 선택한 경우
+                    temp = "outer";
                     getList("OUTER/"+strText);
-                    adapter = new ListAdapter(getActivity(), R.layout.item_dress_listview, imgarr);
-                    listView.setAdapter(adapter) ;//adapter 연결
+                    adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
+                    listView2.setAdapter(adapter) ;//카테고리에 속하는 옷 보여주기 위해 두번째 listview에 adapter를 set
 
-                }else if (strText.equals("blouse") || strText.equals("henley") || strText.equals("hoodie") || strText.equals("shirt") || strText.equals("skirt") || strText.equals("tank") || strText.equals("tee") || strText.equals("top")|| strText.equals("tuterleneck")) {//TOP 메뉴에서 세부 카테고리 선택한 경우
+                }else if (strText.equals("blouse") || strText.equals("henley") || strText.equals("hoodie") || strText.equals("shirt") || strText.equals("tank") || strText.equals("tee") || strText.equals("top")|| strText.equals("tuterleneck")) {//TOP 메뉴에서 세부 카테고리 선택한 경우
+                    temp = "top";
                     getList("TOP/"+strText);
-                    adapter = new ListAdapter(getActivity(), R.layout.item_dress_listview, imgarr);
-                    listView.setAdapter(adapter) ;//adapter 연결
+                    adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
+                    listView2.setAdapter(adapter) ;//두번째 listview에 adapter 연결
 
                }else if (strText.equals("chinos" )|| strText.equals("jeans") || strText.equals("leggings" )|| strText.equals("long" )|| strText.equals("mideum") || strText.equals("short") || strText.equals("skirt") || strText.equals("sourt") || strText.equals("wide")) {//BOTTOM 메뉴에서 세부 카테고리 선택한 경우
+                    temp = "bottom";
                     getList("BOTTOM/"+strText);
-                    adapter = new ListAdapter(getActivity(), R.layout.item_dress_listview, imgarr);
-                    listView.setAdapter(adapter) ;//adapter 연결
+                    adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
+                    listView2.setAdapter(adapter) ;//두번째 listview에 adapter 연결
 
                 }else if (strText.equals("dress" )|| strText.equals("homewear" )|| strText.equals("jumpsuit" )|| strText.equals("kimono") || strText.equals("sarong")) {//DRESS 메뉴에서 세부 카테고리 선택한 경우
+                    temp = "dress";
                     getList("DRESS/"+strText);
-                    adapter = new ListAdapter(getActivity(), R.layout.item_dress_listview, imgarr);
-                    listView.setAdapter(adapter) ;//adapter 연결
-               }else{
-                    imgpath = imgarr[position];
-                    Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ imgpath).into(iv);//보여줄 이미지 파일
-                }
+                    adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
+                    listView2.setAdapter(adapter) ;
+               }
+            }
+        }) ;
 
+
+
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() { //이미지 listview 클릭한 경우
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                category = temp; //서버로 전송할 카테고리
+                imgnow = imgarr[position];
+                    Glide.with(getActivity()).load("http://218.38.52.180/Android_files/" + imgnow).into(iv);//보여줄 이미지 파일
             }
         }) ;
 
@@ -151,7 +173,7 @@ public class AddClothesFragment  extends DialogFragment {
             @Override
             public void onClick(View view) {
 
-                if(imgpath.equals("") || imgpath.equals("null")){ //선택한 이미지가 없는 경우
+                if(imgnow.equals("") || imgnow.equals("null")){ //선택한 이미지가 없는 경우
                     Toast.makeText(getContext(), "저장할 사진을 선택해주세요", Toast.LENGTH_SHORT).show();
                 }else{ //이미지를 선택한 경우
                     addCoordy();
@@ -169,6 +191,7 @@ public class AddClothesFragment  extends DialogFragment {
     }
 
     public void getList(String category){
+        imgarrIndex = 0 ;
         path = appData.getString("Path", "");
         Log.d("Path:", path);
         try {
@@ -221,7 +244,7 @@ public class AddClothesFragment  extends DialogFragment {
 
             if(s.equals("success")) { //해당 날짜에 코디 저장 완료
                 Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
-                dismiss();
+
             }else {
                 Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();
             }
@@ -235,7 +258,9 @@ public class AddClothesFragment  extends DialogFragment {
         try {
             jsonpost.put("Username", id);//sharedpreference에 저장되었던 username 서버로 보내기 위해서 json 형식으로 변환
             jsonpost.put("Date", date);//달력에서 선택한 날짜 서버로 보내기 위해서 json 형식으로 변환
-            jsonpost.put("ImgPath", imgpath);//달력에 저장할 이미지 path
+            jsonpost.put("Imgnow", imgnow);//달력에 저장할 이미지
+            jsonpost.put("Category", category);//이미지와 함께 저장할 카테고리
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -251,21 +276,74 @@ public class AddClothesFragment  extends DialogFragment {
 
 
 
-    //AddClothesFragment의 Adapter
 
-    public class ListAdapter extends BaseAdapter {
+
+    //Listview1의 Adapter
+
+    public class ListAdapter1 extends BaseAdapter {
         private Context context;
         private int layout; //아이템 레이아웃 정보ㅓ
         private String[] list;
         LayoutInflater inf;
 
-        public ListAdapter() {
+        public ListAdapter1() {
             this.context = null;
             this.layout = 0;
             this.list = null;
         }
 
-        public ListAdapter(Context context, int layout, String[] list) {
+        public ListAdapter1(Context context, int layout, String[] list) {
+            this.context = context;
+            this.layout = layout;
+            this.list = list;
+
+            inf=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return list.length;}
+
+        @Override
+        public Object getItem(int postion) {
+            return list[postion];
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(final int postion, View convertView, ViewGroup viewGroup) {
+            if(convertView == null){
+                convertView = inf.inflate(layout, null);
+            }
+
+            TextView tv = convertView.findViewById(R.id.listtext);
+            tv.setText(list[postion]);
+            return convertView;
+        }
+    }
+
+
+
+
+    //Listview2의 Adapter
+
+    public class ListAdapter2 extends BaseAdapter {
+        private Context context;
+        private int layout; //아이템 레이아웃 정보ㅓ
+        private String[] list;
+        LayoutInflater inf;
+
+        public ListAdapter2() {
+            this.context = null;
+            this.layout = 0;
+            this.list = null;
+        }
+
+        public ListAdapter2(Context context, int layout, String[] list) {
             this.context = context;
             this.layout = layout;
             this.list = list;

@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="357dp"
-        android:layout_height="198dp"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
         app:srcCompat="@drawable/emailicon"
         android:layout_weight="0.11" />
 
@@ -41,7 +41,7 @@
             android:gravity="center"
             android:inputType="textPersonName"
             android:text="메일을 확인해 주세요"
-            android:textSize="30dp"
+            android:textSize="25dp"
 
             android:textStyle="bold"
             tools:layout_editor_absoluteX="26dp"
