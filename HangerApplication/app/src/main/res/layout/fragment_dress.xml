@@ -8,20 +8,6 @@
 
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/dress_fbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="72dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="0.03"
-        android:src="@drawable/ic_add_black_24dp"
-        app:background="@color/colorPrimary"
-        app:backgroundTint="#9848d1"
-        app:elevation="5dp"
-        app:fabSize="normal"
-        app:rippleColor="#000000" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-
+        <CalendarView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     <LinearLayout
         android:id="@+id/dress_insert_Layout"
         android:layout_width="match_parent"
@@ -55,21 +44,18 @@
             android:visibility="visible" />
 
         <Button
-            android:id="@+id/dress_coordy_btn"
+            android:id="@+id/coordy_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
             android:background="#9848d1"
-            android:text="♡Add Coordy♡"
+            android:text="♡Daily Look♡"
             android:textColor="#ffffff"
             android:textSize="20dp"
             android:visibility="visible" />
     </LinearLayout>
     </RelativeLayout>
     </LinearLayout>
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 </FrameLayout>
