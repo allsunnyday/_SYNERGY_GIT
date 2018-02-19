@@ -131,11 +131,10 @@ public class LoginActivity extends AppCompatActivity {
             return result;
 
         }
-
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
-            //Log.d("logintest",s);
+            Log.d("logintest",s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
             if (s.equals("0")) {
                 Toast.makeText(getApplication(), "이메일 인증이 완료되지 않았어요T_T", Toast.LENGTH_SHORT).show();
@@ -177,7 +176,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 }
-
 
 
 

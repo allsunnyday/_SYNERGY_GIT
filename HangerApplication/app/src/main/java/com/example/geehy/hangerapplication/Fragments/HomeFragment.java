@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private String id;
     private String path = "";
     private JSONArray photos = null;
-   // private boolean isChanged;
+    // private boolean isChanged;
     private int index =0 ;
     BackgroundTask task;
 
@@ -108,7 +108,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         list = ((MainPageActivity) getActivity()).getList();
     }
 
@@ -123,7 +122,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         change();//이미지 경로가 이미 있는 경우 path에 저장
         if(path.equals("") ) { // 로그인 후 앱 메인화면 처음 켜지는 경우 서버에서 이미지를 가져온다.
             getimg();//이미지 가져오기
-         }
+        }
         init();
         adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);//그리드 뷰의 디자인의 객체를 생성
         gridView.setAdapter(adapter);//그리드 뷰의 객체에 그리드 뷰의 디자인을 적용
@@ -191,8 +190,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 manager = getFragmentManager();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
                 appData.edit().remove("Path").commit();
-               // getimg();
-                //adapter.notifyDataSetChanged();
+                getimg();
+                adapter.notifyDataSetChanged();
 
             }
         });
@@ -424,7 +423,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         Log.d("Path:", path);
         try {
             JSONObject jObject = new JSONObject(path);//php 결과 json형식으로 저장
-            photos = jObject.getJSONArray("result");;
+            photos = jObject.getJSONArray("result");
             int i;
             list.clear();
             for(i=0; i < photos.length(); i++){
@@ -434,7 +433,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 di.setCat1(c.getString("category"));
                 di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
                 di.setDressColor(c.getString("color"));
-                Log.d("why why 2", di.getDressColor());
                 list.add(di);
                 ((MainPageActivity) getActivity()).setList(list);
             }
@@ -482,7 +480,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
-           // Log.d("getimgtest:",s);
+            Log.d("getimgtest:", s);
             //Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();
             if(!(s.equals("no path"))) {
                 save(s);
@@ -538,7 +536,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
             String tempString = "";
 
-            tempString+= ("카테고리 : " + di.getCat1() + "\n");
+            tempString+= (di.getCat1() + "\n");
             //tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
             tempString+= ("계절 : ");
             int[] tempSeason = di.getSeason();
@@ -560,12 +558,11 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 }
             }
             tempString += "\n";
-            tempString += ("해쉬태그: " + di.getDressTag()+ "\n" );
+            tempString += ("#" + di.getDressTag()+ "\n" );
             tv.setText(tempString);
 
-            ImageView iv = (ImageView) convertView.findViewById(R.id.homeitem);
 
-            if(di.getImgURL().equals("") || di.getImgURL() == null){
+            if(di.getImgURL().equals("") || di.getImgURL().equals("null")){
                 imageView.setImageResource(R.drawable.tempimg);
             }else{
                 Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ di.getImgURL()).into(imageView);//보여줄 이미지 파일
@@ -574,23 +571,22 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             TextView color2 = convertView.findViewById(R.id.home_colorView2);
             int defaultValue = 0x000000;
 
-
-            if (di.getDressColor() != "null") {
-                try { //null point exection 추가
+            if((di.getDressColor()).equals("") ||(di.getDressColor()).equals("null")){
+                color1.setBackgroundColor(defaultValue);
+                color2.setBackgroundColor(defaultValue);
+            }
+            else {
+                try { //NumberFormatException 추가
                     String colorStr[] = di.getDressColor().split(",");
                     int v = Integer.parseInt(colorStr[0]);
                     int m = Integer.parseInt(colorStr[1]);
                     color1.setBackgroundColor(v);
                     color2.setBackgroundColor(m);
-                }catch (NullPointerException e){
+                }catch (NumberFormatException e){
                     Log.d("eeeeee","getDressColor null");
                 }
             }
-            else{
-                color1.setBackgroundColor(defaultValue);
-                color2.setBackgroundColor(defaultValue);
 
-            }
 
 
 
@@ -603,7 +599,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 }
-
 
 
 

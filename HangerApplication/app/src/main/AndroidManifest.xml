@@ -36,6 +36,7 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name=".AppCompatPreferenceActivity"
             android:screenOrientation="portrait" />

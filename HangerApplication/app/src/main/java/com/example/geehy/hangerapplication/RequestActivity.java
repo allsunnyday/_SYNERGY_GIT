@@ -16,6 +16,7 @@ import java.net.URL;
 
 public class RequestActivity {
     private static final String TAG = RequestActivity.class.getSimpleName();
+
     public String request(String _url, String json){
 
         // HttpURLConnection 참조 변수.

@@ -13,6 +13,7 @@ public class SignupApproved extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_approved);
+        backtosignin();
     }
 
 
@@ -21,7 +22,7 @@ public class SignupApproved extends AppCompatActivity {
         backtologin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignupApprovedActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

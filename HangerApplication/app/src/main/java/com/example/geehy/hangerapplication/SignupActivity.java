@@ -67,7 +67,6 @@ public class SignupActivity extends AppCompatActivity {
 
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
              //   Toast.makeText(getApplication(),"♥이메일을 확인해주세요♥", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(getApplicationContext(), SignupApprovedActivity.class);
             startActivity(intent);
             finish();

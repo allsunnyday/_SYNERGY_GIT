@@ -13,11 +13,12 @@ public class SignupApprovedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_approved);
+        backtosignin();
     }
 
 
     private void backtosignin() {
-        backtologin = (Button) findViewById(R.id.loginagain_button);
+        backtologin = (Button) findViewById(R.id.loginagain_button2);
         backtologin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -21,6 +21,7 @@ import com.example.geehy.hangerapplication.Fragments.DashFragment;
 import com.example.geehy.hangerapplication.Fragments.DressFragment;
 import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.Fragments.TempFragment;
+import com.example.geehy.hangerapplication.gridview_home.CoordyItem;
 import com.example.geehy.hangerapplication.gridview_home.dressItem;
 import com.example.geehy.hangerapplication.temppa.BottomNavigationViewHelper;
 
@@ -44,6 +45,7 @@ public class MainPageActivity extends AppCompatActivity {
     private int flagWho;
 
     private ArrayList<dressItem> list;
+    private ArrayList<CoordyItem> coordyItemslist;
 
     /*Get Set*/
     public ArrayList<dressItem> getList() {
@@ -54,7 +56,12 @@ public class MainPageActivity extends AppCompatActivity {
         this.list = list;
     }
 
+    public ArrayList<CoordyItem> getCoordy(){
+        return coordyItemslist;
+    }
 
+    public void setCoordylist(ArrayList<CoordyItem> coordyItemslist){this.coordyItemslist = coordyItemslist;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -115,6 +122,7 @@ public class MainPageActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
 
         list = new ArrayList<dressItem>();
+        coordyItemslist = new ArrayList<CoordyItem>();
 
 
         event();
