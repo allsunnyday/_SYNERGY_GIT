@@ -18,16 +18,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.492">
 
-        <EditText
+        <TextView
             android:id="@+id/edit_codi_name"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
             android:ems="10"
+            android:gravity="center"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:text="Name"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/codiiffo_top"
@@ -47,8 +52,8 @@
 
         <ImageButton
             android:id="@+id/likebtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_marginStart="14dp"
             android:layout_toRightOf="@+id/edit_codi_name"
@@ -59,7 +64,8 @@
             android:id="@+id/codi_info_delete_btn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toRightOf="@+id/codi_info_edit_btn"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/codi_info_edit_btn"
             android:background="@color/colorWhite"
             android:elevation="0dp"
             app:srcCompat="@android:drawable/ic_menu_delete" />

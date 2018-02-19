@@ -183,6 +183,7 @@ public class DashFragment extends Fragment {
                 codiInfoFragment.setArguments(bundle);
                 codiInfoFragment.show(getActivity().getFragmentManager(), "CodiInfoFragment");
                 appData.edit().remove("CoordyPath").commit(); //변경된 내용을 보여주기 위해서?
+
                 change();
                 coordyAdapter.notifyDataSetChanged();
             //    refreshFrag();

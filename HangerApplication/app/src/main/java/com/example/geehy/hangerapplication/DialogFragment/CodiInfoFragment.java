@@ -3,23 +3,29 @@ package com.example.geehy.hangerapplication.DialogFragment;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
+import com.example.geehy.hangerapplication.gridview_home.CoordyItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -33,7 +39,7 @@ public class CodiInfoFragment extends DialogFragment{
     private View view;
     private String top;
     private String bottom;
-    private EditText codiName;
+    private TextView codiName;
     private ImageView topView;
     private ImageView bottomView;
     private ImageButton likes;
@@ -73,10 +79,10 @@ public class CodiInfoFragment extends DialogFragment{
     }
 
     private void init() {
-        codiName = (EditText) view.findViewById(R.id.edit_codi_name);
+        codiName = (TextView) view.findViewById(R.id.edit_codi_name);
         topView = (ImageView)view.findViewById(R.id.codiiffo_top);
         bottomView = (ImageView)view.findViewById(R.id.codiinfo_bottom);
-        codiName = (EditText)view.findViewById(R.id.edit_codi_name);
+
         likes = (ImageButton)view.findViewById(R.id.likebtn);
         editbtn=(ImageButton)view.findViewById(R.id.codi_info_edit_btn);
 
@@ -98,14 +104,29 @@ public class CodiInfoFragment extends DialogFragment{
         likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likes.setImageResource(R.drawable.like);
+                likes.setImageResource(R.drawable.like_magenta);
+
 
             }
         });
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //addcoordyFragment를 연결시키는 게 좋을 듯
+
+                Bundle bundle = new Bundle();
+                bundle.putString("TOP", top);
+                bundle.putString("BOTTOM", bottom);
+                bundle.putString("NAME", name);
+                bundle.putInt("NO", codi_no);
+
+                EditCodiInfoFragment editCodi = new EditCodiInfoFragment();
+                editCodi.setArguments(bundle);
+                editCodi.show(getActivity().getFragmentManager(), "EditCodiInfoFragment");
+                //getFragmentManager().
+
+//                CodiInfoFragment codiInfo = new CodiInfoFragment();
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.detach(codiInfo).attach(codiInfo).commit();
 
             }
         });

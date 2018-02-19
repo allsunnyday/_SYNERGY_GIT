@@ -190,8 +190,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 manager = getFragmentManager();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
                 appData.edit().remove("Path").commit();
-                getimg();
-                adapter.notifyDataSetChanged();
+               // getimg();
+                //adapter.notifyDataSetChanged();
 
             }
         });
@@ -214,6 +214,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
                 //파일 서버로 업로드 start
                 uri = data.getData();
+                Log.d("uri_", uri +" ");
                 if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     String filePath = getRealPathFromURIPath(uri, getActivity());
                     File file = new File(filePath);
@@ -266,8 +267,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             showUpLayout();
         } else if (requestCode == SIGNAL_toCamera) {
             if (resultCode == Activity.RESULT_OK) {
-
-
 
 /*
 

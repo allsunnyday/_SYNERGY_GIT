@@ -1,35 +1,15 @@
 package com.example.geehy.hangerapplication.DialogFragment;
 
-/**
- * Created by JHS on 2018-02-09.
- */
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.CursorLoader;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,56 +18,30 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-import com.example.geehy.hangerapplication.Fragments.DashFragment;
-
 import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
-import com.example.geehy.hangerapplication.UploadImageInterface;
-import com.example.geehy.hangerapplication.UploadObject;
-import com.example.geehy.hangerapplication.gridview_home.CoordyItem;
 import com.example.geehy.hangerapplication.gridview_home.dressItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * Created by JHS on 2018-02-19.
+ */
 
-public class AddCoordyFragment extends DialogFragment{
-    private static final String SERVER_PATH = "http://218.38.52.180/";//파일 업로드시
+public class EditCodiInfoFragment extends DialogFragment {
     private SharedPreferences appData; //전체 프래그먼트에서 공유하는 값을 사용할 수 있음
     private Dialog dialog;
     private View view;
@@ -101,19 +55,22 @@ public class AddCoordyFragment extends DialogFragment{
     private JSONArray photos;
     private ArrayList<dressItem> list;
     private int index;
-    private AddCodiAdapter addcodiAdapter;
     private int spinnerNUMBER=0;
     private int test=0;
-    private ImageButton save, cancle;
+    private Button save, cancle;
     private ImageView topview;
     private ImageView bottomview;
     private EditText coordyname;
+
     private String selectTop="";
     private String selectBottom="";
-    private BackgroundTask_codi task;
-    private int xDelta;
-    private int yDelta;
-    private ViewGroup codiLayout;
+
+    private BackgroundTask_edit_codi task;
+    private String top;
+    private int codi_no;
+    private String name;
+    private String bottom;
+    private EditCodiAdapter codiAdapter;
 
 /*
 
@@ -137,26 +94,50 @@ public class AddCoordyFragment extends DialogFragment{
         dialog = super.onCreateDialog(savedInstanceState);
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
 
+        Bundle mbundle = getArguments();
+        top = mbundle.getString("TOP");
+        bottom = mbundle.getString("BOTTOM");
+        name = mbundle.getString("NAME");
+        codi_no = mbundle.getInt("NO");
+
         load();         //->사용자의 id와 기존의 path를 불러온다.
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.activity_add_coordy, null);
-        codiLayout = (RelativeLayout)view.findViewById(R.id.codi_main_layout);
+
         categarySpinner = (Spinner)view.findViewById(R.id.categorySpinner);
         ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categarySpinner.setAdapter(categoryAdapter);
-        save = (ImageButton)view.findViewById(R.id.saveBtn);
-        cancle = (ImageButton)view.findViewById(R.id.noBtn);
+        save = (Button)view.findViewById(R.id.saveBtn);
+        cancle = (Button)view.findViewById(R.id.noBtn);
+
         topview =(ImageView)view.findViewById(R.id.top_View);
         bottomview =(ImageView)view.findViewById(R.id.bottom_View);
         coordyname = (EditText)view.findViewById(R.id.addcoordy_name);
+
+        // 변경하기 전의 코디 이미지를 불러 온다
+        Glide.with(getActivity())
+                .load("http://218.38.52.180/Android_files/"+ top)
+                .override(600, 500)
+                .into(topview);
+        Glide.with(getActivity())
+                .load("http://218.38.52.180/Android_files/"+bottom)
+                .override(600,500)
+                .into(bottomview);
+
+        coordyname.setText(name);
+        selectBottom = bottom;
+        selectTop = top;
+
+        //
+
         gridView = (GridView)view.findViewById(R.id.add_gridview);
-        addcodiAdapter = new AddCodiAdapter(getActivity(),R.layout.item_codi_gridview, list); //그리드 뷰 한개씩을 여기에 붙임
+        codiAdapter = new EditCodiAdapter(getActivity(),R.layout.item_codi_gridview, list); //그리드 뷰 한개씩을 여기에 붙임
         init();
 
-        gridView.setAdapter(addcodiAdapter);
+        gridView.setAdapter(codiAdapter);
         dialog.setContentView(view);
 
         return dialog;
@@ -266,7 +247,6 @@ public class AddCoordyFragment extends DialogFragment{
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void event() {
         //카테고리 이벤트
         categarySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -291,7 +271,7 @@ public class AddCoordyFragment extends DialogFragment{
                         break;
                 }
                 init();
-                addcodiAdapter.notifyDataSetChanged();
+                codiAdapter.notifyDataSetChanged();
 
             }
 
@@ -333,7 +313,6 @@ public class AddCoordyFragment extends DialogFragment{
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                picCapture(view);
                 saveServer();
                 //Toast.makeText(getActivity(),"저장하기", Toast.LENGTH_SHORT).show();
             }
@@ -345,92 +324,16 @@ public class AddCoordyFragment extends DialogFragment{
                 dismiss();
             }
         });
-
-        topview.setOnTouchListener(OnTouchListener());
-        bottomview.setOnTouchListener(OnTouchListener());
-
-
-    }
-
-    private void picCapture(View view) {
-        // WRITE_EXTERNAL_STORAGE 외부 공간 사용 권한 허용
-        ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-
-
-        codiLayout.buildDrawingCache();   // 캡처할 뷰를 지정하여 buildDrawingCache() 한다
-        Bitmap captureView = codiLayout.getDrawingCache();   // 캡쳐할 뷰를 지정하여 getDrawingCache() 한다
-
-
-
-        FileOutputStream fos;   // FileOutputStream 이용 파일 쓰기 한다
-//        String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + CAPTURE_PATH;
-        String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "test_capture_path";
-
-        File folder = new File(strFolderPath);
-        if(!folder.exists()) {  // 해당 폴더 없으면 만들어라
-            folder.mkdirs();
-        }
-
-
-        String strFilePath = strFolderPath + "/" + System.currentTimeMillis() + ".png";
-        File fileCacheItem = new File(strFilePath);
-
-        try {
-            fos = new FileOutputStream(fileCacheItem);
-            captureView.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            //Toast.makeText(getActivity(), "영상을 캡쳐했습니다", Toast.LENGTH_SHORT).show();
-            Log.d("test_", strFilePath);
-        }
-
-
-    }
-
-    private View.OnTouchListener OnTouchListener() {
-            return new View.OnTouchListener() {
-                @SuppressLint("ClickableViewAccessibility")
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    final int x = (int) event.getRawX();
-                    final int y = (int) event.getRawY();
-
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
-                        case MotionEvent.ACTION_DOWN:
-                            RelativeLayout.LayoutParams lparams =(RelativeLayout.LayoutParams) v.getLayoutParams();
-                            xDelta = x - lparams.leftMargin;
-                            yDelta = y - lparams.topMargin;
-                            break;
-
-                        case MotionEvent.ACTION_UP:
-                            //Toast.makeText(getActivity(), "thanks", Toast.LENGTH_SHORT).show();
-                            break;
-
-                        case MotionEvent.ACTION_MOVE:
-                            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)v.getLayoutParams();
-                            layoutParams.leftMargin = x - xDelta;
-                            layoutParams.topMargin = y - yDelta;
-                            layoutParams.rightMargin = 0;
-                            layoutParams.bottomMargin = 0;
-                            v.setLayoutParams(layoutParams);
-                            break;
-
-                    }
-                    codiLayout.invalidate();
-                    return true;
-                }
-            };
     }
 
     private void saveServer() {
-        task = new BackgroundTask_codi();
+        task = new BackgroundTask_edit_codi();
         task.execute();
     }
-    class BackgroundTask_codi extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
-        String url = "http://218.38.52.180/addcodi.php";
-        String json= sendObject_codi();//편집할 내용 받아옴
+    class BackgroundTask_edit_codi extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
+        String url = "http://218.38.52.180/editcodi.php";
+
+        String json= sendObject_edit();//편집할 내용 받아옴
 
         @Override
         protected String doInBackground (String...params){
@@ -445,37 +348,45 @@ public class AddCoordyFragment extends DialogFragment{
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s); //서버 결과
+            Log.d("present", s);
             if (s.equals("성공")) {
                 /////성공할 시에 서버에 결과를 보낸다
                 //isChanged = true;
                 Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
                 dismiss();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.content, new CodiInfoFragment())
+                        .commit();
+
+
             }else{
                 Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private String sendObject_codi() {
+    private String sendObject_edit() {
         JSONObject jsonp = new JSONObject();
+        Log.d("present", selectBottom +", "+selectTop +","+coordyname.getText() +","+codi_no);
         try {
             jsonp.put("Username", id+"_coordy");
             jsonp.put("Top", selectTop);
             jsonp.put("Bottom", selectBottom);
             jsonp.put("Name", coordyname.getText());
+            jsonp.put("NO", codi_no);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonp.toString();
     }
 
-    public class AddCodiAdapter extends BaseAdapter {
+    public class EditCodiAdapter extends BaseAdapter {
         LayoutInflater layoutInflater;
         private Context context;
         private int layout;
         private ArrayList<dressItem> list;
 
-        public AddCodiAdapter(Context context,int layout, ArrayList<dressItem> list){
+        public EditCodiAdapter(Context context,int layout, ArrayList<dressItem> list){
             this.context = context;
             this.layout = layout;
             this.list = list;
@@ -566,50 +477,4 @@ public class AddCoordyFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-
-
-
-
-    //파일 업로드 부분
-/*
-    private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
-        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            return contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(idx);
-        }
-    }
-*/
-
-    /*@Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        if (uri != null) {
-            String filePath = getRealPathFromURIPath(uri, getActivity());
-            File file = new File(filePath);
-            RequestBody mFile = RequestBody.create(MediaType.parse("image*//*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
-            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(SERVER_PATH)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            UploadImageInterface uploadImage = retrofit.create(UploadImageInterface.class);
-            Call<UploadObject> fileUpload = uploadImage.uploadFile(fileToUpload, filename);
-            fileUpload.enqueue(new Callback<UploadObject>() {
-                @Override
-                public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
-                    Toast.makeText(getActivity().getApplication(), "Success " + response.message(), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity().getApplication(), "Success " + response.body().toString(), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Call<UploadObject> call, Throwable t) {
-                    Log.d(TAG, "Error " + t.getMessage());
-                }
-            });
-        }
-    }*/
 }
