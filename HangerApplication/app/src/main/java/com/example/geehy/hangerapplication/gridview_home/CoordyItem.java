@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class CoordyItem implements Serializable{
     private String topImgURL;
     private String bottomImgURL;
+    private String fullCodiImgURL;
     private String codiName;
     private int no; //in database codi number -> auto increase
     private int likes;
@@ -17,16 +18,26 @@ public class CoordyItem implements Serializable{
         this.bottomImgURL="";
         this.topImgURL="";
         this.codiName="";
+        this.fullCodiImgURL="";
         this.likes = -1;
         this.no=0;
     }
-    public CoordyItem(String top, String bottom, String codiName, int no){
+
+    public CoordyItem(String top, String bottom, String fullCodi, String codiName, int no){
         this.bottomImgURL = bottom;
         this.topImgURL=top;
+        this.fullCodiImgURL=fullCodi;
         this.codiName=codiName;
         this.no = no;
     }
 
+    public String getFullCodiImgURL() {
+        return fullCodiImgURL;
+    }
+
+    public void setFullCodiImgURL(String fullCodiImgURL) {
+        this.fullCodiImgURL = fullCodiImgURL;
+    }
     public int getNo() {
         return no;
     }

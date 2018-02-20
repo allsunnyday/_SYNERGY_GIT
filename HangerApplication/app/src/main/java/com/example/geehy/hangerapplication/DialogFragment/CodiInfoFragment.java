@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -41,7 +42,7 @@ public class CodiInfoFragment extends DialogFragment{
     private String bottom;
     private TextView codiName;
     private ImageView topView;
-    private ImageView bottomView;
+    //private ImageView bottomView;
     private ImageButton likes;
     private ImageButton editbtn;
     private ImageButton deletebtn;
@@ -49,6 +50,8 @@ public class CodiInfoFragment extends DialogFragment{
     private int codi_no;
     private String id;
     BackgroundTaskDelete task;
+    private String codi;
+
 
 
     @Override
@@ -67,6 +70,8 @@ public class CodiInfoFragment extends DialogFragment{
         bottom = mbundle.getString("BOTTOM");
         name = mbundle.getString("NAME");
         codi_no = mbundle.getInt("NO");
+        codi = mbundle.getString("FULL");
+        Log.d("codi", codi);
 
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
         id = appData.getString("ID", "");//username 받아오기
@@ -80,22 +85,27 @@ public class CodiInfoFragment extends DialogFragment{
 
     private void init() {
         codiName = (TextView) view.findViewById(R.id.edit_codi_name);
-        topView = (ImageView)view.findViewById(R.id.codiiffo_top);
-        bottomView = (ImageView)view.findViewById(R.id.codiinfo_bottom);
+        topView = (ImageView)view.findViewById(R.id.codiinfo_top);
+        //bottomView = (ImageView)view.findViewById(R.id.codiinfo_bottom);
+
 
         likes = (ImageButton)view.findViewById(R.id.likebtn);
         editbtn=(ImageButton)view.findViewById(R.id.codi_info_edit_btn);
 
         deletebtn=(ImageButton)view.findViewById(R.id.codi_info_delete_btn);
         codiName.setText(name);
+
         Glide.with(getActivity())
-                .load("http://218.38.52.180/Android_files/"+top)
-                .override(600, 500)
+                .load("http://218.38.52.180/Android_files/"+codi)
+                .override(700, 1500)
                 .into(topView);
-        Glide.with(getActivity())
-                .load("http://218.38.52.180/Android_files/"+bottom)
-                .override(600,500)
-                .into(bottomView);
+//        Glide.with(getActivity())
+//                .load("http://218.38.52.180/Android_files/"+codi)
+//                .override(600,500)
+//                .into(bottomView);
+//        Glide.with(getActivity())
+//                .load("http://218.38.52.180/Android_files/"+codi)
+//                .into(codiView);
 
         event();
     }
@@ -112,16 +122,17 @@ public class CodiInfoFragment extends DialogFragment{
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity().getApplicationContext(), "♥준비중♥",Toast.LENGTH_SHORT).show();
 
-                Bundle bundle = new Bundle();
-                bundle.putString("TOP", top);
-                bundle.putString("BOTTOM", bottom);
-                bundle.putString("NAME", name);
-                bundle.putInt("NO", codi_no);
-
-                EditCodiInfoFragment editCodi = new EditCodiInfoFragment();
-                editCodi.setArguments(bundle);
-                editCodi.show(getActivity().getFragmentManager(), "EditCodiInfoFragment");
+//                Bundle bundle = new Bundle();
+//                bundle.putString("TOP", top);
+//                bundle.putString("BOTTOM", bottom);
+//                bundle.putString("NAME", name);
+//                bundle.putInt("NO", codi_no);
+//
+//                EditCodiInfoFragment editCodi = new EditCodiInfoFragment();
+//                editCodi.setArguments(bundle);
+//                editCodi.show(getActivity().getFragmentManager(), "EditCodiInfoFragment");
                 //getFragmentManager().
 
 //                CodiInfoFragment codiInfo = new CodiInfoFragment();

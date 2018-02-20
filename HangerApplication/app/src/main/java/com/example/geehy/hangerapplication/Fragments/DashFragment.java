@@ -116,6 +116,7 @@ public class DashFragment extends Fragment {
                ci.setBottomImgURL(jo.getString("bottomPath"));
                ci.setCodiName(jo.getString("name"));
                ci.setNo(jo.getInt("codi_no"));
+               ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
 
                coordyItemslist.add(ci);
                ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
@@ -177,6 +178,7 @@ public class DashFragment extends Fragment {
                 bundle.putString("TOP", cd.getTopImgURL());
                 bundle.putString("BOTTOM", cd.getBottomImgURL());
                 bundle.putString("NAME", cd.getCodiName());
+                bundle.putString("FULL", cd.getFullCodiImgURL());
                 bundle.putInt("NO", cd.getNo());
                 Log.d("Test Layout", "Show  CODIINFO Fragment");
                 CodiInfoFragment codiInfoFragment = new CodiInfoFragment();

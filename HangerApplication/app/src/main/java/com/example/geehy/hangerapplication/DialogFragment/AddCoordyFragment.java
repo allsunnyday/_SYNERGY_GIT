@@ -8,9 +8,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -57,6 +60,7 @@ import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
+import com.example.geehy.hangerapplication.UploadImageForCodiInterface;
 import com.example.geehy.hangerapplication.UploadImageInterface;
 import com.example.geehy.hangerapplication.UploadObject;
 import com.example.geehy.hangerapplication.gridview_home.CoordyItem;
@@ -75,6 +79,8 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,7 +93,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class AddCoordyFragment extends DialogFragment{
-    private static final String SERVER_PATH = "http://218.38.52.180/";//파일 업로드시
     private SharedPreferences appData; //전체 프래그먼트에서 공유하는 값을 사용할 수 있음
     private Dialog dialog;
     private View view;
@@ -114,6 +119,10 @@ public class AddCoordyFragment extends DialogFragment{
     private int xDelta;
     private int yDelta;
     private ViewGroup codiLayout;
+    private static final int REQUEST_GALLERY_CODE = 200;
+    private static final int READ_REQUEST_CODE = 300;
+    private static final String SERVER_PATH = "http://218.38.52.180/";//파일 업로드시
+    private AbstractWindowedCursor cursor;
 
 /*
 
@@ -334,8 +343,8 @@ public class AddCoordyFragment extends DialogFragment{
             @Override
             public void onClick(View v) {
                 picCapture(view);
-                saveServer();
-                //Toast.makeText(getActivity(),"저장하기", Toast.LENGTH_SHORT).show();
+               // saveServer();
+                Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -349,30 +358,26 @@ public class AddCoordyFragment extends DialogFragment{
         topview.setOnTouchListener(OnTouchListener());
         bottomview.setOnTouchListener(OnTouchListener());
 
-
     }
 
     private void picCapture(View view) {
         // WRITE_EXTERNAL_STORAGE 외부 공간 사용 권한 허용
         ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
 
-
         codiLayout.buildDrawingCache();   // 캡처할 뷰를 지정하여 buildDrawingCache() 한다
         Bitmap captureView = codiLayout.getDrawingCache();   // 캡쳐할 뷰를 지정하여 getDrawingCache() 한다
 
-
-
         FileOutputStream fos;   // FileOutputStream 이용 파일 쓰기 한다
 //        String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + CAPTURE_PATH;
-        String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "test_capture_path";
+        String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures";
 
         File folder = new File(strFolderPath);
         if(!folder.exists()) {  // 해당 폴더 없으면 만들어라
             folder.mkdirs();
         }
 
-
         String strFilePath = strFolderPath + "/" + System.currentTimeMillis() + ".png";
+
         File fileCacheItem = new File(strFilePath);
 
         try {
@@ -383,10 +388,51 @@ public class AddCoordyFragment extends DialogFragment{
         } finally {
             //Toast.makeText(getActivity(), "영상을 캡쳐했습니다", Toast.LENGTH_SHORT).show();
             Log.d("test_", strFilePath);
+            //strFIlePath->> 파일path
+            uploadFile(strFilePath);
         }
 
-
     }
+    private void uploadFile(String uri){
+
+        if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //String filePath = getRealPathFromURIPath(uri, getActivity());
+            String filePath = uri;
+            File file = new File(filePath);
+            Log.d(TAG, "name" + file.getName());
+            //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText() , mFile);//id값+파일이름 보내기
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText());
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(SERVER_PATH)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            //////업로드를 위한  custom interface >> 별도로 설정해줘야한다
+            UploadImageForCodiInterface uploadImage = retrofit.create(UploadImageForCodiInterface.class);
+            //////
+
+            Call<UploadObject> fileUpload = uploadImage.upload(name, fileToUpload);
+            Log.d("testname", id + "+" + file.getName());
+            fileUpload.enqueue(new Callback<UploadObject>() {
+                @Override
+                public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
+                    // Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplication(), "☆ 저장 성공 ☆ ", Toast.LENGTH_LONG).show();
+                    //getimg();
+                    dismiss();
+                }
+                @Override
+                public void onFailure(Call<UploadObject> call, Throwable t) {
+                    Log.d(TAG, "Error " + t.getMessage());
+                }
+            });
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.read_file), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
+
 
     private View.OnTouchListener OnTouchListener() {
             return new View.OnTouchListener() {
@@ -423,6 +469,8 @@ public class AddCoordyFragment extends DialogFragment{
                 }
             };
     }
+
+
 
     private void saveServer() {
         task = new BackgroundTask_codi();

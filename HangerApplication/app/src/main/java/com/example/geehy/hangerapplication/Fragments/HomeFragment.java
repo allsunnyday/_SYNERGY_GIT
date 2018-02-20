@@ -217,6 +217,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 Log.d("uri_", uri +" ");
                 if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     String filePath = getRealPathFromURIPath(uri, getActivity());
+                    Log.d("filePath",filePath);
                     File file = new File(filePath);
                     Log.d(TAG, "name" + file.getName());
                     //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -227,7 +228,9 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                             .baseUrl(SERVER_PATH)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
+                    //////업로드를 위한  custom interface >> 별도로 설정해줘야한다
                     UploadImageInterface uploadImage = retrofit.create(UploadImageInterface.class);
+                    //////
                     Call<UploadObject> fileUpload = uploadImage.uploadFile(fileToUpload, name);
                     Log.d("testname", id + "+" + file.getName());
                     fileUpload.enqueue(new Callback<UploadObject>() {
