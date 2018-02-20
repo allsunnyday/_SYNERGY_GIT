@@ -345,6 +345,7 @@ public class AddCoordyFragment extends DialogFragment{
                 picCapture(view);
                // saveServer();
                 Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
