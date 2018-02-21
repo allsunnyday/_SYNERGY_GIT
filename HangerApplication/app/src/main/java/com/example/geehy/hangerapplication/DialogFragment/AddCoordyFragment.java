@@ -11,6 +11,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.AbstractWindowedCursor;
@@ -124,14 +125,20 @@ public class AddCoordyFragment extends DialogFragment{
     private static final String SERVER_PATH = "http://218.38.52.180/";//파일 업로드시
     private AbstractWindowedCursor cursor;
 
-/*
+    private DialogInterface.OnDismissListener onDismissListener;
 
-    public static AddCoordyFragment newInstance(Bundle bundle) {
-        AddCoordyFragment addCoordyFragment = new AddCoordyFragment();
-
-        return addCoordyFragment;
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
+        this.onDismissListener = onDismissListener;
     }
-*/
+
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(onDismissListener !=null){
+            onDismissListener.onDismiss(dialog);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -325,14 +332,14 @@ public class AddCoordyFragment extends DialogFragment{
                 if(spinnerNUMBER==0 || spinnerNUMBER==2||spinnerNUMBER==3||spinnerNUMBER==4){
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(600, 500)
+                            .override(500, 400)
                             .into(topview);
                     selectTop=imgUri;
                 }
                 else{
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(600, 500)
+                            .override(500, 400)
                             .into(bottomview);
                     selectBottom=imgUri;
                 }

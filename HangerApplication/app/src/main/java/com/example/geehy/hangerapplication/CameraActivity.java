@@ -77,6 +77,7 @@ public class CameraActivity extends AppCompatActivity {
                             outUriStr = MediaStore.Images.Media.insertImage(getContentResolver(), rotateBitmap,
                                     "Captured Image", "Captured Image using Camera");
                             outUriStr.replace("content:", "");
+
                             if(outUriStr == null){
                                 Toast.makeText(getApplicationContext(), "카메라 이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
                                 Log.e("Camera Activity", "Camera Image Error");
@@ -84,6 +85,7 @@ public class CameraActivity extends AppCompatActivity {
                             }else{
                                 //String folder = Environment.getExternalStorageDirectory().getAbsolutePath();
                                  uri = Uri.parse(outUriStr);
+                                 Log.d("camera_uri", uri + " ");
                                 getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
 
                                 new MediaScanning(getApplicationContext(), uri);

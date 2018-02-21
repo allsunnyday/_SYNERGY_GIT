@@ -9,21 +9,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
         <ImageView
             android:id="@+id/dash_top"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/tempimg" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
 
         <ImageView
             android:id="@+id/dash_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/dash_top"
-            app:srcCompat="@drawable/tempimg" />
+            android:layout_below="@+id/dash_top" />
 
     </RelativeLayout>
 

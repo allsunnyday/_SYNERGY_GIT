@@ -29,9 +29,9 @@
         <GridView
             android:id="@+id/dash_gridview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:numColumns="3" />
+            android:numColumns="2" />
 
 
     </RelativeLayout>

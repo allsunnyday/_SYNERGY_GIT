@@ -3,7 +3,9 @@ package com.example.geehy.hangerapplication.DialogFragment;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.example.geehy.hangerapplication.Fragments.DashFragment;
+import com.example.geehy.hangerapplication.Fragments.HomeFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -51,8 +55,23 @@ public class CodiInfoFragment extends DialogFragment{
     private String id;
     BackgroundTaskDelete task;
     private String codi;
+    private int hit;
+    private BackgroundTaskForSendHit likesTask;
+
+    private DialogInterface.OnDismissListener onDismissListener;
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
+        this.onDismissListener = onDismissListener;
+    }
 
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(onDismissListener !=null){
+            onDismissListener.onDismiss(dialog);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +90,7 @@ public class CodiInfoFragment extends DialogFragment{
         name = mbundle.getString("NAME");
         codi_no = mbundle.getInt("NO");
         codi = mbundle.getString("FULL");
+        hit = mbundle.getInt("LIKE"); //초기값은 0  > 버튼 클릭시 1로 변경
         Log.d("codi", codi);
 
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
@@ -106,16 +126,28 @@ public class CodiInfoFragment extends DialogFragment{
 //        Glide.with(getActivity())
 //                .load("http://218.38.52.180/Android_files/"+codi)
 //                .into(codiView);
+        if(hit!=0){
+            likes.setImageResource(R.drawable.like_magenta);
+        }
 
         event();
     }
 
     private void event() {
+
         likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                likes.setImageResource(R.drawable.like_magenta);
 
+                if(hit!=0) {
+                    likes.setImageResource(R.drawable.like_blank);
+                    hit=0;
+                }
+                else{
+                    likes.setImageResource(R.drawable.like_magenta);
+                    hit=1;
+                }
+                sendHitChange();
 
             }
         });
@@ -149,6 +181,12 @@ public class CodiInfoFragment extends DialogFragment{
         });
     }
 
+    private void sendHitChange() {
+        likesTask = new BackgroundTaskForSendHit();
+        likesTask.execute();
+
+    }
+
     private void deleteCodi() {
         task = new BackgroundTaskDelete();
         task.execute();
@@ -177,6 +215,9 @@ public class CodiInfoFragment extends DialogFragment{
                 //isChanged = true;
                 Toast.makeText(getContext(), "delete!", Toast.LENGTH_SHORT).show();
                 dismiss();
+
+
+
             }else{
                 Toast.makeText(getContext(), "fail..", Toast.LENGTH_SHORT).show();
             }
@@ -194,4 +235,28 @@ public class CodiInfoFragment extends DialogFragment{
         return jsonp.toString();
     }
 
+    private class BackgroundTaskForSendHit extends AsyncTask<String, Integer, String> {
+        String url = "http://218.38.52.180/hit_change.php";
+        String json= sendObject_hit();//편집할 내용 받아옴
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String result; // 요청 결과를 저장할 변수.
+            RequestActivity requestHttpURLConnection = new RequestActivity();
+            result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
+            return result;
+        }
+    }
+
+    private String sendObject_hit() {
+        JSONObject jsonp = new JSONObject();
+        try {
+            jsonp.put("Username", id+"_coordy");
+            jsonp.put("coordy_no", codi_no );
+            jsonp.put("hit", hit);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonp.toString();
+    }
 }

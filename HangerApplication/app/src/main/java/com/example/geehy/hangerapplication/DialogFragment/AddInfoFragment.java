@@ -268,7 +268,6 @@ public class AddInfoFragment extends DialogFragment {
     }
 
 
-
     class BackgroundTask extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
         String url = "http://218.38.52.180/addinfo.php";
         String json=sendObject();//편집할 내용 받아옴

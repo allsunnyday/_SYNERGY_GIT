@@ -19,7 +19,7 @@ public class CoordyItem implements Serializable{
         this.topImgURL="";
         this.codiName="";
         this.fullCodiImgURL="";
-        this.likes = -1;
+        this.likes = 0;
         this.no=0;
     }
 

@@ -190,9 +190,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 manager = getFragmentManager();
                 addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
                 appData.edit().remove("Path").commit();
-               // getimg();
+                //getimg();
                 //adapter.notifyDataSetChanged();
-
             }
         });
 
@@ -251,18 +250,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 } else {
                     EasyPermissions.requestPermissions(this, getString(R.string.read_file), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
                 }//end
-/*
-                data_byte = data.getByteArrayExtra("data");
-                Log.d("Imgae Data : ", "Data : " + data.getData());
-                Log.d("Imgae Data : ", "Byte : " + data_byte);
-                dressItem di = new dressItem();
-                di.setSeason(new int[]{1, 2});
-                di.setImgURL(data.getData() + ""); //스트링을 넣기
-                di.setDressName("Dress " + (list.size()));
-                list.add(di);
-                //   adapter.notifyDataSetChanged();
-                ((MainPageActivity) getActivity()).setList(list);
-*/
+
 
             } else {
                 //실패
@@ -271,52 +259,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         } else if (requestCode == SIGNAL_toCamera) {
             if (resultCode == Activity.RESULT_OK) {
 
-/*
-
-                if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-
-                    String camerafileName = null;
-                    File[] listFiles = (new File(Environment.getExternalStorageDirectory()+"/Pictures/").listFiles());
-
-                    if(listFiles[0].getName().endsWith(".jpg") || listFiles[0].getName().endsWith(".bmp"))
-                        camerafileName = listFiles[0].getName();
-
-                    File file = new File(Environment.getExternalStorageDirectory()+"/Pictures/"+camerafileName);
-
-                    Log.d(TAG, "name" + file.getName());
-                    //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                    RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-                    MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", id + "+" + file.getName(), mFile);//id값+파일이름 보내기
-                    RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName());
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(SERVER_PATH)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-                    UploadImageInterface uploadImage = retrofit.create(UploadImageInterface.class);
-                    Call<UploadObject> fileUpload = uploadImage.uploadFile(fileToUpload, name);
-                    Log.d("testname", id + "+" + file.getName());
-                    fileUpload.enqueue(new Callback<UploadObject>() {
-                        @Override
-                        public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
-
-                            //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
-                            init();
-                        }
-
-                        @Override
-                        public void onFailure(Call<UploadObject> call, Throwable t) {
-                            Log.d(TAG, "Error " + t.getMessage());
-                        }
-                    });
-                } else {
-                    EasyPermissions.requestPermissions(this, getString(R.string.read_file), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
-                }//end
-                */
-
-
-                Log.d("Camera Data Set", "Camera url : " + data.getStringExtra("URI").toString());
+                Log.d("CameraDataSet", "Camera url : " + data.getStringExtra("URI").toString());
                 dressItem di = new dressItem();
                 di.setSeason(new int[]{1, 2});
                 di.setImgURL(data.getStringExtra("URI").toString()); //스트링을 넣기
@@ -324,6 +267,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 list.add(di);
                 adapter.notifyDataSetChanged();
                 ((MainPageActivity) getActivity()).setList(list);
+
             } else {
                 //실패
             }

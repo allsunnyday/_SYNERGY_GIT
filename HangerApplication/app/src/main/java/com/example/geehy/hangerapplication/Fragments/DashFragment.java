@@ -2,6 +2,7 @@ package com.example.geehy.hangerapplication.Fragments;
 
 //코디 메뉴
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -62,7 +63,6 @@ public class DashFragment extends Fragment {
     private int numberOfCoordy;
     private Handler mhandle;
 
-    ////////////////////////////////////////////////"Path"라는 이름의 것들 다 고치기 !!!!!!!!!
     public DashFragment() {
         // Required empty public constructor
     }
@@ -117,6 +117,7 @@ public class DashFragment extends Fragment {
                ci.setCodiName(jo.getString("name"));
                ci.setNo(jo.getInt("codi_no"));
                ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
+               ci.setLikes(jo.getInt("hit"));
 
                coordyItemslist.add(ci);
                ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
@@ -159,6 +160,15 @@ public class DashFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 Log.d("Test Layout", "Show  addcoordy Fragment");
                 AddCoordyFragment addCoordyFragment = new AddCoordyFragment();
+                addCoordyFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content, new DashFragment())
+                                .commit();
+                    }
+                });
+
                 addCoordyFragment.show(getActivity().getFragmentManager(), "AddCoordyFragment");
                 //getCoordtImg();
                 appData.edit().remove("CoordyPath").commit(); //변경된 내용을 보여주기 위해서?
@@ -180,11 +190,29 @@ public class DashFragment extends Fragment {
                 bundle.putString("NAME", cd.getCodiName());
                 bundle.putString("FULL", cd.getFullCodiImgURL());
                 bundle.putInt("NO", cd.getNo());
+                bundle.putInt("LIKE", cd.getLikes());
                 Log.d("Test Layout", "Show  CODIINFO Fragment");
+
                 CodiInfoFragment codiInfoFragment = new CodiInfoFragment();
                 codiInfoFragment.setArguments(bundle);
+                codiInfoFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.content, new DashFragment())
+                                .commit();
+                    }
+                });
+
+                manager = getFragmentManager();
+
                 codiInfoFragment.show(getActivity().getFragmentManager(), "CodiInfoFragment");
                 appData.edit().remove("CoordyPath").commit(); //변경된 내용을 보여주기 위해서?
+
+//
+//                manager = getFragmentManager();
+//                addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
+//                appData.edit().remove("Path").commit();
 
                 change();
                 coordyAdapter.notifyDataSetChanged();
@@ -336,7 +364,7 @@ public class DashFragment extends Fragment {
             }
 
             ImageView imageViewTop = (ImageView) convertView.findViewById(R.id.dash_top);
-            ImageView imageViewBottom = (ImageView) convertView.findViewById(R.id.dash_bottom);
+            //ImageView imageViewBottom = (ImageView) convertView.findViewById(R.id.dash_bottom);
 
             //final dressItem di = list.get(position);
             final CoordyItem ci =coordyItemslist.get(position);
@@ -344,16 +372,17 @@ public class DashFragment extends Fragment {
             if(ci.getTopImgURL().equals("")||ci.getTopImgURL().equals("null")
                     || ci.getBottomImgURL().equals("")||ci.getBottomImgURL().equals("null")){
                             imageViewTop.setImageResource(R.drawable.tempimg);
-                            imageViewBottom.setImageResource(R.drawable.tempimg);
+                            //imageViewBottom.setImageResource(R.drawable.tempimg);
             }else{
                 Glide.with(getActivity())
-                        .load("http://218.38.52.180/Android_files/"+ ci.getTopImgURL())
-                        .override(600,200)
+                        .load("http://218.38.52.180/Android_files/"+ ci.getFullCodiImgURL())
+                        .override(1000,500)
+                        .fitCenter()
                         .into(imageViewTop);//보여줄 이미지 파일
-                Glide.with(getActivity())
-                        .load("http://218.38.52.180/Android_files/"+ ci.getBottomImgURL())
-                        .override(600,200)
-                        .into(imageViewBottom);//보여줄 이미지 파일
+//                Glide.with(getActivity())
+//                        .load("http://218.38.52.180/Android_files/"+ ci.getBottomImgURL())
+//                        .override(600,200)
+//                        .into(imageViewBottom);//보여줄 이미지 파일
             }
 
 
