@@ -40,7 +40,7 @@
 
         <GridView
             android:id="@+id/add_gridview"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="120dp"
             android:layout_above="@+id/button_layout"
             android:numColumns="3">
