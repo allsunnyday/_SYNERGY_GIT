@@ -148,7 +148,6 @@ public class CodiInfoFragment extends DialogFragment{
                 }
                 sendHitChange();
 
-                likes.setImageResource(R.drawable.like_magenta);
 
 
             }
@@ -217,8 +216,6 @@ public class CodiInfoFragment extends DialogFragment{
                 //isChanged = true;
                 Toast.makeText(getContext(), "delete!", Toast.LENGTH_SHORT).show();
                 dismiss();
-
-
 
             }else{
                 Toast.makeText(getContext(), "fail..", Toast.LENGTH_SHORT).show();

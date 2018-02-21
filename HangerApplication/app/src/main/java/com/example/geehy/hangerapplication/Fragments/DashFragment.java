@@ -118,7 +118,6 @@ public class DashFragment extends Fragment {
                ci.setNo(jo.getInt("codi_no"));
                ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
                ci.setLikes(jo.getInt("hit"));
-
                coordyItemslist.add(ci);
                ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
            }
@@ -282,8 +281,6 @@ public class DashFragment extends Fragment {
                 coordyAdapter.notifyDataSetChanged();
             }
         }
-
-
     }
     private void save(String s) {
         SharedPreferences.Editor editor = appData.edit(); // SharedPreferences 객체만으론 저장 불가능 Editor 사용

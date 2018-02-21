@@ -4,9 +4,11 @@ package com.example.geehy.hangerapplication.gridview_home;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.geehy.hangerapplication.R;
@@ -25,6 +27,10 @@ public class AutoScrollAdapter extends PagerAdapter {
         this.data = data;
     }
 
+//    public AutoScrollAdapter(Context context, ArrayList<CoordyItem> codi){
+//
+//    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
@@ -32,7 +38,10 @@ public class AutoScrollAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.item_viewpager,null);
         ImageView image_container = (ImageView) v.findViewById(R.id.image);
-        Glide.with(context).load("http://218.38.52.180/Weather_files/"+data.get(position)).into(image_container);
+
+        Glide.with(context)
+                .load("http://218.38.52.180/Android_files/"+data.get(position))
+                .into(image_container);
 
         container.addView(v);
         return v;
@@ -40,7 +49,6 @@ public class AutoScrollAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-
         container.removeView((View)object);
 
     }

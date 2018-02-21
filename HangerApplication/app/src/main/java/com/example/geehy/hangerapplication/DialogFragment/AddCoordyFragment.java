@@ -131,7 +131,6 @@ public class AddCoordyFragment extends DialogFragment{
         this.onDismissListener = onDismissListener;
     }
 
-
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
@@ -353,6 +352,7 @@ public class AddCoordyFragment extends DialogFragment{
                // saveServer();
                 Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -396,6 +396,7 @@ public class AddCoordyFragment extends DialogFragment{
         } finally {
             //Toast.makeText(getActivity(), "영상을 캡쳐했습니다", Toast.LENGTH_SHORT).show();
             Log.d("test_", strFilePath);
+
             //strFIlePath->> 파일path
             uploadFile(strFilePath);
         }
@@ -425,9 +426,7 @@ public class AddCoordyFragment extends DialogFragment{
             fileUpload.enqueue(new Callback<UploadObject>() {
                 @Override
                 public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
-                    // Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
                     Toast.makeText(getActivity().getApplication(), "☆ 저장 성공 ☆ ", Toast.LENGTH_LONG).show();
-                    //getimg();
                     dismiss();
                 }
                 @Override
