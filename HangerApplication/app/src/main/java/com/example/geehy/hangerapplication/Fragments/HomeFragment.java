@@ -4,6 +4,7 @@ package com.example.geehy.hangerapplication.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,11 +84,14 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private GridView gridView;
     private FragmentManager manager;
     private boolean isVisible;
+    private boolean isVisible_check;
     private LinearLayout insertLinearLayout;
     private Button Camera;
     private Button Gallery;
     private static String UploadImgPath;
     private FloatingActionButton fab;
+    private FloatingActionButton del;
+    private FloatingActionButton undo;
     private byte[] data_byte;
 
     private static final String TAG = HomeFragment.class.getSimpleName();
@@ -132,6 +137,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
     public void init() {
         isVisible = false; //F : 안보임 T : 보임
+        isVisible_check = false; //F : 안보임 T : 보임
         gridView = (GridView) view.findViewById(R.id.home_gridview);//그리드 뷰의 객체를 가져오기
 
         //insertBTN = (Button) view.findViewById(R.id.floatingActionButton);
@@ -140,7 +146,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         Camera = (Button) view.findViewById(R.id.home_camera_btn);
         Gallery = (Button) view.findViewById(R.id.home_gallery_btn);
         fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
-
+        del = (FloatingActionButton) view.findViewById(R.id.floatingButton_delete);
+        undo = (FloatingActionButton) view.findViewById(R.id.floatingButton_undo);
         event();
     }
 
@@ -194,6 +201,34 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 //adapter.notifyDataSetChanged();
             }
         });
+
+
+        del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (isVisible_check) {
+                 // delete_show();
+                  alert_show();
+
+                } else {
+                    undo.setVisibility(View.VISIBLE);
+                    adapter = new homeGridAdapter(getActivity(), R.layout.item_home_gridview_check,list);
+                    gridView.setAdapter(adapter);
+                    isVisible_check = true;
+                }
+            }
+        });
+
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isVisible_check = false;
+                adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);
+                gridView.setAdapter(adapter);
+                undo.setVisibility(View.GONE);
+            }
+            });
 
     }
 
@@ -350,6 +385,42 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
 
+    void delete_show(int total)
+    {
+        final int del = total;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(total+"개의 항목을 삭제하시겠습니까?");
+        builder.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+
+
+                });
+
+        builder.setPositiveButton("확인",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        builder.show();
+    }
+
+    void alert_show()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("삭제할 코디를 선택해주세요 ");
+        builder.setPositiveButton("확인",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        builder.show();
+    }
+
     //이미지path 서버에서 가져오기
     //username 서버로 보내기
     private String sendObject() {
@@ -409,13 +480,31 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         String url = "http://218.38.52.180/getimgpath3.php";//원래는 getimgpath.php
         String json=sendObject();//username
 
+        ProgressDialog asyncDialog = new ProgressDialog(getActivity());
+
         @Override
         protected  void onPreExecute(){
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);//dialog
+            asyncDialog.setMessage("Loading...");
+            // show dialog
+          //  asyncDialog.show();
+
             super.onPreExecute();
         }
 
         @Override
         protected String doInBackground (String...params){
+          /*
+            //dialog 진행
+            try {
+                for (int i = 0; i < 5; i++) {
+                    //asyncDialog.setProgress(i * 30);
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+*/
             super.onPreExecute();
             String result; // 요청 결과를 저장할 변수.
             RequestActivity requestHttpURLConnection = new RequestActivity();
@@ -425,6 +514,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         @Override
         protected void onPostExecute (String s) {
+    //        asyncDialog.dismiss();
             super.onPostExecute(s);
             Log.d("getimgtest:", s);
             //Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();
@@ -475,7 +565,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             }
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.homeitem);
-
+            final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.check);
             final dressItem di = list.get(position);
 
             TextView tv = (TextView) convertView.findViewById(R.id.item_clothesname);
@@ -532,7 +622,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                     Log.d("eeeeee","getDressColor null");
                 }
             }
-
 
 
 

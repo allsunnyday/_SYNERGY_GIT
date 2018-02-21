@@ -56,6 +56,7 @@ public class CalendarFragment extends DialogFragment {
     private GridView gridView;
     private ArrayList<dressItem> list = new ArrayList<>();
      private boolean isCheck[] = new boolean[1000];
+    private String delete[] = new String[1000];
     private SharedPreferences appData;
     BackgroundTask task;
 
@@ -105,10 +106,14 @@ public class CalendarFragment extends DialogFragment {
             public void onClick(View view) {
                 adapter.notifyDataSetChanged();
                 int total=0;
-                for(int position=0; position < isCheck.length; position++) {
+                int i=0;
+                for(int position=0 ; position < isCheck.length; position++ ) {
                     if (isCheck[position] == true) {//체크박스가 선택됐을 때
                         Toast.makeText(getActivity(), "position:" + position, Toast.LENGTH_LONG).show();
+                        final dressItem di = list.get(position);
+                        delete[i] = di.getImgURL(); //지울 이미지가 담김
                         total+=1;
+                        i+=1;
                     }
                 }
                 if(total == 0) {//선택 안됐을 때
@@ -143,7 +148,7 @@ public class CalendarFragment extends DialogFragment {
         builder.setPositiveButton("확인",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                       // delete_daily();//삭제
+                        delete_daily();//삭제
                         gridView.setAdapter(adapter);
                         for (int i=0; i <isCheck.length;i++){//체크상태 초기화
                             isCheck[i] = false;
@@ -216,7 +221,7 @@ public class CalendarFragment extends DialogFragment {
                 Toast.makeText(getActivity(), "실패", Toast.LENGTH_SHORT).show();
             }else if(s.equals("no img")){//성공 & DB에 저장된 코디가 없는 경우
                 dismiss();
-                Toast.makeText(getContext(), "저장된 코디가 없어요T_T 코디를 추가해주세요", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "저장된 코디가 없어요T_T 코디를 추가해주세요!", Toast.LENGTH_LONG).show();
             } else{//성공
                 temp = s;
                 getcoodi(); //list 갱신

@@ -3,6 +3,7 @@
 package com.example.geehy.hangerapplication.DialogFragment;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -39,6 +40,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AddClothesFragment  extends DialogFragment {
     private JSONArray photos = null;
+    private JSONArray coordies = null;
     private Dialog dialog;
     private View view;
     private Button cancelBTN;
@@ -54,11 +56,11 @@ public class AddClothesFragment  extends DialogFragment {
     private String id;
     private ListAdapter2 adapter;
     private ListAdapter1 new_adapter;
-    static final String[] listmenu = {"OUTER","TOP", "BOTTOM","DRESS","ACC"} ;
-    static final String[] outermenu = {"OUTER","bomber", "blazer","cardigan","coat","jacket","jersey","parka","poncho","precoat","robe","TOP", "BOTTOM","DRESS","ACC"} ;
-    static final String[] topmenu = {"OUTER","TOP","blouse","henley","hoodie","shirt","tank","tee","top","tuterleneck", "BOTTOM","DRESS","ACC"} ;
-    static final String[] bottommenu = {"OUTER","TOP","BOTTOM","chinos","jeans","leggings","long","mideum","short","skirt","sourt","wide","DRESS","ACC" } ;
-    static final String[] dressmenu = {"OUTER","TOP","BOTTOM","DRESS","dress","homewear","jumpsuit","kimono","sarong","ACC"} ;
+    static final String[] listmenu = {"MY COORDI","OUTER","TOP", "BOTTOM","DRESS","ACC"} ;
+    static final String[] outermenu = {"MY COORDI","OUTER","bomber", "blazer","cardigan","coat","jacket","jersey","parka","poncho","precoat","robe","TOP", "BOTTOM","DRESS","ACC"} ;
+    static final String[] topmenu = {"MY COORDI","OUTER","TOP","blouse","henley","hoodie","shirt","tank","tee","top","tuterleneck", "BOTTOM","DRESS","ACC"} ;
+    static final String[] bottommenu = {"MY COORDI","OUTER","TOP","BOTTOM","chinos","jeans","leggings","long","mideum","short","skirt","sourt","wide","DRESS","ACC" } ;
+    static final String[] dressmenu = {"MY COORDI","OUTER","TOP","BOTTOM","DRESS","dress","homewear","jumpsuit","kimono","sarong","ACC"} ;
     String[] imgarr = new String[500];
     private  int imgarrIndex=0;
     BackgroundTask task;
@@ -125,31 +127,37 @@ public class AddClothesFragment  extends DialogFragment {
                     listView1.setAdapter(new_adapter) ;//DRESS에 속하는 카테고리 보여준다
 
                 } else if (strText == "ACC") {
-                    temp = "acc";
+                    temp = "Acc";
                     getList("ACC/");
                     adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
                     listView2.setAdapter(adapter) ;//카테고리에 속하는 옷 보여주기 위해 두번째 listview에 adapter를 set
 
+                } else if (strText == "MY COORDI") {
+                    temp = "My coordi";
+                    getList("MY COORDI");
+                    adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
+                    listView2.setAdapter(adapter) ;
+
                 } else if (strText == "bomber" || strText =="blazer" || strText =="cardigan"|| strText =="coat"|| strText =="jacket"|| strText =="jersey"|| strText =="parka"|| strText =="poncho"|| strText =="precoat"|| strText =="robe") {//OUTER 메뉴에서 세부 카테고리 선택한 경우
-                    temp = "outer";
+                    temp = "Outer";
                     getList("OUTER/"+strText);
                     adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
                     listView2.setAdapter(adapter) ;//카테고리에 속하는 옷 보여주기 위해 두번째 listview에 adapter를 set
 
                 }else if (strText.equals("blouse") || strText.equals("henley") || strText.equals("hoodie") || strText.equals("shirt") || strText.equals("tank") || strText.equals("tee") || strText.equals("top")|| strText.equals("tuterleneck")) {//TOP 메뉴에서 세부 카테고리 선택한 경우
-                    temp = "top";
+                    temp = "Top";
                     getList("TOP/"+strText);
                     adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
                     listView2.setAdapter(adapter) ;//두번째 listview에 adapter 연결
 
                }else if (strText.equals("chinos" )|| strText.equals("jeans") || strText.equals("leggings" )|| strText.equals("long" )|| strText.equals("mideum") || strText.equals("short") || strText.equals("skirt") || strText.equals("sourt") || strText.equals("wide")) {//BOTTOM 메뉴에서 세부 카테고리 선택한 경우
-                    temp = "bottom";
+                    temp = "Bottom";
                     getList("BOTTOM/"+strText);
                     adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
                     listView2.setAdapter(adapter) ;//두번째 listview에 adapter 연결
 
                 }else if (strText.equals("dress" )|| strText.equals("homewear" )|| strText.equals("jumpsuit" )|| strText.equals("kimono") || strText.equals("sarong")) {//DRESS 메뉴에서 세부 카테고리 선택한 경우
-                    temp = "dress";
+                    temp = "Dress";
                     getList("DRESS/"+strText);
                     adapter = new ListAdapter2(getActivity(), R.layout.item_dress_listview, imgarr);
                     listView2.setAdapter(adapter) ;
@@ -191,26 +199,52 @@ public class AddClothesFragment  extends DialogFragment {
     }
 
     public void getList(String category){
-        imgarrIndex = 0 ;
+
+
+    if(category.equals("MY COORDI")) { //코디를 불러오는 경우
+        imgarrIndex = 0;
+        path = appData.getString("CoordyPath", "");
+        Log.d("CoordyPath:", path);
+        try {
+            JSONObject jsonObject = new JSONObject(path);
+            coordies = jsonObject.getJSONArray("result");
+
+            for (int i = 0; i < coordies.length(); i++) {
+                JSONObject jo = coordies.getJSONObject(i);
+
+                imgarr[imgarrIndex] =  jo.getString("fullCodiPath");
+                imgarrIndex++;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }else { //옷장에서 불러오는 경우
+
+        imgarrIndex = 0;
         path = appData.getString("Path", "");
         Log.d("Path:", path);
         try {
             JSONObject jObject = new JSONObject(path);//php 결과 json형식으로 저장
             photos = jObject.getJSONArray("result");
 
-            for(int i=0; i < photos.length(); i++){
+            for (int i = 0; i < photos.length(); i++) {
                 JSONObject c = photos.getJSONObject(i);
 
-                if((c.getString("category")).equals(category)){ //카테고리를 비교하여 동일한 경우 이미지 경로 배열에 저장
-                    imgarr[imgarrIndex]=c.getString("path");
+                if ((c.getString("category")).equals(category)) { //카테고리를 비교하여 동일한 경우 이미지 경로 배열에 저장
+                    imgarr[imgarrIndex] = c.getString("path");
                     imgarrIndex++;
                 }
             }
 
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+
     }
 
 
@@ -223,23 +257,44 @@ public class AddClothesFragment  extends DialogFragment {
         String url = "http://218.38.52.180/addCoordy.php";//
         String json=sendObject();//username & 해당 날짜
 
+        ProgressDialog asyncDialog = new ProgressDialog(getActivity());
+
         @Override
         protected  void onPreExecute(){
-            super.onPreExecute();
+
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);//dialog
+            asyncDialog.setMessage("Loading...");
+            // show dialog
+            asyncDialog.show();
+
+                super.onPreExecute();
+
         }
 
 
         @Override
         protected String doInBackground (String...params){
+            //dialog 진행
+            try {
+                for (int i = 0; i < 2; i++) {
+                    //asyncDialog.setProgress(i * 30);
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             super.onPreExecute();
             String result; // 요청 결과를 저장할 변수.
             RequestActivity requestHttpURLConnection = new RequestActivity();
             result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
+
             return result;
         }
 
         @Override
         protected void onPostExecute (String s) {
+            asyncDialog.dismiss();
             super.onPostExecute(s);
 
             if(s.equals("success")) { //해당 날짜에 코디 저장 완료
@@ -372,7 +427,10 @@ public class AddClothesFragment  extends DialogFragment {
             }
 
             ImageView imageView = convertView.findViewById(R.id.listimg);
-            Glide.with(getActivity()).load("http://218.38.52.180/Android_files/"+ list[postion]).into(imageView);//보여줄 이미지 파일
+            Glide.with(getActivity())
+                    .load("http://218.38.52.180/Android_files/"+ list[postion])
+                    .override(800,700)
+                    .into(imageView);//보여줄 이미지 파일
 
             return convertView;
         }

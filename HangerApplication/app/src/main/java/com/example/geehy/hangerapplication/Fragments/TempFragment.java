@@ -59,7 +59,7 @@ public class TempFragment extends Fragment {
         autoViewPager = (AutoScrollViewPager)view.findViewById(R.id.autoViewPager);
         AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getActivity().getApplicationContext(), data);
         autoViewPager.setAdapter(scrollAdapter); //Auto Viewpager에 Adapter 장착
-        autoViewPager.setInterval(3000); // 페이지 넘어갈 시간 간격 설정
+        autoViewPager.setInterval(2500); // 페이지 넘어갈 시간 간격 설정
         autoViewPager.startAutoScroll(); //Auto Scroll 시작
 
 
