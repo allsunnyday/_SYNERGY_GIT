@@ -408,7 +408,7 @@ public class AddCoordyFragment extends DialogFragment{
             String filePath = uri;
             File file = new File(filePath);
             Log.d(TAG, "name" + file.getName());
-            //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
             RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
             MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText() , mFile);//id값+파일이름 보내기
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText());
