@@ -138,7 +138,6 @@ public class CodiInfoFragment extends DialogFragment{
         likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(hit!=0) {
                     likes.setImageResource(R.drawable.like_blank);
                     hit=0;
@@ -148,6 +147,9 @@ public class CodiInfoFragment extends DialogFragment{
                     hit=1;
                 }
                 sendHitChange();
+
+                likes.setImageResource(R.drawable.like_magenta);
+
 
             }
         });

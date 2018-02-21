@@ -48,7 +48,7 @@
 
         <EditText
             android:id="@+id/username_edittext"
-            android:layout_width="200dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tagtext"
             android:layout_alignParentEnd="true"
@@ -80,14 +80,15 @@
 
         <EditText
             android:id="@+id/Pw_edittext"
-            android:layout_width="200dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tagtext"
             android:layout_alignParentEnd="true"
+            android:hint="현재 비밀번호를 입력해주세요"
             android:imeOptions="actionDone"
             android:lines="1"
-            android:singleLine="true"
 
+            android:singleLine="true"
             android:textSize="15dp" />
 
 
@@ -113,14 +114,15 @@
 
         <EditText
             android:id="@+id/newpw_edittext"
-            android:layout_width="200dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tagtext"
             android:layout_alignParentEnd="true"
+            android:hint="새로운 비밀번호를 입력해주세요"
             android:imeOptions="actionDone"
             android:lines="1"
-            android:singleLine="true"
 
+            android:singleLine="true"
             android:textSize="15dp" />
 
 
