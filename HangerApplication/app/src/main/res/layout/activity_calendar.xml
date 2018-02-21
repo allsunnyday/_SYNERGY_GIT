@@ -1,85 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
 android:minHeight="400dp"
 android:minWidth="300dp"
 android:orientation="vertical"
 android:weightSum="1">
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
         android:background="#ffffff"
-        android:padding="5dp">
-    </RelativeLayout>
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
+
+    <ImageView
+        android:id="@+id/hangerupperbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/hanger" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dress_insert_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="17dp" />
+
+        <ImageButton
+            android:id="@+id/delete_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:paddingRight="10dp"
+            android:layout_toRightOf="@+id/codi_info_edit_btn"
+            android:background="@color/colorWhite"
+            android:elevation="0dp"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+    </LinearLayout>
 
     <GridView
             android:id="@+id/calendar_gridview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:columnWidth="100dp"
         android:horizontalSpacing="10dp"
         android:numColumns="2"
         android:padding="5dp"
         android:verticalSpacing="10dp" />
 
-    <ImageButton
-        android:id="@+id/delete_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="right"
-        android:layout_toRightOf="@+id/codi_info_edit_btn"
-        android:background="@color/colorWhite"
-        android:elevation="0dp"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="#ffffff"
-        android:padding="5dp">
 
 
-        <TextView
-            android:id="@+id/date_text"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textColor="#000000"
-            android:textAlignment="center"
-            android:textSize="17dp" />
-
-
-    </RelativeLayout>
-
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_margin="5dp"
-        android:background="#ffffff"
-        android:padding="10dp">
-
-        <Button
-            android:id="@+id/ok_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:background="#9848d1"
-            android:text="확인"
-            android:textColor="#ffffff"
-            android:textStyle="bold" />
-
-
-    </RelativeLayout>
 </LinearLayout>

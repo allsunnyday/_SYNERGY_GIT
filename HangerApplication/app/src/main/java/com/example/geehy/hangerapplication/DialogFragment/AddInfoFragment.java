@@ -256,7 +256,7 @@ public class AddInfoFragment extends DialogFragment {
     private String sendObject(){ //편집할 내용 json으로
         JSONObject jsonpost = new JSONObject();
         try{
-            appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
+            appData =   this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
             id = appData.getString("ID", "");//username 받아오기
             //String colorSum = vibantColor + ","+ mutedColor;
             jsonpost.put("Username", id);//username

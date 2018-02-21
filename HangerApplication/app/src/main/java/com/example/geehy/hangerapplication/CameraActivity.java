@@ -84,6 +84,8 @@ public class CameraActivity extends AppCompatActivity {
                             }else{
                                 //String folder = Environment.getExternalStorageDirectory().getAbsolutePath();
                                  uri = Uri.parse(outUriStr);
+                                 Log.d("cameraTest", "uri:"+uri);
+                                Log.d("cameraTest", "outUriStr:"+outUriStr);
                                 getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
 
                                 new MediaScanning(getApplicationContext(), uri);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <LinearLayout tools:context="com.example.geehy.hangerapplication.CameraActivity2" android:orientation="vertical" android:layout_height="match_parent" android:layout_width="match_parent" xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_marginTop="5dp">
+
+
+    <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/Save_btn" android:onClick="Save_onClick" android:text="저장하기" android:textSize="15dp" android:gravity="center" android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <ImageView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/Capture_img" android:background="#FFFFFF" android:maxHeight="1000dp" android:adjustViewBounds="true"/>
+
+</LinearLayout>
