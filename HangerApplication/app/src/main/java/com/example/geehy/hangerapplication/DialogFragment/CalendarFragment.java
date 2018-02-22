@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.geehy.hangerapplication.Fragments.DressFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -88,6 +89,7 @@ public class CalendarFragment extends DialogFragment {
         gridView = (GridView) view.findViewById(R.id.calendar_gridview);//그리드 뷰의 객체를 가져오기
         datetext.setText(date); //해당 날짜 set
 
+
         Event();
     }
 
@@ -109,11 +111,12 @@ public class CalendarFragment extends DialogFragment {
                 int i=0;
                 for(int position=0 ; position < isCheck.length; position++ ) {
                     if (isCheck[position] == true) {//체크박스가 선택됐을 때
-                        Toast.makeText(getActivity(), "position:" + position, Toast.LENGTH_LONG).show();
-                        final dressItem di = list.get(position);
+                     dressItem di;
+                       di = list.get(position);
                         delete[i] = di.getImgURL(); //지울 이미지가 담김
                         total+=1;
                         i+=1;
+
                     }
                 }
                 if(total == 0) {//선택 안됐을 때
@@ -217,33 +220,45 @@ public class CalendarFragment extends DialogFragment {
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s); //서버 결과
+
             if (s.equals("fail")) {//실패
                 Toast.makeText(getActivity(), "실패", Toast.LENGTH_SHORT).show();
             }else if(s.equals("no img")){//성공 & DB에 저장된 코디가 없는 경우
+                Toast.makeText(getActivity(),"삭제 완료",Toast.LENGTH_SHORT).show();
                 dismiss();
-                Toast.makeText(getContext(), "저장된 코디가 없어요T_T 코디를 추가해주세요!", Toast.LENGTH_LONG).show();
+
+                getFragmentManager().beginTransaction()  //dialog 닫고 달력 메뉴로 이동
+                        .replace(R.id.content, new DressFragment())
+                        .commit();
             } else{//성공
+                Toast.makeText(getActivity(),"삭제 완료",Toast.LENGTH_SHORT).show();
                 temp = s;
                 getcoodi(); //list 갱신
                 adapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(),"삭제 완료",Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private String sendObject(){ //편집할 내용 json으로
-        JSONObject jsonpost = new JSONObject();
+    private String sendObject(){ //서버에 보낼 편집할 내용 json으로
+        JSONArray jsonArray = new JSONArray();
         try{
             appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
             id = appData.getString("ID", "");//username 받아오기
-            jsonpost.put("Username", id);//username
-            jsonpost.put("Date", date);
-            //   jsonpost.put("Imgurl", imgurl);//지울 사진
 
+            int i=0;
+            while(!(delete[i] == null)){
+                JSONObject jsonpost = new JSONObject();
+                jsonpost.put("Username", id+"_Daily");//username
+                jsonpost.put("Date", date);
+                jsonpost.put("Imgurl", delete[i]);//지울 사진
+                jsonArray.put(jsonpost);
+                i+=1;
+            }
         }catch (JSONException e){
             e.printStackTrace();
         }
-        return jsonpost.toString();
+        return jsonArray.toString();
+
     }
 
 
@@ -253,14 +268,14 @@ public class CalendarFragment extends DialogFragment {
         LayoutInflater layoutInflater;
         private Context context;
         private int layout;
-        private ArrayList<dressItem> list;
+        private ArrayList<dressItem> list2;
 
 
 
-        public GridAdapter(Context context,int layout,ArrayList<dressItem> list){
+        public GridAdapter(Context context,int layout,ArrayList<dressItem> list2){
             this.context = context;
             this.layout = layout;
-            this.list = list;
+            this.list2 = list2;
             layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         }
         public final  int getCount(){
@@ -268,7 +283,7 @@ public class CalendarFragment extends DialogFragment {
         }
 
         public final Object getItem (int position){
-            return list.get(position);
+            return list2.get(position);
         }
 
         public final long getItemId(int position){
@@ -288,7 +303,7 @@ public class CalendarFragment extends DialogFragment {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.item_calendar2);
             TextView tv = (TextView) convertView.findViewById(R.id.item_calendar1);//카테고리 textview
 
-            final dressItem di = list.get(position);
+            final dressItem di = list2.get(position);
             String tempString = di.getCat1();
             if(!(tempString.equals("") || tempString.equals("null"))) {
                 tv.setText(tempString);
