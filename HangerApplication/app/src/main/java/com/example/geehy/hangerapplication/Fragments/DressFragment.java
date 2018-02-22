@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -47,9 +48,11 @@ public class DressFragment extends Fragment {
     private FragmentManager manager;
     private String date;
     private View view;
+    private TextView confirm;
     BackgroundTask task;
     private String id;
-    private String img;
+    private int day;
+    private String img="";
     private SharedPreferences appData;
 
 
@@ -70,6 +73,7 @@ public class DressFragment extends Fragment {
 
     public void init() {
 
+        confirm= (TextView) view.findViewById(R.id.confirm_text);
         dressinsert = (LinearLayout) view.findViewById(R.id.dress_insert_Layout);
         Clothes = (Button) view.findViewById(R.id.dress_closet_btn);
         CoordyBTN = (Button) view.findViewById(R.id.coordy_btn);
@@ -104,9 +108,19 @@ public class DressFragment extends Fragment {
         CoordyBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(img.equals("") || img.equals("null")) {
+                    Toast.makeText(getActivity(),"저장된 코디가 없습니다T_T",Toast.LENGTH_LONG).show();
+                }
+                else{// CalendarFragment로 이동해여 이미지뷰에 보여준다
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Date", date);//날짜 정보 넣기("Date"를 키 값으로)
+                    bundle.putString("Img", img);//코디 정보 넣기("Img"를 키 값으로)
 
-                GetDailyLook();//서버에 저장된 코디 가져오기
-
+                    CalendarFragment calendarfragment = new CalendarFragment();
+                    calendarfragment.setArguments(bundle);//정보 전달
+                    manager = getFragmentManager();
+                    calendarfragment.show(getActivity().getSupportFragmentManager(), "calendarFragment");//dialogfragment 띄우기
+                }
             }
         });
 
@@ -115,7 +129,10 @@ public class DressFragment extends Fragment {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                     dressinsert.setVisibility(View.VISIBLE);   //날짜 클릭시 메뉴 버튼 보여준다
+                    day = dayOfMonth;
                     date = year+"/"+(month+1)+"/"+dayOfMonth;
+
+                     GetDailyLook();//서버에 저장된 코디 가져오기
 
             }
 
@@ -135,6 +152,7 @@ public class DressFragment extends Fragment {
     class BackgroundTask extends AsyncTask<String, Integer, String> {
         String url = "http://218.38.52.180/getCoordy.php";//
         String json=sendObject();//username & 해당 날짜
+
 
         @Override
         protected  void onPreExecute(){
@@ -156,24 +174,18 @@ public class DressFragment extends Fragment {
             super.onPostExecute(s);
 
             if (s.equals("no img")) {//DB에 저장된 코디가 없는 경우
-                Toast.makeText(getContext(), "저장된 코디가 없어요T_T 코디를 추가해주세요", Toast.LENGTH_LONG).show();
+                confirm.setText("저장된 코디가 없습니다T_T\n코디를 추가해주세요!");
+                img="";
             }
 
-            else{//저장된 코디가 있는 경우 CalendarFragment로 이동해여 이미지뷰에 보여준다
+            else{//저장된 코디가 있는 경우
+                img = s;
+                confirm.setText(day+"일의 코디를 확인해보세요!");
 
-                Bundle bundle = new Bundle();
-                bundle.putString("Date", date);//날짜 정보 넣기("Date"를 키 값으로)
-                bundle.putString("Img", s);//코디 정보 넣기("Img"를 키 값으로)
-
-                CalendarFragment calendarfragment = new CalendarFragment();
-                calendarfragment.setArguments(bundle);//정보 전달
-                manager = getFragmentManager();
-                calendarfragment.show(getActivity().getSupportFragmentManager(), "calendarFragment");//dialogfragment 띄우기
-
-                dressinsert.setVisibility(View.GONE);
             }
         }
     }
+
 
 
     private String sendObject() {
