@@ -110,16 +110,6 @@ public class TempFragment extends Fragment {
     }
 
     public void event() {
-        weatherBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                WeatherFragment weatherfragment = new WeatherFragment();
-                manager = getFragmentManager();
-                weatherfragment.show(getActivity().getSupportFragmentManager(), "weatherFragment");//dialogfragment 띄우기
-
-            }
-        });
 
     }
 

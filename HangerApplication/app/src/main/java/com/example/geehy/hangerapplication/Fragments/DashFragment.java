@@ -254,7 +254,7 @@ public class DashFragment extends Fragment {
     }
 
     class BackgroundTask3 extends AsyncTask<String, Integer, String> {
-        String url = "http://218.38.52.180/getimgpath4.php";
+        String url = "http://218.38.52.180/gtimgpath4.phpe";
         String json = sendObject_inCoordy();
 
         @Override
