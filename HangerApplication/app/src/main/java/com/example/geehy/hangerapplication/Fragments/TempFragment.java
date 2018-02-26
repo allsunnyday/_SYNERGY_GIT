@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 
 import com.example.geehy.hangerapplication.DialogFragment.CalendarFragment;
@@ -42,11 +44,11 @@ public class TempFragment extends Fragment {
     private View view;
     private Button weatherBTN;
     private AutoScrollViewPager autoViewPager;
-    private ArrayList<String> data = new ArrayList<>(); //이미지 url를 저장하는 arraylist
+    private ArrayList<CoordyItem> data = new ArrayList<>(); //이미지 url를 저장하는 arraylist
     private SharedPreferences appData;
     private String id;
-    private BackgroundTask3 task3;
-    private String path;
+    BackgroundTask4 task3;
+    private String sharedCodiPath="";
     private JSONArray coordies;
    // private ArrayList<CoordyItem> coordyItemslist;
     //private int numberOfCoordy;
@@ -59,7 +61,7 @@ public class TempFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        data.add("1519195427506.png");
+        //data.add("1519195427506.png");
         //coordyItemslist = ((MainPageActivity)getActivity()).getCoordy();
 
     }
@@ -71,26 +73,23 @@ public class TempFragment extends Fragment {
         view  = inflater.inflate(R.layout.fragment_temp, container, false);
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
         load();
-
-        change(); //이미 path가 존재하면
-        if(path.equals("") ) {      // path = coordyPath
-            Log.d("path", "ready to getCoody");
-            loadCodi();
-        }
+//        change(); //이미 path가 존재하면
+//        if(sharedCodiPath.equals("")) {      // path = coordyPath
+//            loadCodi();
+//        }
+        loadCodi();
         init();
 
         return view;
     }
     private void load() {
-        // SharedPreferences 객체.get타입( 저장된 이름, 기본값 )  ID : Username
         id = appData.getString("ID", "");
-        dressitemPath = appData.getString("Path", "");
         Log.d("SharedPreferences", id);
-        //서버에서 코디의 정보를 불러온다.
+
     }
 
     private void loadCodi() {
-        task3 = new BackgroundTask3();
+        task3 = new BackgroundTask4();
         task3.execute();
     }
 
@@ -98,14 +97,6 @@ public class TempFragment extends Fragment {
 
         weatherBTN = (Button) view.findViewById(R.id.getWeatherBTN);
         autoViewPager = (AutoScrollViewPager)view.findViewById(R.id.autoViewPager);
-
-        AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getActivity().getApplicationContext(), data);
-
-        autoViewPager.setAdapter(scrollAdapter); //Auto Viewpager에 Adapter 장착
-        autoViewPager.setInterval(2500); // 페이지 넘어갈 시간 간격 설정
-        autoViewPager.startAutoScroll(); //Auto Scroll 시작
-
-
         event();
     }
 
@@ -115,29 +106,23 @@ public class TempFragment extends Fragment {
     }
 
 
-
     private void change() {     //서버에서 가져온 이미지 url 배열에 저장
-        path = appData.getString("CoordyPath", "");
-        Log.d("CoordyPath:", path);
+        sharedCodiPath = appData.getString("SharedCodiPath", "");
+        Log.d("SharedCodiPath:", sharedCodiPath);
 
         try{
-            JSONObject jsonObject = new JSONObject(path);
+            JSONObject jsonObject = new JSONObject(sharedCodiPath);
             coordies = jsonObject.getJSONArray("result");
             int i;
             //coordyItemslist.clear();
             for (i=0; i < coordies.length(); i++){
                 JSONObject jo = coordies.getJSONObject(i);
                 CoordyItem ci = new CoordyItem();
-                ci.setTopImgURL(jo.getString("topPath"));
-                ci.setBottomImgURL(jo.getString("bottomPath"));
-                ci.setCodiName(jo.getString("name"));
-                ci.setNo(jo.getInt("codi_no"));
-                ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
-                ci.setLikes(jo.getInt("hit"));
-                if(ci.getLikes()!=0) {
-                    //coordyItemslist.add(ci);
-                    data.add(ci.getFullCodiImgURL());
-                }
+                ci.setCodiName(jo.getString("username")); //여기에서 codiName은 해당 코디의 유저이름
+                ci.setNo(jo.getInt("codi_no"));  //shared_codi DB의 key값
+                ci.setFullCodiImgURL(jo.getString("codiPath"));
+               // ci.setLikes(jo.getInt("likes"));
+                data.add(ci);
                // ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
                 Log.d("finish_", "no: "+ci.getNo()+" codiURI:"+ci.getFullCodiImgURL()+" hit:"+ci.getLikes());
             }
@@ -145,22 +130,27 @@ public class TempFragment extends Fragment {
         }catch(JSONException e){
             e.printStackTrace();
         }
+
+        AutoScrollAdapter scrollAdapter = new AutoScrollAdapter(getActivity().getApplicationContext(), data);
+        autoViewPager.setAdapter(scrollAdapter); //Auto Viewpager에 Adapter 장착
+        autoViewPager.setInterval(2500); // 페이지 넘어갈 시간 간격 설정
+        autoViewPager.startAutoScroll(); //Auto Scroll 시작
     }
 
 
     private String sendObject_inCoordy() {
         JSONObject jsonpost = new JSONObject();
         try {
-            String coordyid = id +"_coordy";
-            jsonpost.put("Username", coordyid); //sharedpreference에 저장되었던 username 서버로 보내기(해당 유저 이미지 가져오기 위해)
+            jsonpost.put("Username", id); //sharedpreference에 저장되었던 username 서버로 보내기(해당 유저 이미지 가져오기 위해)
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonpost.toString();
     }
 
-    class BackgroundTask3 extends AsyncTask<String, Integer, String> {
-        String url = "http://218.38.52.180/getimgpath4.php";
+    class BackgroundTask4 extends AsyncTask<String, Integer, String> {
+        String url = "http://218.38.52.180/getimgpath_forsharedcodi.php";
+        //getimgpath_forsharedcodi.php
         String json = sendObject_inCoordy();
 
         @Override
@@ -180,7 +170,7 @@ public class TempFragment extends Fragment {
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
-            //Log.d("getCOORDY:", s);
+            Log.d("gett:", s);
             if(!(s.equals("no path"))) {
                 save(s);
                 change();
@@ -190,11 +180,11 @@ public class TempFragment extends Fragment {
     }
     private void save(String s) {
         SharedPreferences.Editor editor = appData.edit(); // SharedPreferences 객체만으론 저장 불가능 Editor 사용
-        Log.d("CoordyPath_save()",s);
+        Log.d("save_",s);
         // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
         // 저장시킬 이름이 이미 존재하면 덮어씌움
         //  editor.putBoolean("SAVE_LOGIN_DATA", checkBox.isChecked());
-        editor.putString("CoordyPath", s);                  // CoordyPath라는 appdat에 넣음 >> 앱전체에서 사용할 수 있도록
+        editor.putString("SharedCodiPath", s);                  // CoordyPath라는 appdat에 넣음 >> 앱전체에서 사용할 수 있도록
         //    editor.putString("PWD", pwtext.getText().toString().trim());
         // apply, commit 을 안하면 변경된 내용이 저장되지 않음
         editor.apply();

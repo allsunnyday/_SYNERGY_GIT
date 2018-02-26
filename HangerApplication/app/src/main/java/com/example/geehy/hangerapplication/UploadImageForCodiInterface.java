@@ -11,7 +11,7 @@ import retrofit2.http.Part;
 /**
  * Created by JHS on 2018-02-20.
  */
-//파일 업로드를 위한 인터페이스 정의
+//코디 파일 업로드를 위한 인터페이스 정의
 public interface UploadImageForCodiInterface {
 
     @Multipart
