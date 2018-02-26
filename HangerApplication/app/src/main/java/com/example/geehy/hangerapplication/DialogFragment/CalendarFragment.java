@@ -23,6 +23,8 @@ import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,8 @@ public class CalendarFragment extends DialogFragment {
     private Dialog dialog;
     private View view;
     private Button okBTN;
+    private LinearLayout circlebar_layout;
+    private ProgressBar circlebar;
     private ImageButton delBTN;
     private TextView datetext;
     private String date;
@@ -84,6 +88,8 @@ public class CalendarFragment extends DialogFragment {
     private void init() {
 
      //   okBTN = (Button) view.findViewById(R.id.ok_button);
+
+
         delBTN = (ImageButton) view.findViewById(R.id.delete_btn);
         datetext = (TextView) view.findViewById(R.id.date_text);
         gridView = (GridView) view.findViewById(R.id.calendar_gridview);//그리드 뷰의 객체를 가져오기
@@ -209,6 +215,12 @@ public class CalendarFragment extends DialogFragment {
         String json=sendObject();//편집할 내용 받아옴
 
         @Override
+        protected  void onPreExecute(){
+
+            super.onPreExecute();
+        }
+
+        @Override
         protected String doInBackground (String...params){
             String result; // 요청 결과를 저장할 변수.
             RequestActivity requestHttpURLConnection = new RequestActivity();
@@ -220,6 +232,7 @@ public class CalendarFragment extends DialogFragment {
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s); //서버 결과
+
 
             if (s.equals("fail")) {//실패
                 Toast.makeText(getActivity(), "실패", Toast.LENGTH_SHORT).show();

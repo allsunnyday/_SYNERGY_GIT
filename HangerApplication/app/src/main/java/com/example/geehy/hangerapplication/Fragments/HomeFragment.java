@@ -36,6 +36,7 @@ import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.DialogInterface;
@@ -45,6 +46,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.geehy.hangerapplication.CameraActivity;
 import com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment;
+import com.example.geehy.hangerapplication.DialogFragment.progressbar;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -88,6 +90,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private LinearLayout insertLinearLayout;
     private Button Camera;
     private Button Gallery;
+    private LinearLayout circlebar_layout;
+    private ProgressBar circlebar;
     private static String UploadImgPath;
     private FloatingActionButton fab;
     private FloatingActionButton del;
@@ -106,7 +110,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     // private boolean isChanged;
     private int index =0 ;
     BackgroundTask task;
-
+    progressbar bar;
     public HomeFragment() {
     }
 
@@ -148,6 +152,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         del = (FloatingActionButton) view.findViewById(R.id.floatingButton_delete);
         undo = (FloatingActionButton) view.findViewById(R.id.floatingButton_undo);
+
+
         event();
     }
 
@@ -203,6 +209,39 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         });
 
 
+
+
+        del.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+
+                                        if (isVisible_check) {
+                                     // delete_show();
+                                              alert_show();
+
+                                            } else {
+                                        undo.setVisibility(View.VISIBLE);
+                                        adapter = new homeGridAdapter(getActivity(), R.layout.item_home_gridview_check,list);
+                                        gridView.setAdapter(adapter);
+                                        isVisible_check = true;
+                                    }
+                            }
+         });
+
+                        undo.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                                        isVisible_check = false;
+                                        adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);
+                                        gridView.setAdapter(adapter);
+                                        undo.setVisibility(View.GONE);
+                                    }
+             });
+
+
+
+
+        /*
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,13 +251,27 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                   alert_show();
 
                 } else {
-                    undo.setVisibility(View.VISIBLE);
-                    adapter = new homeGridAdapter(getActivity(), R.layout.item_home_gridview_check,list);
-                    gridView.setAdapter(adapter);
+                    undo.setVisibility(View.VISIBLE); //checkBox 없애는 버튼
+                    int count = gridView.getAdapter().getCount();
+
+                    for (int i = 0; i < count; i++) {
+                        LinearLayout itemLayout = (LinearLayout)gridView.getChildAt(i); // Find by under LinearLayout
+                        LinearLayout itemLayout = (LinearLayout)gridView.getChildt(i); // Find by under LinearLayout
+                  //      CheckBox checkbox = (CheckBox) gridView.findViewById(R.id.check);
+                         CheckBox checkbox = (CheckBox) itemLayout.findViewById(R.id.check);
+                         checkbox.setVisibility(View.VISIBLE);
+                        if(checkbox.isChecked())
+                        {
+                            Log.d("Item "+String.valueOf(i), checkbox.getTag().toString());
+                            Toast.makeText(getActivity(),checkbox.getTag().toString() ,Toast.LENGTH_LONG).show();
+                        }
+
+                    }
                     isVisible_check = true;
                 }
             }
         });
+*/
 
         undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,6 +300,15 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             if (resultCode == Activity.RESULT_OK) {
 
                 //파일 서버로 업로드 start
+/*
+                circlebar_layout.setVisibility(View.VISIBLE); //progressBar 보여줌
+                circlebar.setVisibility(View.VISIBLE);
+*/
+
+                 bar = new progressbar();
+                manager = getFragmentManager();
+                bar.show(getActivity().getSupportFragmentManager(), "progressbar");//dialogfragment 띄우기
+
                 uri = data.getData();
                 Log.d("uri_", uri +" ");
                 if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -272,6 +334,10 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
 
                             //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
+                          //  circlebar_layout.setVisibility(View.GONE);
+                           // circlebar.setVisibility(View.GONE); //progressBar 사라짐
+                            bar.dismiss();
+
                             Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
                             getimg();
 
@@ -280,6 +346,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         @Override
                         public void onFailure(Call<UploadObject> call, Throwable t) {
                             Log.d(TAG, "Error " + t.getMessage());
+                            bar.dismiss();
+
                         }
                     });
                 } else {
@@ -484,10 +552,12 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         @Override
         protected  void onPreExecute(){
+            /*
             asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);//dialog
             asyncDialog.setMessage("Loading...");
             // show dialog
-          //  asyncDialog.show();
+            asyncDialog.show();
+*/
 
             super.onPreExecute();
         }
@@ -505,6 +575,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 e.printStackTrace();
             }
 */
+
             super.onPreExecute();
             String result; // 요청 결과를 저장할 변수.
             RequestActivity requestHttpURLConnection = new RequestActivity();
@@ -565,7 +636,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             }
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.homeitem);
-            final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.check);
+
             final dressItem di = list.get(position);
 
             TextView tv = (TextView) convertView.findViewById(R.id.item_clothesname);
@@ -622,9 +693,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                     Log.d("eeeeee","getDressColor null");
                 }
             }
-
-
-
 
 
             return convertView;
