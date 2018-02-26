@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,9 +18,10 @@
 
         <Spinner
             android:id="@+id/categorySpinner"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/add_gridview"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:background="@color/colorPrimary"
@@ -106,6 +106,24 @@
             android:layout_toEndOf="@+id/addcoordy_name"
             android:backgroundTint="@color/colorPrimary"
             app:srcCompat="@android:drawable/ic_menu_save" />
+
+        <ImageButton
+            android:id="@+id/shareButton"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/add_gridview"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@android:color/white"
+            app:srcCompat="@drawable/ic_menu_share" />
+
+        <TextView
+            android:id="@+id/shareInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/categorySpinner"
+            android:layout_toStartOf="@+id/shareButton"
+            android:text="이 코디를 공유할까요? "
+            android:textColor="@color/colorPrimary" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

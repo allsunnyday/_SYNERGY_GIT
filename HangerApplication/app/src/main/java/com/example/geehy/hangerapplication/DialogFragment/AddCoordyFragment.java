@@ -1,5 +1,5 @@
 package com.example.geehy.hangerapplication.DialogFragment;
-
+//코디 추가하기
 /**
  * Created by JHS on 2018-02-09.
  */
@@ -49,6 +49,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -110,13 +111,14 @@ public class AddCoordyFragment extends DialogFragment{
     private AddCodiAdapter addcodiAdapter;
     private int spinnerNUMBER=0;
     private int test=0;
-    private ImageButton save, cancle;
+    private ImageButton save, cancle, share;
     private ImageView topview;
     private ImageView bottomview;
     private EditText coordyname;
     private String selectTop="";
     private String selectBottom="";
-    private BackgroundTask_codi task;
+    private String selectShare="";
+    //private BackgroundTask_codi task;
     private int xDelta;
     private int yDelta;
     private ViewGroup codiLayout;
@@ -126,6 +128,8 @@ public class AddCoordyFragment extends DialogFragment{
     private AbstractWindowedCursor cursor;
 
     private DialogInterface.OnDismissListener onDismissListener;
+    private TextView shareText;
+    private static int isShare=0;
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
         this.onDismissListener = onDismissListener;
@@ -151,7 +155,7 @@ public class AddCoordyFragment extends DialogFragment{
         super.onCreateDialog(savedInstanceState);
         dialog = super.onCreateDialog(savedInstanceState);
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
-
+        isShare=0;
         load();         //->사용자의 id와 기존의 path를 불러온다.
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -164,6 +168,8 @@ public class AddCoordyFragment extends DialogFragment{
         categarySpinner.setAdapter(categoryAdapter);
         save = (ImageButton)view.findViewById(R.id.saveBtn);
         cancle = (ImageButton)view.findViewById(R.id.noBtn);
+        share = (ImageButton)view.findViewById(R.id.shareButton);
+        shareText = (TextView)view.findViewById(R.id.shareInfoText);
         topview =(ImageView)view.findViewById(R.id.top_View);
         bottomview =(ImageView)view.findViewById(R.id.bottom_View);
         coordyname = (EditText)view.findViewById(R.id.addcoordy_name);
@@ -356,6 +362,27 @@ public class AddCoordyFragment extends DialogFragment{
             }
         });
 
+        share.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                if(isShare == 0) {
+                    share.setImageResource(R.drawable.ic_menu_share_pp);
+                    isShare = 1;
+                    Toast.makeText(getActivity().getApplicationContext(), "공유하기 선택", Toast.LENGTH_SHORT ).show();
+
+
+                }
+                else{
+                    share.setImageResource(R.drawable.ic_menu_share);
+                    isShare = 0;
+                    Toast.makeText(getActivity().getApplicationContext(), "공유하기 취소", Toast.LENGTH_SHORT ).show();
+
+                }
+
+            }
+        });
+
         cancle.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -396,6 +423,12 @@ public class AddCoordyFragment extends DialogFragment{
         } finally {
             //Toast.makeText(getActivity(), "영상을 캡쳐했습니다", Toast.LENGTH_SHORT).show();
             Log.d("test_", strFilePath);
+            if(isShare == 1){
+                selectShare = "Y";
+            }
+            else{
+                selectShare = "N";
+            }
 
             //strFIlePath->> 파일path
             uploadFile(strFilePath);
@@ -411,8 +444,8 @@ public class AddCoordyFragment extends DialogFragment{
             Log.d(TAG, "name" + file.getName());
 
             RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText() , mFile);//id값+파일이름 보내기
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText());
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText() +"+"+ selectShare , mFile);//id값+파일이름 보내기
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText()+"+"+ selectShare);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(SERVER_PATH)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -477,52 +510,6 @@ public class AddCoordyFragment extends DialogFragment{
             };
     }
 
-
-
-    private void saveServer() {
-        task = new BackgroundTask_codi();
-        task.execute();
-    }
-    class BackgroundTask_codi extends AsyncTask<String, Integer, String> {//편집할 내용 서버로 보내기
-        String url = "http://218.38.52.180/addcodi.php";
-        String json= sendObject_codi();//편집할 내용 받아옴
-
-        @Override
-        protected String doInBackground (String...params){
-
-            String result; // 요청 결과를 저장할 변수.
-            RequestActivity requestHttpURLConnection = new RequestActivity();
-            result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
-            return result;
-
-        }
-
-        @Override
-        protected void onPostExecute (String s) {
-            super.onPostExecute(s); //서버 결과
-            if (s.equals("성공")) {
-                /////성공할 시에 서버에 결과를 보낸다
-                //isChanged = true;
-                Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
-                dismiss();
-            }else{
-                Toast.makeText(getContext(), "저장 실패", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private String sendObject_codi() {
-        JSONObject jsonp = new JSONObject();
-        try {
-            jsonp.put("Username", id+"_coordy");
-            jsonp.put("Top", selectTop);
-            jsonp.put("Bottom", selectBottom);
-            jsonp.put("Name", coordyname.getText());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonp.toString();
-    }
 
     public class AddCodiAdapter extends BaseAdapter {
         LayoutInflater layoutInflater;
@@ -608,9 +595,6 @@ public class AddCoordyFragment extends DialogFragment{
                         break;
                 }
 
-//                Glide.with(getActivity())
-//                        .load("http://218.38.52.180/Android_files/"+ ci.getImgURL())
-//                        .into(imageViewTop);//보여줄 이미지 파일
             }
             return convertView;
         }
@@ -622,49 +606,4 @@ public class AddCoordyFragment extends DialogFragment{
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-
-
-
-    //파일 업로드 부분
-/*
-    private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
-        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            return contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(idx);
-        }
-    }
-*/
-
-    /*@Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        if (uri != null) {
-            String filePath = getRealPathFromURIPath(uri, getActivity());
-            File file = new File(filePath);
-            RequestBody mFile = RequestBody.create(MediaType.parse("image*//*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
-            RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(SERVER_PATH)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            UploadImageInterface uploadImage = retrofit.create(UploadImageInterface.class);
-            Call<UploadObject> fileUpload = uploadImage.uploadFile(fileToUpload, filename);
-            fileUpload.enqueue(new Callback<UploadObject>() {
-                @Override
-                public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
-                    Toast.makeText(getActivity().getApplication(), "Success " + response.message(), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity().getApplication(), "Success " + response.body().toString(), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Call<UploadObject> call, Throwable t) {
-                    Log.d(TAG, "Error " + t.getMessage());
-                }
-            });
-        }
-    }*/
 }

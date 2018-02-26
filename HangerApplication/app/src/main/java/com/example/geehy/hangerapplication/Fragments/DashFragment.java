@@ -165,6 +165,7 @@ public class DashFragment extends Fragment {
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.content, new DashFragment())
                                 .commit();
+
                     }
                 });
 
@@ -208,10 +209,6 @@ public class DashFragment extends Fragment {
                 codiInfoFragment.show(getActivity().getFragmentManager(), "CodiInfoFragment");
                 appData.edit().remove("CoordyPath").commit(); //변경된 내용을 보여주기 위해서?
 
-//
-//                manager = getFragmentManager();
-//                addfragment.show(getActivity().getSupportFragmentManager(), "AddInfoFragment");
-//                appData.edit().remove("Path").commit();
 
                 change();
                 coordyAdapter.notifyDataSetChanged();
@@ -222,16 +219,6 @@ public class DashFragment extends Fragment {
 
 
         });
-//        {
-//            @Override
-//            public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                Log.d("Test Layout", "Show  CODIINFO Fragment");
-//                CodiInfoFragment codiInfoFragment = new CodiInfoFragment();
-//                codiInfoFragment.show(getActivity().getFragmentManager(), "CodiInfoFragment");
-//
-//            }
-//        });
 
     }
 
@@ -294,31 +281,6 @@ public class DashFragment extends Fragment {
         editor.apply();
     }
 
-/*
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (data == null)
-//            return;
-//        switch (requestCode) {
-//            case 100:
-//                if (resultCode == RESULT_OK) {
-//                    path = getPathFromURI(data.getData());
-//                    img.setImageURI(data.getData());
-//                    //upload.setVisibility(View.VISIBLE);
-//
-//                }
-//        }
-    }
-
-//    private String getPathFromURI(Uri contentUri) {
-////        String[] proj = { MediaStore.Images.Media.DATA };
-////        CursorLoader loader = new CursorLoader(getContext(), contentUri, proj, null, null, null);
-////        Cursor cursor = loader.loadInBackground();
-////        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-////        cursor.moveToFirst();
-////        return cursor.getString(column_index);
-//    }
-*/
 
 
     public class CoordyGridAdapter extends BaseAdapter {

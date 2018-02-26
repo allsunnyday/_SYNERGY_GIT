@@ -214,11 +214,11 @@ public class CodiInfoFragment extends DialogFragment{
             if (s.equals("성공")) {
                 /////성공할 시에 서버에 결과를 보낸다
                 //isChanged = true;
-                Toast.makeText(getContext(), "delete!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "delete!", Toast.LENGTH_SHORT).show();
                 dismiss();
 
             }else{
-                Toast.makeText(getContext(), "fail..", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "fail..", Toast.LENGTH_SHORT).show();
             }
         }
     }

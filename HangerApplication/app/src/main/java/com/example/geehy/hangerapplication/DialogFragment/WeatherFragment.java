@@ -49,7 +49,6 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class WeatherFragment  extends DialogFragment {
-
     private Dialog dialog;
     private View view;
     private Button okBTN;
@@ -395,5 +394,4 @@ public class WeatherFragment  extends DialogFragment {
             }
         }
     }*/
-
 }
