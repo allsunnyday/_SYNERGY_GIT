@@ -212,31 +212,31 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
         del.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                                        if (isVisible_check) {
-                                     // delete_show();
-                                              alert_show();
+                if (isVisible_check) {
+                    // delete_show();
+                    alert_show();
 
-                                            } else {
-                                        undo.setVisibility(View.VISIBLE);
-                                        adapter = new homeGridAdapter(getActivity(), R.layout.item_home_gridview_check,list);
-                                        gridView.setAdapter(adapter);
-                                        isVisible_check = true;
-                                    }
-                            }
-         });
+                } else {
+                    undo.setVisibility(View.VISIBLE);
+                    adapter = new homeGridAdapter(getActivity(), R.layout.item_home_gridview_check,list);
+                    gridView.setAdapter(adapter);
+                    isVisible_check = true;
+                }
+            }
+        });
 
-                        undo.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                                        isVisible_check = false;
-                                        adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);
-                                        gridView.setAdapter(adapter);
-                                        undo.setVisibility(View.GONE);
-                                    }
-             });
+        undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isVisible_check = false;
+                adapter = new homeGridAdapter(getActivity(), R.layout.item_home_girdview, list);
+                gridView.setAdapter(adapter);
+                undo.setVisibility(View.GONE);
+            }
+        });
 
 
 
@@ -281,7 +281,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 gridView.setAdapter(adapter);
                 undo.setVisibility(View.GONE);
             }
-            });
+        });
 
     }
 
@@ -305,7 +305,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 circlebar.setVisibility(View.VISIBLE);
 */
 
-                 bar = new progressbar();
+                bar = new progressbar();
                 manager = getFragmentManager();
                 bar.show(getActivity().getSupportFragmentManager(), "progressbar");//dialogfragment 띄우기
 
@@ -334,8 +334,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
 
                             //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
-                          //  circlebar_layout.setVisibility(View.GONE);
-                           // circlebar.setVisibility(View.GONE); //progressBar 사라짐
+                            //  circlebar_layout.setVisibility(View.GONE);
+                            // circlebar.setVisibility(View.GONE); //progressBar 사라짐
                             bar.dismiss();
 
                             Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
@@ -585,7 +585,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         @Override
         protected void onPostExecute (String s) {
-    //        asyncDialog.dismiss();
+            //        asyncDialog.dismiss();
             super.onPostExecute(s);
             Log.d("getimgtest:", s);
             //Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();
@@ -702,7 +702,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 }
-
 
 
 
