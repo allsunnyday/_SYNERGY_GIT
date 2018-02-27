@@ -271,7 +271,7 @@ public class TempFragment extends Fragment {
         @Override
         public int getCount() {
 
-            Log.d("index2", index + " ");
+            Log.d("index2eee", index + " ");
             return index;
         }
 
