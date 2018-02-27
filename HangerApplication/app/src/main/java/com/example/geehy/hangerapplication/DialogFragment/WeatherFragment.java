@@ -42,20 +42,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static android.content.Context.MODE_PRIVATE;
-
+import static android.content.Context.SENSOR_SERVICE;
 
 /**
  * Created by MIN on 2018-02-19.
  */
 
 public class WeatherFragment  extends DialogFragment {
-  /*  private Dialog dialog;
+    private Dialog dialog;
     private View view;
     private Button okBTN;
     private TextView textView;
     private ImageView imageView1;
     private ImageView imageView2;
-    BackgroundTaskForWeather task;
+    //BackgroundTask task;
     private SharedPreferences appData;
     private String id;
     private Spinner citySpinner;
@@ -94,7 +94,35 @@ public class WeatherFragment  extends DialogFragment {
         dialog.setContentView(view);
         return dialog;
     }
+/*
+    private final LocationListener mLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            //여기서 위치값이 갱신되면 이벤트가 발생한다.
+            //값은 Location 형태로 리턴되며 좌표 출력 방법은 다음과 같다.
 
+            Log.d("test", "onLocationChanged, location:" + location);
+            double longitude = location.getLongitude(); //경도
+            double latitude = location.getLatitude();   //위도
+//            geovariable.setLatitude(latitude); // 클래스 변수에 위도 대입
+//            geovariable.setLongitube(longitude);  // 클래스 변수에 경도 대입
+            Log.d("location_", longitude +","+latitude +"");
+        }
+
+        public void onProviderDisabled(String provider) {
+            // Disabled시
+            Log.d("test", "onProviderDisabled, provider:" + provider);
+        }
+
+        public void onProviderEnabled(String provider) {
+            // Enabled시
+            Log.d("test", "onProviderEnabled, provider:" + provider);
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // 변경시
+            Log.d("test", "onStatusChanged, provider:" + provider + ", status:" + status + " ,Bundle:" + extras);
+        }
+    };*/
 
     private void init() {
         okBTN = (Button) view.findViewById(R.id.ok_button);
@@ -113,18 +141,18 @@ public class WeatherFragment  extends DialogFragment {
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
 
         Event();
-       // getWeatherData(lati, longi);
+//        getWeatherData(lati, longi);
 
-        recommend();
+        //recommend();
     }
+/*
 
-//
-//    private void getWeatherData(double lati, double longi) {
-//        String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lati + "&lon=" +longi + "&appid=92e7ce79a7a1d14ac2cae64319116b46";
-//        ReceiveWeatherTask receiveWeatherTask = new ReceiveWeatherTask();
-//
-//    }
+    private void getWeatherData(double lati, double longi) {
+        String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lati + "&lon=" +longi + "&units=metric&appid=92e7ce79a7a1d14ac2cae64319116b46";
+        ReceiveWeatherTask receiveWeatherTask = new ReceiveWeatherTask();
 
+    }
+*/
 
 
     private void Event() {
@@ -226,7 +254,7 @@ public class WeatherFragment  extends DialogFragment {
                 }
 
                 //서버에 위치 보내는 backgroundtack 부르기
-                recommend();
+                //recommend();
 
             }
 
@@ -238,70 +266,71 @@ public class WeatherFragment  extends DialogFragment {
 
     }
 
-
-    private void recommend(){//추천할 옷 서버에서 가져오기
-        task = new BackgroundTaskForWeather();
-        task.execute();
-    }
-
-
-
-
-    class BackgroundTaskForWeather extends AsyncTask<String, Integer, String> {
-        String url = "http://218.38.52.180/recomend.php";//
-        String json=sendObject();//username
-
-        @Override
-        protected  void onPreExecute(){
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground (String...params){
-            super.onPreExecute();
-            String result; // 요청 결과를 저장할 변수.
-            RequestActivity requestHttpURLConnection = new RequestActivity();
-            result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute (String s) {
-            super.onPostExecute(s);
-            Log.d("sssss", s);
-            if (s.equals("성공")) {
-                /////성공할 시에 서버에 결과를 보낸다
-                //isChanged = true;
-                Toast.makeText(getContext(), "delete!", Toast.LENGTH_SHORT).show();
-                //dismiss();
-
-            }else{
-                Toast.makeText(getContext(), "fail..", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-    }
-
-    private String sendObject() {
-        id = appData.getString("ID", "");
-        JSONObject jsonpost = new JSONObject();
-        try {
-            jsonpost.put("Username", id);//sharedpreference에 저장되었던 username 서버로 보내기 위해서 json 형식으로 변환
-            jsonpost.put("City", selectCity);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonpost.toString();
-    }
+//
+//    private void recommend(){//추천할 옷 서버에서 가져오기
+//        task = new BackgroundTask();
+//        task.execute();
+//    }
+//
+//
+//
+//
+//    class BackgroundTask extends AsyncTask<String, Integer, String> {
+//        String url = "http://218.38.52.180/recomend.php";//
+//        String json=sendObject();//username
+//
+//        @Override
+//        protected  void onPreExecute(){
+//            super.onPreExecute();
+//        }
+//
+//        @Override
+//        protected String doInBackground (String...params){
+//            super.onPreExecute();
+//            String result; // 요청 결과를 저장할 변수.
+//            RequestActivity requestHttpURLConnection = new RequestActivity();
+//            result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
+//
+//            return result;
+//        }
+//
+//        @Override
+//        protected void onPostExecute (String s) {
+//            super.onPostExecute(s);
+//         //   Log.d("sssss", s);
+//            if (s.equals("성공")) {
+//                /////성공할 시에 서버에 결과를 보낸다
+//                //isChanged = true;
+//                Toast.makeText(getContext(), "delete!", Toast.LENGTH_SHORT).show();
+//                //dismiss();
+//
+//            }else{
+//                Toast.makeText(getContext(), "fail..", Toast.LENGTH_SHORT).show();
+//            }
+//
+//
+//        }
+//    }
+//
+//    private String sendObject() {
+//        id = appData.getString("ID", "");
+//        JSONObject jsonpost = new JSONObject();
+//        try {
+//            jsonpost.put("Username", id);//sharedpreference에 저장되었던 username 서버로 보내기 위해서 json 형식으로 변환
+//            jsonpost.put("City", selectCity);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return jsonpost.toString();
+//    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-
- *//*   private class ReceiveWeatherTask extends AsyncTask <String , Void , JSONObject>{
+/*
+    private class ReceiveWeatherTask extends AsyncTask <String , Void , JSONObject>{
 
 
         @Override

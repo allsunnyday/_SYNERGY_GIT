@@ -21,7 +21,9 @@ import android.widget.Button;import java.util.ArrayList;
 import java.util.List;
 
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,7 @@ public class AddClothesFragment  extends DialogFragment {
     private Button okBTN;
     private ListView listView1;
     private ListView listView2;
+
     private ImageView iv;
     private String date;
     private String path;
@@ -262,11 +265,6 @@ public class AddClothesFragment  extends DialogFragment {
         @Override
         protected  void onPreExecute(){
 
-            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);//dialog
-            asyncDialog.setMessage("Loading...");
-            // show dialog
-            asyncDialog.show();
-
                 super.onPreExecute();
 
         }
@@ -274,15 +272,6 @@ public class AddClothesFragment  extends DialogFragment {
 
         @Override
         protected String doInBackground (String...params){
-            //dialog 진행
-            try {
-                for (int i = 0; i < 2; i++) {
-                    //asyncDialog.setProgress(i * 30);
-                    Thread.sleep(100);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
             super.onPreExecute();
             String result; // 요청 결과를 저장할 변수.
@@ -294,9 +283,8 @@ public class AddClothesFragment  extends DialogFragment {
 
         @Override
         protected void onPostExecute (String s) {
-            asyncDialog.dismiss();
-            super.onPostExecute(s);
 
+            super.onPostExecute(s);
             if(s.equals("success")) { //해당 날짜에 코디 저장 완료
                 Toast.makeText(getContext(), "저장 성공", Toast.LENGTH_SHORT).show();
 
