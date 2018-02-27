@@ -41,24 +41,52 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:isScrollContainer="true">
 
-            <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
-                android:id="@+id/autoViewPager"
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            </cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager>
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+                        android:id="@+id/autoViewPager"
+                        android:layout_width="200dp"
+                        android:layout_height="300dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/colorPrimary">
+
+                    </cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager>
 
 
-        </LinearLayout>
+                </LinearLayout>
+
+                <com.example.geehy.hangerapplication.gridview_home.ExpendableHeightGridView
+                    android:id="@+id/tempGridView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/linearLayout2"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:padding="5dp" />
+
+            </RelativeLayout>
+        </ScrollView>
 
 
     </LinearLayout>

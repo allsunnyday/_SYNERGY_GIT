@@ -32,6 +32,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/edit_codi_name"
             android:backgroundTint="@android:color/white"
+            android:tint="@color/colorpp"
             app:srcCompat="@drawable/like_blank" />
 
         <ImageButton
@@ -41,7 +42,8 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/likebtn"
             android:backgroundTint="@android:color/white"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:tint="@color/colorpp"
+            app:srcCompat="@drawable/ic_menu_share" />
 
         <ImageButton
             android:id="@+id/codi_info_delete_btn"
@@ -50,6 +52,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/codi_info_edit_btn"
             android:backgroundTint="@android:color/white"
+            android:tint="@color/colorpp"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ImageView

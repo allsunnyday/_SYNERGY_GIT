@@ -80,11 +80,14 @@ public class DashFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_dash, container, false);
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
         load();                     //Username을 가지고 옴
-        change();                   //이미 불러온 coordyPath가 있는 경우
+        change();
+        // 이미 불러온 coordyPath가 있는 경우
         if(path.equals("") ) {      // 로그인 후 앱 메인화면 처음 켜지는 경우 서버에서 이미지를 가져온다.
             Log.d("path", "ready to getCoody");
-            getCoordtImg();         //이미지 가져오기
+            getCoordtImg();             //이미지 가져오기
         }
+
+
         init();
 
         coordyAdapter= new CoordyGridAdapter( getActivity(), R.layout.item_coordy_gridview , coordyItemslist);
@@ -118,6 +121,13 @@ public class DashFragment extends Fragment {
                ci.setNo(jo.getInt("codi_no"));
                ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
                ci.setLikes(jo.getInt("hit"));
+               Log.d("isshared", jo.getString("isShare"));
+               if(jo.getString("isShare").equals("Y")){
+                   ci.setIsShare(1);
+               }
+               else{
+                   ci.setIsShare(0);
+               }
                coordyItemslist.add(ci);
                ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
            }
@@ -191,10 +201,16 @@ public class DashFragment extends Fragment {
                 bundle.putString("FULL", cd.getFullCodiImgURL());
                 bundle.putInt("NO", cd.getNo());
                 bundle.putInt("LIKE", cd.getLikes());
+                bundle.putInt("SHARE", cd.getIsShare());
                 Log.d("Test Layout", "Show  CODIINFO Fragment");
 
                 CodiInfoFragment codiInfoFragment = new CodiInfoFragment();
                 codiInfoFragment.setArguments(bundle);
+
+                manager = getFragmentManager();
+                codiInfoFragment.show(getActivity().getFragmentManager(), "CodiInfoFragment");
+                appData.edit().remove("CoordyPath").commit();
+
                 codiInfoFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -204,14 +220,9 @@ public class DashFragment extends Fragment {
                     }
                 });
 
-                manager = getFragmentManager();
-
-                codiInfoFragment.show(getActivity().getFragmentManager(), "CodiInfoFragment");
-                appData.edit().remove("CoordyPath").commit(); //변경된 내용을 보여주기 위해서?
-
-
-                change();
-                coordyAdapter.notifyDataSetChanged();
+                 //변경된 내용을 보여주기 위해서?
+//                change();
+//                coordyAdapter.notifyDataSetChanged();
             //    refreshFrag();
 
 

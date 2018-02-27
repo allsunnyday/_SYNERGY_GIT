@@ -3,8 +3,10 @@
 package com.example.geehy.hangerapplication.gridview_home;
 
 import android.content.Context;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.geehy.hangerapplication.DialogFragment.WeatherFragment;
 import com.example.geehy.hangerapplication.R;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -27,12 +32,19 @@ public class AutoScrollAdapter extends PagerAdapter {
     TextView likeNum;
     boolean islike = false;
 
+    private final SparseArrayCompat<WeakReference<View>> holder;
+
+
+
+
     public AutoScrollAdapter(Context context, ArrayList<CoordyItem> data) {
         this.context = context;
+        this.holder = new SparseArrayCompat<>(data.size());
         this.data = data;
     }
 
-//    public AutoScrollAdapter(Context context, ArrayList<CoordyItem> codi){
+//    public AutoScrollAdapter(Context paramContext){
+//        init();
 //
 //    }
 
@@ -43,62 +55,37 @@ public class AutoScrollAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.item_viewpager,null);
         ImageView image_container = (ImageView) v.findViewById(R.id.image);
-        TextView textView = (TextView) v.findViewById(R.id.whoesCodi);
-        final ImageButton imgbtn = (ImageButton)v.findViewById(R.id.imgbtn);
-        likeNum= (TextView)v.findViewById(R.id.likesNum);
+        //TextView textView = (TextView) v.findViewById(R.id.whoesCodi);
+        ImageView imgbtn = (ImageView) v.findViewById(R.id.imgbtn);
+        //likeNum= (TextView)v.findViewById(R.id.likesNum);
         //Log.d("getposition", data.get(position));
         CoordyItem ci = data.get(position);
         String codiPath = ci.getFullCodiImgURL();
         String whoesCodi = ci.getCodiName();
+
         likes= ci.getLikes();
-
-        textView.setText(whoesCodi);
-        if (ci.getLikes() !=0 ) {
-            likeNum.setText(ci.getLikes());
-        }
-        else{
-            imgbtn.setImageResource(R.drawable.like_blank);
-        }
-        /*v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!islike) {
-                    imgbtn.setImageResource(R.drawable.like_magenta);
-                    likes++;
-                    likeNum.setText(likes);
-                    islike = true;
-                }
-                else{
-                    imgbtn.setImageResource(R.drawable.like_blank);
-                    likes--;
-                    likeNum.setText(likes);
-                    islike = false;
-                }
-
-            }
-        });*/
-//
-//        imgbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                imgbtn.setImageResource(R.drawable.like_magenta);
-//                likes ++ ;
-//                likeNum.setText(likes);
-//            }
-//        });
+       // imgbtn.setImageResource(R.drawable.like_magenta);
 
         Glide.with(context)
                 .load("http://218.38.52.180/Android_files/"+ codiPath)
+                .override(2000, 2300)
+                .fitCenter()
                 .into(image_container);
 
         container.addView(v);
+        holder.put(position, new WeakReference<View>(v));
+
         return v;
     }
 
+//    private void event() {
+//
+//    }
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        holder.remove(position);
         container.removeView((View)object);
-
     }
 
     @Override
@@ -110,4 +97,16 @@ public class AutoScrollAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
+
+    public View getPage(int position) {
+        final WeakReference<View> weakRefItem = holder.get(position);
+        return (weakRefItem != null) ? weakRefItem.get() : null;
+    }
+
+    protected CoordyItem getPagerItem(int position) {
+        return data.get(position);
+    }
+
+
+
 }

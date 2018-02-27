@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,11 +55,13 @@ public class CodiInfoFragment extends DialogFragment{
     private int codi_no;
     private String id;
     BackgroundTaskDelete task;
+    BackgroundTaskForSend shareTask;
     private String codi;
     private int hit;
     private BackgroundTaskForSendHit likesTask;
 
     private DialogInterface.OnDismissListener onDismissListener;
+    private int share;
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
         this.onDismissListener = onDismissListener;
@@ -91,7 +94,8 @@ public class CodiInfoFragment extends DialogFragment{
         codi_no = mbundle.getInt("NO");
         codi = mbundle.getString("FULL");
         hit = mbundle.getInt("LIKE"); //초기값은 0  > 버튼 클릭시 1로 변경
-        Log.d("codi", codi);
+        share = mbundle.getInt("SHARE");
+        Log.d("ssssss", share + " ");
 
         appData = this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);     //설정값을 가지고 온다
         id = appData.getString("ID", "");//username 받아오기
@@ -130,6 +134,13 @@ public class CodiInfoFragment extends DialogFragment{
             likes.setImageResource(R.drawable.like_magenta);
         }
 
+        if(share!=0){
+            editbtn.setImageResource(R.drawable.ic_menu_share_pp);
+        }
+        else{
+            editbtn.setImageResource(R.drawable.ic_menu_share);
+        }
+
         event();
     }
 
@@ -155,8 +166,16 @@ public class CodiInfoFragment extends DialogFragment{
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity().getApplicationContext(), "♥준비중♥",Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(getActivity().getApplicationContext(), "♥준비중♥",Toast.LENGTH_SHORT).show();
+                if(share ==0) {
+                    Toast.makeText(getActivity().getApplicationContext(), "공유할게요!♥",Toast.LENGTH_SHORT).show();
+                    editbtn.setImageResource(R.drawable.ic_menu_share_pp);
+                    sendShare();
+                    share=1;
+                }
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(), "이미 공유했습니다",Toast.LENGTH_SHORT).show();
+                }
 //                Bundle bundle = new Bundle();
 //                bundle.putString("TOP", top);
 //                bundle.putString("BOTTOM", bottom);
@@ -180,6 +199,11 @@ public class CodiInfoFragment extends DialogFragment{
                 deleteCodi();
             }
         });
+    }
+
+    private void sendShare() {
+        shareTask = new BackgroundTaskForSend();
+        shareTask.execute();
     }
 
     private void sendHitChange() {
@@ -228,6 +252,7 @@ public class CodiInfoFragment extends DialogFragment{
         try {
             jsonp.put("Username", id+"_coordy");
             jsonp.put("coordy_no", codi_no );
+            jsonp.put("codiPath", codi);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -258,4 +283,36 @@ public class CodiInfoFragment extends DialogFragment{
         }
         return jsonp.toString();
     }
+
+    private class BackgroundTaskForSend extends AsyncTask<String, Integer, String> {
+        String url = "http://218.38.52.180/info_codishare.php";
+        String json = sendObject_share();//편집할 내용 받아옴
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String result; // 요청 결과를 저장할 변수.
+            RequestActivity requestHttpURLConnection = new RequestActivity();
+            result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Toast.makeText(getActivity().getApplicationContext(), "공유되었습니다", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String sendObject_share() {
+        JSONObject jsonp = new JSONObject();
+        try {
+            jsonp.put("Username", id+"_coordy");
+            jsonp.put("codiPath", codi);
+            jsonp.put("no", codi_no);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonp.toString();
+    }
+
 }
