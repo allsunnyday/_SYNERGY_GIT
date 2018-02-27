@@ -40,6 +40,7 @@ public class EditInfoFragment extends DialogFragment {
     private EditText new_pwtext;
     private SharedPreferences appData;
     private String id;
+    BackgroundTask task;
 
 
     @Override
@@ -77,8 +78,9 @@ public Dialog onCreateDialog(Bundle savedInstanceState) {
         finishBTN.setOnClickListener(new View.OnClickListener() {//완료 버튼
             @Override
             public void onClick(View view) {
-                //서버 저장
-                dismiss(); //dialog 닫기
+                task = new BackgroundTask();
+                task.execute();
+                //dismiss(); //dialog 닫기
             }
         });
 

@@ -38,7 +38,7 @@ public class AccFragment extends Fragment {
     private Button qnabtn;
     private SharedPreferences appData;
     private String id;
-    BackgroundTask task;
+    BackgroundTask5 task5;
     private FragmentManager manager;
 
 
@@ -84,7 +84,9 @@ public class AccFragment extends Fragment {
         unregisterbtn.setOnClickListener(new View.OnClickListener() {//회원탈퇴
             @Override
             public void onClick(View view) {
-                unregister();
+                task5 = new BackgroundTask5();
+                task5.execute();
+
             }
         });
 
@@ -106,31 +108,27 @@ public class AccFragment extends Fragment {
         });
     }
 
-
-    public void unregister(){//회원 탈퇴하기
-        task = new BackgroundTask();
-      //  task.execute();
-    }
+//
+//    public void unregister(){//회원 탈퇴하기
+//        task = new BackgroundTask5();
+//        task.execute();
+//    }
 
     //sharedpreference에 저장되었던 username 서버로 보내기
-    private String sendObject() {
+    private String sendObject5() {
         JSONObject jsonpost = new JSONObject();
+        String username = appData.getString(id,"");
         try {
-            jsonpost.put("Username", appData.getString(id,""));
+            jsonpost.put("Username", username);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonpost.toString();
     }
 
-    class BackgroundTask extends AsyncTask<String, Integer, String> {
+    class BackgroundTask5 extends AsyncTask<String, Integer, String> {
         String url = "http://218.38.52.180/unregister.php";
-        String json=sendObject();//username
-
-        @Override
-        protected  void onPreExecute(){
-            super.onPreExecute();
-        }
+        String json= sendObject5();//username
 
         @Override
         protected String doInBackground (String...params){
@@ -144,9 +142,18 @@ public class AccFragment extends Fragment {
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
+            Log.d("result_", s);
             if(s.equals("success")) {
                 Toast.makeText(getActivity().getApplication(), "탈퇴 완료", Toast.LENGTH_LONG).show();
+//                appData.edit().clear().apply();//sharedpreference에 저장된 값 삭제하기
+//                Intent intent = new Intent(getContext().getApplicationContext(), LoginActivity.class);//로그인 페이지로 이동
+//                startActivity(intent);
+//                getActivity().finish();
             }
+            else if(s.equals("fail")){
+                Toast.makeText(getActivity().getApplication(), "fail...", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
