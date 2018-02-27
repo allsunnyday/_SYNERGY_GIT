@@ -50,7 +50,7 @@ import org.json.JSONObject;
             @Override
             protected void onPostExecute (String s) {
                 super.onPostExecute(s);
-                    Toast.makeText(getApplication(), s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), "메일을 확인해주세요", Toast.LENGTH_SHORT).show();
             }
         }
 

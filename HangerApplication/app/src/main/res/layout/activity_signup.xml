@@ -102,9 +102,9 @@
                         android:id="@+id/button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#ffffff"
                         android:background="#9848d1"
-                        android:text="중복체크" />
+                        android:text="중복체크"
+                        android:textColor="#ffffff" />
                 </LinearLayout>
 
             </android.support.design.widget.TextInputLayout>
