@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +47,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AddInfoFragment extends DialogFragment {
     private static dressItem dress;
+    private static String dressTag;
+    private static String dressBrand;
     //rivate static int dressFlag;
     private SharedPreferences appData;
     private Dialog dialog;
@@ -72,6 +75,9 @@ public class AddInfoFragment extends DialogFragment {
     BackgroundTask task;
     BackgroundTask2 task2;
     private Bitmap bitmap;
+    private EditText tagText;
+    private AutoCompleteTextView brandText;
+    private static final String[] brands = {"hi", "nice","h&m"};
 
 
     public static AddInfoFragment newInstance(dressItem ds) {
@@ -82,6 +88,8 @@ public class AddInfoFragment extends DialogFragment {
         imgurl = ds.getImgURL();//사진 img
         category = ds.getCat1();//카테고리 내용
         dressColor = ds.getDressColor();
+        dressTag = ds.getDressTag();
+        dressBrand = ds.getBrand();
         //dressFlag = ds.getColorFlag();
         addInfoFragment.setArguments(args);
         dress = new dressItem();
@@ -120,7 +128,29 @@ public class AddInfoFragment extends DialogFragment {
         categorytext = (EditText)view.findViewById(R.id.categorytext2);
         colortext = (TextView) view.findViewById(R.id.color_Edittext);
         colorView1 = (TextView)view.findViewById(R.id.colorview1);
+        tagText = (EditText)view.findViewById(R.id.AddPost_HashTag_Edittext);
+        brandText = (AutoCompleteTextView)view.findViewById(R.id.brandEditText);
+
+        if(!dressTag.equals("") || !dressTag.equals("null")) {
+            tagText.setText(dressTag);
+        }
+        else{
+            tagText.setText("");
+        }
+        if(!dressBrand.equals("") || !dressBrand.equals("null")){
+            brandText.setText(dressBrand);
+        }
+        else{
+            brandText.setText("");
+        }
+
+
+        brandText.setAdapter(  //현재 영어에 한해서만  자동완성 기능이 이루어지고 있음
+                new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line, brands));
+
         //색깔 초기화
+
+
         int defaultValue = 0x000000;
         colorView1.setBackgroundColor(defaultValue);
         colortext.setBackgroundColor(defaultValue);
@@ -250,6 +280,8 @@ public class AddInfoFragment extends DialogFragment {
 
             }
         });
+
+
     }
 
 
@@ -264,6 +296,8 @@ public class AddInfoFragment extends DialogFragment {
             jsonpost.put("Category", categorytext.getText());//카테고리
             //jsonpost.put("Color", dressColor);//색깔
             jsonpost.put("Season",item);//계절
+            jsonpost.put("Tag", tagText.getText());
+            jsonpost.put("Brand", brandText.getText());
         }catch (JSONException e){
             e.printStackTrace();
         }

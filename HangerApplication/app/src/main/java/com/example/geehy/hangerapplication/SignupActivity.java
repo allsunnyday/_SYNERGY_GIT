@@ -29,6 +29,8 @@ public class SignupActivity extends AppCompatActivity {
     private boolean isUsernameChecked = false;
     private boolean isEmailChecked = false;
     private boolean ispwdChecked = false;
+    private EditText tall;
+    private EditText weight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,9 @@ public class SignupActivity extends AppCompatActivity {
         Username = (EditText) findViewById(R.id.username);
         Email = (EditText) findViewById(R.id.ID);
         PassWord = (EditText) findViewById(R.id.password);
+        tall = (EditText)findViewById(R.id.tallTextview);
+        weight = (EditText)findViewById(R.id.weightTextView);
+
         btn_send = (ImageView) findViewById(R.id.signin_next);
         checkDupli = (Button) findViewById(R.id.button);
 
@@ -53,6 +58,8 @@ public class SignupActivity extends AppCompatActivity {
             jsonpost.put("Username", Username.getText());
             jsonpost.put("Email", Email.getText());
             jsonpost.put("PassWord", PassWord.getText());
+            jsonpost.put("Tall",tall.getText() );
+            jsonpost.put("Weight", weight.getText());
         }catch (JSONException e){
             e.printStackTrace();
         }

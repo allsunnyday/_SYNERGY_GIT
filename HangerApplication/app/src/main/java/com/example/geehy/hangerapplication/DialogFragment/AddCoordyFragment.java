@@ -115,8 +115,8 @@ public class AddCoordyFragment extends DialogFragment{
     private ImageView topview;
     private ImageView bottomview;
     private EditText coordyname;
-    private String selectTop="";
-    private String selectBottom="";
+    private String selectTop="NOTHING";
+    private String selectBottom="NOTHING";
     private String selectShare="";
     //private BackgroundTask_codi task;
     private int xDelta;
@@ -130,6 +130,14 @@ public class AddCoordyFragment extends DialogFragment{
     private DialogInterface.OnDismissListener onDismissListener;
     private TextView shareText;
     private static int isShare=0;
+    private ImageView outerview;
+    private ImageView dressview;
+    private ImageView accview;
+    private String selectOuter="NOTHING";
+    private String selectAcc="NOTHING";
+    private String selectDress="NOTHING";
+    private String weight;
+    private String height;
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
         this.onDismissListener = onDismissListener;
@@ -170,8 +178,14 @@ public class AddCoordyFragment extends DialogFragment{
         cancle = (ImageButton)view.findViewById(R.id.noBtn);
         share = (ImageButton)view.findViewById(R.id.shareButton);
         shareText = (TextView)view.findViewById(R.id.shareInfoText);
+
+        //선택한 이미지를 띄우는 image VIew
         topview =(ImageView)view.findViewById(R.id.top_View);
         bottomview =(ImageView)view.findViewById(R.id.bottom_View);
+        outerview =(ImageView)view.findViewById(R.id.outer_View);
+        dressview =(ImageView)view.findViewById(R.id.dress_View);
+        accview =(ImageView)view.findViewById(R.id.acc_View);
+
         coordyname = (EditText)view.findViewById(R.id.addcoordy_name);
         gridView = (GridView)view.findViewById(R.id.add_gridview);
         addcodiAdapter = new AddCodiAdapter(getActivity(),R.layout.item_codi_gridview, list); //그리드 뷰 한개씩을 여기에 붙임
@@ -187,6 +201,8 @@ public class AddCoordyFragment extends DialogFragment{
     private void load() {
         // SharedPreferences 객체.get타입( 저장된 이름, 기본값 )  ID : Username
         id = appData.getString("ID", "");
+        weight = appData.getString("WEIGHT", "");
+        height = appData.getString("HEIGHT", "");
         path = appData.getString("Path", "");
         Log.d("SharedPreferencesID", id);
         if(!path.equals("")) {
@@ -333,15 +349,40 @@ public class AddCoordyFragment extends DialogFragment{
                 Log.d("ImgURL", imgUri + "is uri");
                 topview.setBackgroundColor(Color.WHITE);
                 bottomview.setBackgroundColor(Color.WHITE);
+                outerview.setBackgroundColor(Color.WHITE);
+                dressview.setBackgroundColor(Color.WHITE);
+                accview.setBackgroundColor(Color.WHITE);
 
-                if(spinnerNUMBER==0 || spinnerNUMBER==2||spinnerNUMBER==3||spinnerNUMBER==4){
+                if(spinnerNUMBER==0){ //top
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
                             .override(500, 400)
                             .into(topview);
                     selectTop=imgUri;
                 }
-                else{
+                else if(spinnerNUMBER==2){ //outer
+                    Glide.with(getActivity())
+                            .load("http://218.38.52.180/Android_files/"+ imgUri)
+                            .override(500, 400)
+                            .into(outerview);
+                    selectOuter =imgUri;
+                }
+                else if(spinnerNUMBER==3){ //dress
+                    Glide.with(getActivity())
+                            .load("http://218.38.52.180/Android_files/"+ imgUri)
+                            .override(500, 400)
+                            .into(dressview);
+                    selectDress =imgUri;
+
+                }
+                else if (spinnerNUMBER==4){ //acc
+                    Glide.with(getActivity())
+                            .load("http://218.38.52.180/Android_files/"+ imgUri)
+                            .override(500, 400)
+                            .into(accview);
+                    selectAcc =imgUri;
+                }
+                else{  //bottom
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
                             .override(500, 400)
@@ -392,6 +433,9 @@ public class AddCoordyFragment extends DialogFragment{
 
         topview.setOnTouchListener(OnTouchListener());
         bottomview.setOnTouchListener(OnTouchListener());
+        outerview.setOnTouchListener(OnTouchListener());
+        dressview.setOnTouchListener(OnTouchListener());
+        accview.setOnTouchListener(OnTouchListener());
 
     }
 
@@ -444,8 +488,9 @@ public class AddCoordyFragment extends DialogFragment{
             Log.d(TAG, "name" + file.getName());
 
             RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText() +"+"+ selectShare , mFile);//id값+파일이름 보내기
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+coordyname.getText()+"+"+ selectShare);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file",
+                    id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+selectOuter+"+"+ selectDress+"+"+selectAcc+"+"+coordyname.getText() +"+"+ selectShare+"+"+height+"+"+weight , mFile);//id값+파일이름 보내기
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), id + "+" + file.getName()+ "+" +selectTop + "+" + selectBottom +"+"+selectOuter+"+"+ selectDress+"+"+selectAcc+"+"+coordyname.getText() +"+"+ selectShare +"+"+height+"+"+weight);
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(SERVER_PATH)
                     .addConverterFactory(GsonConverterFactory.create())

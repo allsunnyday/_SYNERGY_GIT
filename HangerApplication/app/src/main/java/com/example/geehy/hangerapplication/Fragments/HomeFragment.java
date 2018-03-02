@@ -518,6 +518,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 di.setCat1(c.getString("category"));
                 di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
                 di.setDressColor(c.getString("color"));
+                di.setBrand(c.getString("brand"));
+                di.setDressTag(c.getString("tag"));
                 list.add(di);
                 ((MainPageActivity) getActivity()).setList(list);
             }

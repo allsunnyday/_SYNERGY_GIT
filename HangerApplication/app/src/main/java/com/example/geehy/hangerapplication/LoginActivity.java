@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private String email;
     private String id;
     private boolean loginChecked;
+
     BackgroundTask task;
 
     @Override
@@ -107,14 +108,17 @@ public class LoginActivity extends AppCompatActivity {
     private void save(String username) {
         // SharedPreferences 객체만으론 저장 불가능 Editor 사용
         SharedPreferences.Editor editor = appData.edit();
+        String[] str = username.split(",");
         // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
         // 저장시킬 이름이 이미 존재하면 덮어씌움
         editor.putBoolean("autologin", autoLogin.isChecked());
-        editor.putString("ID", username);
+        editor.putString("ID", str[0]);
+        editor.putString("WEIGHT", str[1]);
+        editor.putString("HEIGHT", str[2]);
         //    editor.putString("PWD", pwtext.getText().toString().trim());
         // apply, commit 을 안하면 변경된 내용이 저장되지 않음
         editor.apply();
-        Log.d("username",username);
+        Log.d("username",str[0]+", "+str[1]+", "+str[2]);
     }
 
 

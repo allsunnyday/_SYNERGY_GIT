@@ -9,10 +9,12 @@ public class dressItem implements Serializable{
     //안보여지는것
     private String dressName;
     private String dressColor;
-    private String[] dressTag;
+    private String dressTag;
     private String Cat1;
     private int season[]; // spring 0 summer 1 fall 2 winter 3
     private int colorFlag;
+    private String brand;
+
 
 
 
@@ -24,16 +26,25 @@ public class dressItem implements Serializable{
         this.Cat1 = "";
         this.season = null;
         this.colorFlag=0; // 0이면 색 X
+        this.brand="";
 
     }
 
-    public dressItem(String iu, String dN, String dC, String[] dT, String c1, String c2, int[] sn, boolean isc, boolean iso){
+    public dressItem(String iu, String dN, String dC, String dT, String c1, String c2, int[] sn, boolean isc, boolean iso){
         this.imgURL = iu;
         this.dressName = dN;
         this.dressColor = dC;
         this.dressTag = dT;
         this.Cat1 = c1;
         this.season = sn;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public int getColorFlag() {
@@ -67,11 +78,11 @@ public class dressItem implements Serializable{
         this.dressColor = dressColor;
     }
 
-    public String[] getDressTag() {
+    public String getDressTag() {
         return dressTag;
     }
 
-    public void setDressTag(String[] dressTag) {
+    public void setDressTag(String dressTag) {
         this.dressTag = dressTag;
     }
 

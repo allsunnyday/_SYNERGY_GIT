@@ -63,6 +63,7 @@ public class CalendarFragment extends DialogFragment {
      private boolean isCheck[] = new boolean[1000];
     private String delete[] = new String[1000];
     private SharedPreferences appData;
+    private String dateWeather = "";
     BackgroundTask task;
 
     @Override
@@ -79,7 +80,10 @@ public class CalendarFragment extends DialogFragment {
         init();
         adapter = new GridAdapter(getActivity(),R.layout.item_calendar_grid,list);//그리드 뷰의 디자인의 객체를 생성
         gridView.setAdapter(adapter);//그리드 뷰의 객체에 그리드 뷰의 디자인을 적용
+        datetext.setText(date + ": "+ dateWeather +"℃");
+
         dialog.setContentView(view);
+
        // list = ((MainPageActivity) getActivity()).getList();
 
         return dialog;
@@ -93,7 +97,8 @@ public class CalendarFragment extends DialogFragment {
         delBTN = (ImageButton) view.findViewById(R.id.delete_btn);
         datetext = (TextView) view.findViewById(R.id.date_text);
         gridView = (GridView) view.findViewById(R.id.calendar_gridview);//그리드 뷰의 객체를 가져오기
-        datetext.setText(date); //해당 날짜 set
+        //datetext.setText(date); //해당 날짜 set
+
 
 
         Event();
@@ -194,6 +199,11 @@ public class CalendarFragment extends DialogFragment {
                 dressItem di = new dressItem();
                 di.setCat1(c.getString("category"));//카테고리
                 di.setImgURL( c.getString("coordy")); //코디
+                //di.setDressTag(c.getString("weather")); //날씨 정보
+                if(i==0){
+                  dateWeather = c.getString("weather");
+
+                }
                 list.add(di);
             }
             index = i;
