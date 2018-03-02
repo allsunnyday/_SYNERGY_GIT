@@ -15,9 +15,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
-
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
 
     <application
@@ -39,7 +36,6 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
-        <!--suppress AndroidDomInspection -->
         <activity
             android:name=".AppCompatPreferenceActivity"
             android:screenOrientation="portrait" />
@@ -62,23 +58,11 @@
         <activity
             android:name=".CameraActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".CameraActivity2"
-            android:screenOrientation="portrait" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignupApproved" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.geehy.hangerapplication"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
     </application>
 
 </manifest>
