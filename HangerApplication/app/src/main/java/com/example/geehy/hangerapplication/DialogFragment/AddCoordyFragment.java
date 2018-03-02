@@ -219,6 +219,7 @@ public class AddCoordyFragment extends DialogFragment{
 
             JSONObject jObject = new JSONObject(path);//php 결과 json형식으로 저장
             photos = jObject.getJSONArray("result");
+            //홈프래그먼트에서 받아온 path를 이용하여 다시한번 아이템들을 부른다. ->> 여기에서 브랜드/ 태그를 같이 추출할 수 있을 것으로 보여짐
             int i=0;
             index = i;
             list.clear();

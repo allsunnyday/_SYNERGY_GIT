@@ -77,7 +77,8 @@ public class AddInfoFragment extends DialogFragment {
     private Bitmap bitmap;
     private EditText tagText;
     private AutoCompleteTextView brandText;
-    private static final String[] brands = {"hi", "nice","h&m"};
+
+    private static final String[] brands = {"zara","uniqlo","flymodel","66girls" ,"nice","h&m"}; //브랜드 및 쇼핑몰 이름>>  영문만 지원됨
 
 
     public static AddInfoFragment newInstance(dressItem ds) {
