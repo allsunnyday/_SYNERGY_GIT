@@ -264,7 +264,7 @@ public class DashFragment extends Fragment {
         protected String doInBackground (String...params){
             super.onPreExecute();
             String result; // 요청 결과를 저장할 변수.
-            RequestActivity requestHttpURLConnection = new RequestActivity();
+            RequestActivity requestHttpURLConnection = new RequestActivity(); //
             result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
             return result;   //--> onPostExecute()
         }

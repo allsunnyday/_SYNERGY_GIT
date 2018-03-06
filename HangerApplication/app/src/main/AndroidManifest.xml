@@ -6,17 +6,19 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
-    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
 
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
 
@@ -39,19 +41,19 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
-        <!--suppress AndroidDomInspection -->
+        <!-- suppress AndroidDomInspection -->
         <activity
             android:name=".AppCompatPreferenceActivity"
             android:screenOrientation="portrait" />
         <activity
-        android:name=".ForgotActivity"
-        android:screenOrientation="portrait" />
+            android:name=".ForgotActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SignupApprovedActivity"
             android:screenOrientation="portrait" />
         <activity
-        android:name=".GrabcutActivity"
-        android:screenOrientation="portrait" />
+            android:name=".GrabcutActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditClosetActivity"
             android:screenOrientation="portrait" />
@@ -69,7 +71,8 @@
         <activity android:name=".SignupApproved" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.geehy.hangerapplication"
@@ -79,6 +82,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".GrabcutActivity2" />
+        <activity android:name=".GalleryActivity"></activity>
     </application>
 
 </manifest>

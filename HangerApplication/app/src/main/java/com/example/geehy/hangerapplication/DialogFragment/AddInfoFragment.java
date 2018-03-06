@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,9 @@ import com.example.geehy.hangerapplication.GrabcutActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
 import com.example.geehy.hangerapplication.gridview_home.dressItem;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +53,10 @@ public class AddInfoFragment extends DialogFragment {
     private static dressItem dress;
     private static String dressTag;
     private static String dressBrand;
+    private static String dressColor;
+    private static String imgurl;
+    private static String category;
+
     //rivate static int dressFlag;
     private SharedPreferences appData;
     private Dialog dialog;
@@ -68,9 +76,7 @@ public class AddInfoFragment extends DialogFragment {
     private String id;
     private String item;
     private Drawable d;
-    static String dressColor;
-    static String imgurl;
-    static String category;
+
     private int flagWho;
     BackgroundTask task;
     BackgroundTask2 task2;
@@ -78,7 +84,7 @@ public class AddInfoFragment extends DialogFragment {
     private EditText tagText;
     private AutoCompleteTextView brandText;
 
-    private static final String[] brands = {"zara","uniqlo","flymodel","66girls" ,"nice","h&m"}; //브랜드 및 쇼핑몰 이름>>  영문만 지원됨
+    private final String[] brands = {"zara","uniqlo","flymodel","66girls" ,"nice","h&m"}; //브랜드 및 쇼핑몰 이름>>  영문만 지원됨
 
 
     public static AddInfoFragment newInstance(dressItem ds) {
@@ -168,6 +174,7 @@ public class AddInfoFragment extends DialogFragment {
                         .load("http://218.38.52.180/Android_files/"+imgurl)
                         .asBitmap()
                         .into(new SimpleTarget<Bitmap>(){
+
                             @Override
                             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
@@ -196,6 +203,15 @@ public class AddInfoFragment extends DialogFragment {
 
                                     }
                                 });
+
+/*
+
+                                Picasso.with(context).load(uri).networkPolicy(NetworkPolicy.NO_CACHE)
+                                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                        .placeholder(R.drawable.bv_logo_default).stableKey(id)
+                                        .into(viewImage_imageView);
+*/
+
                             }
                         } );
 

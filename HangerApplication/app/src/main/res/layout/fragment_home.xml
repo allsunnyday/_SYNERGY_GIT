@@ -108,7 +108,17 @@
 
                 <Button android:background="#9848d1" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1" android:layout_gravity="bottom" android:id="@+id/home_camera_btn2" android:visibility="visible" android:textSize="20dp" android:textColor="#ffffff" android:text="CAMERA2"/>
 
-                <Button android:background="#9848d1" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1" android:layout_gravity="bottom" android:id="@+id/home_grab_btn" android:visibility="visible" android:textSize="20dp" android:textColor="#ffffff" android:text="Grab"/>
+                <Button
+                    android:id="@+id/home_gallery_btn2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    android:background="#9848d1"
+                    android:text="Grab"
+                    android:textColor="#ffffff"
+                    android:textSize="20dp"
+                    android:visibility="visible" />
 
                 <Button
                     android:id="@+id/home_gallery_btn"
