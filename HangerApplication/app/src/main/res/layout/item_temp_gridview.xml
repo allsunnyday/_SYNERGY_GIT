@@ -1,55 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/tempGrid_imgVIew"
-            android:layout_width="200dp"
-            android:layout_height="300dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="3dp"
-            android:background="@android:color/white"
-            app:srcCompat="@drawable/tempimg" />
+<com.example.geehy.hangerapplication.gridview_home.LikebuttonLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <RelativeLayout
-            android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tempGrid_imgVIew"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentEnd="false">
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <ImageButton
-                android:id="@+id/imageButtonlike"
+            <ImageView
+                android:id="@+id/tempGrid_imgVIew"
+                android:layout_width="200dp"
+                android:layout_height="300dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="3dp"
+                android:background="@android:color/white"
+                app:srcCompat="@drawable/tempimg" />
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tempGrid_imgVIew"
                 android:layout_alignParentBottom="false"
-                android:layout_alignParentEnd="false"
-                android:backgroundTint="@color/colorWhite"
-                app:srcCompat="@drawable/like_magenta" />
+                android:layout_alignParentEnd="false">
 
-            <TextView
-                android:id="@+id/codiNameVIew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                android:layout_alignBottom="@+id/imageButtonlike"
-                android:layout_marginBottom="5dp"
-                android:layout_toEndOf="@+id/imageButtonlike"
-                android:text="누구" />
 
+                <CheckBox android:id="@+id/check_like"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:background="@drawable/item_check"
+                    android:button="@null"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:clickable="false"/>
+
+
+                <TextView
+                    android:id="@+id/codiNameVIew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/check_like"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toEndOf="@+id/check_like"
+                    android:text="누구"
+                    android:textSize="11sp" />
+
+            </RelativeLayout>
         </RelativeLayout>
-
-    </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</com.example.geehy.hangerapplication.gridview_home.LikebuttonLinearLayout>

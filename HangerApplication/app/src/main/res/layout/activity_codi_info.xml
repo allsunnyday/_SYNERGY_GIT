@@ -63,14 +63,8 @@
             android:layout_below="@+id/likebtn"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="false"
+            android:layout_margin="20dp"
             app:srcCompat="@drawable/tempimg" />
 
-        <ImageView
-            android:id="@+id/codiinfo_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/codiinfo_top"
-            android:layout_below="@+id/codiinfo_top"
-            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

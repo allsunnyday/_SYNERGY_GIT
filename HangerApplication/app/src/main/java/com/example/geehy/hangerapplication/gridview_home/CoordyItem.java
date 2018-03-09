@@ -11,6 +11,8 @@ public class CoordyItem implements Serializable{
     private String bottomImgURL;
     private String fullCodiImgURL;
     private String codiName;
+    private int tall;
+    private int weight;
     private int no; //in database codi number -> auto increase
     private int likes;
     private int isShare;
@@ -23,6 +25,10 @@ public class CoordyItem implements Serializable{
         this.likes = 0;
         this.no=0;
         this.isShare=0;
+        this.tall= 0;
+        this.weight=0;
+
+
     }
 
     public CoordyItem(String top, String bottom, String fullCodi, String codiName, int no){
@@ -31,6 +37,22 @@ public class CoordyItem implements Serializable{
         this.fullCodiImgURL=fullCodi;
         this.codiName=codiName;
         this.no = no;
+    }
+
+    public int getTall() {
+        return tall;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setTall(int tall) {
+        this.tall = tall;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public int getIsShare() {

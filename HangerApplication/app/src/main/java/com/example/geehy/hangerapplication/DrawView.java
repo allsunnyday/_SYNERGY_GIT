@@ -1,3 +1,4 @@
+/*
 package com.example.geehy.hangerapplication;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +12,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 public class DrawView extends View {
-    public Bitmap mBitmap;
+*/
+/*    public Bitmap mBitmap;
     public Canvas mCanvas;
     private Path mPath;
 
@@ -57,7 +59,9 @@ public class DrawView extends View {
         canvas.save();
         canvas.scale(scaleFactor, scaleFactor);
         // Image manipulation
-        /*{
+        *//*
+*/
+/*{
 
             Bitmap crp = MainActivity.gImg;
 
@@ -90,7 +94,9 @@ public class DrawView extends View {
             matrix.postScale(desiredScale, desiredScale);
             imgF = Bitmap.createBitmap(crp, 0, 0, crp.getWidth(), crp.getHeight(), matrix, true);
 
-        }*/
+        }*//*
+*/
+/*
         imgF = Bitmap.createScaledBitmap(GrabcutActivity.gImg,canvas.getWidth(),canvas.getHeight(),true);
         int centerX = (canvas.getWidth() - imgF.getWidth()) / 2;
         int centreY = (canvas.getHeight()-imgF.getHeight()) / 2;
@@ -185,8 +191,12 @@ public class DrawView extends View {
                     G = Color.green(Color.BLACK);
                     B = Color.blue(Color.BLACK);
                     pixels[index] = Color.argb(A,R,G,B);
-                    /*or change the whole color
-                    pixels[index] = colorThatWillReplace;*/
+                    *//*
+*/
+/*or change the whole color
+                    pixels[index] = colorThatWillReplace;*//*
+*/
+/*
                 }
             }
         }
@@ -266,6 +276,7 @@ public class DrawView extends View {
 
         }
 
-    }
+    }*//*
 
-}
+
+}*/

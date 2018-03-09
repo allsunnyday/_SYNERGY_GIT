@@ -1,3 +1,4 @@
+/*
 package com.example.geehy.hangerapplication.Fragments;
 
         import android.app.AlertDialog;
@@ -140,3 +141,4 @@ public class ImageProcessing extends ActionBarActivity {
 
 
 }
+*/

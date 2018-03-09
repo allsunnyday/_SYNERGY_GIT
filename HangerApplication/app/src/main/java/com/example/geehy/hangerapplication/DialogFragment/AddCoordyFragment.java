@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
@@ -34,6 +35,7 @@ import android.support.v4.content.CursorLoader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -89,6 +91,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
@@ -139,6 +142,7 @@ public class AddCoordyFragment extends DialogFragment{
     private String weight;
     private String height;
 
+
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
         this.onDismissListener = onDismissListener;
     }
@@ -185,6 +189,9 @@ public class AddCoordyFragment extends DialogFragment{
         outerview =(ImageView)view.findViewById(R.id.outer_View);
         dressview =(ImageView)view.findViewById(R.id.dress_View);
         accview =(ImageView)view.findViewById(R.id.acc_View);
+
+
+
 
         coordyname = (EditText)view.findViewById(R.id.addcoordy_name);
         gridView = (GridView)view.findViewById(R.id.add_gridview);
@@ -432,11 +439,17 @@ public class AddCoordyFragment extends DialogFragment{
             }
         });
 
+
+
+
         topview.setOnTouchListener(OnTouchListener());
         bottomview.setOnTouchListener(OnTouchListener());
         outerview.setOnTouchListener(OnTouchListener());
         dressview.setOnTouchListener(OnTouchListener());
         accview.setOnTouchListener(OnTouchListener());
+
+
+
 
     }
 
@@ -521,7 +534,8 @@ public class AddCoordyFragment extends DialogFragment{
 
 
     private View.OnTouchListener OnTouchListener() {
-            return new View.OnTouchListener() {
+
+        return new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -554,6 +568,8 @@ public class AddCoordyFragment extends DialogFragment{
                     return true;
                 }
             };
+
+
     }
 
 

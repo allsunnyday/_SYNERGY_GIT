@@ -49,7 +49,7 @@ import static android.content.Context.SENSOR_SERVICE;
  */
 
 public class WeatherFragment  extends DialogFragment {
-    private Dialog dialog;
+/*    private Dialog dialog;
     private View view;
     private Button okBTN;
     private TextView textView;
@@ -94,7 +94,7 @@ public class WeatherFragment  extends DialogFragment {
         dialog.setContentView(view);
         return dialog;
     }
-/*
+*//*
     private final LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             //여기서 위치값이 갱신되면 이벤트가 발생한다.
@@ -122,7 +122,7 @@ public class WeatherFragment  extends DialogFragment {
             // 변경시
             Log.d("test", "onStatusChanged, provider:" + provider + ", status:" + status + " ,Bundle:" + extras);
         }
-    };*/
+    };*//*
 
     private void init() {
         okBTN = (Button) view.findViewById(R.id.ok_button);
@@ -145,14 +145,14 @@ public class WeatherFragment  extends DialogFragment {
 
         //recommend();
     }
-/*
+*//*
 
     private void getWeatherData(double lati, double longi) {
         String url = "http://api.openweathermap.org/data/2.5/weather?lat="+lati + "&lon=" +longi + "&units=metric&appid=92e7ce79a7a1d14ac2cae64319116b46";
         ReceiveWeatherTask receiveWeatherTask = new ReceiveWeatherTask();
 
     }
-*/
+*//*
 
 
     private void Event() {
@@ -329,7 +329,7 @@ public class WeatherFragment  extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-/*
+*//*
     private class ReceiveWeatherTask extends AsyncTask <String , Void , JSONObject>{
 
 

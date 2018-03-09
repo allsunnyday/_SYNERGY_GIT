@@ -1,8 +1,11 @@
+/*
 package com.example.geehy.hangerapplication;
 
+*/
 /**
  * Created by geehy on 2017-12-13.
- */
+ *//*
+
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -31,7 +34,8 @@ import com.example.geehy.hangerapplication.Fragments.ImageProcessing;
 import java.io.ByteArrayOutputStream;
 
 public class GrabcutActivity extends ActionBarActivity {
-
+*/
+/*
 
     private Bitmap croppedBitmap = null;
     private Bitmap bitmap= null;
@@ -175,7 +179,9 @@ public class GrabcutActivity extends ActionBarActivity {
                 Intent intent = new Intent("com.android.camera.action.CROP");
                 Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
                 Uri uri = getImageUri(this, bitmap);
-                intent.setDataAndType(uri, "image/*");
+                intent.setDataAndType(uri, "image*//*
+*/
+/*");
                 intent.putExtra("outputX", 200);
                 intent.putExtra("outputY", 200);
                 intent.putExtra("crop", "true");
@@ -233,9 +239,13 @@ public class GrabcutActivity extends ActionBarActivity {
     }
 
 
-    /**
+    *//*
+*/
+/**
      * A placeholder fragment containing a simple view.
-     */
+     *//*
+*/
+/*
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
@@ -248,5 +258,6 @@ public class GrabcutActivity extends ActionBarActivity {
             return rootView;
         }
 
-    }
-}
+    }*//*
+
+}*/

@@ -20,7 +20,7 @@ import com.example.geehy.hangerapplication.temppa.CameraSurfaceView;
 import com.example.geehy.hangerapplication.temppa.MediaScanning;
 
 public class CameraActivity extends AppCompatActivity {
-    private FrameLayout previewFrame;
+ /*   private FrameLayout previewFrame;
     private Button takeBTN;
     private Button saveBTN;
     private Button retakeBTN;
@@ -126,7 +126,7 @@ public class CameraActivity extends AppCompatActivity {
 
 
 
-        /*cameraView.setOnClickListener(new View.OnClickListener() {
+        *//*cameraView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cntCamera.autoFocus (new Camera.AutoFocusCallback() {
@@ -140,6 +140,6 @@ public class CameraActivity extends AppCompatActivity {
                     }
                 });
             }
-        });*/
-    }
+        });*//*
+    }*/
 }

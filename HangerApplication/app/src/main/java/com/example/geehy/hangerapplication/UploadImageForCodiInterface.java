@@ -15,7 +15,7 @@ import retrofit2.http.Part;
 public interface UploadImageForCodiInterface {
 
     @Multipart
-    @POST("/testfile10.php")  //기존의 ->> testfile4.php
+    @POST("/testfile10.php")  //기존의 ->> testfile10.php
     Call<UploadObject> upload(
             @Part("name") RequestBody name,
             @Part MultipartBody.Part file

@@ -16,15 +16,16 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp">
 
             <TextView
                 android:id="@+id/showWeather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="Today's Pick"
+                android:padding="5dp"
+                android:text="Shared Closet"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 
@@ -32,14 +33,39 @@
                 android:id="@+id/getWeatherBTN"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/showWeather"
+                android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/showWeather"
                 android:background="@color/colorPrimary"
                 android:text="..."
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
+
         </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=" #태그 / 브랜드로 검색"
+                android:inputType="textPersonName" />
+
+
+            <ImageButton
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="10dp"
+                android:background="@color/colorWhite"
+                app:srcCompat="@drawable/ic_search_black_24dp" />
+
+        </FrameLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -64,11 +90,11 @@
                     <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
                         android:id="@+id/autoViewPager"
                         android:layout_width="200dp"
-                        android:layout_height="300dp"
+                        android:layout_height="250dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:background="@color/colorPrimary">
+                        >
 
                     </cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager>
 
@@ -82,8 +108,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/linearLayout2"
                     android:isScrollContainer="false"
-                    android:numColumns="1"
-                    android:padding="5dp" />
+                    android:numColumns="2"
+                    android:padding="5dp"
+                    android:choiceMode="multipleChoice"/>
 
             </RelativeLayout>
         </ScrollView>

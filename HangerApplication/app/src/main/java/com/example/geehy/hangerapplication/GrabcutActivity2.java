@@ -50,6 +50,7 @@ public class GrabcutActivity2 extends AppCompatActivity {
 
     static {
         System.loadLibrary("native-lib");
+
         //System.loadLibrary("opencv_java3");
     }
 
