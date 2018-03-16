@@ -60,7 +60,7 @@ public class CalendarFragment extends DialogFragment {
     private GridAdapter adapter;
     private GridView gridView;
     private ArrayList<dressItem> list = new ArrayList<>();
-     private boolean isCheck[] = new boolean[1000];
+    private boolean isCheck[] = new boolean[1000];
     private String delete[] = new String[1000];
     private SharedPreferences appData;
     private String dateWeather = "";
@@ -80,18 +80,18 @@ public class CalendarFragment extends DialogFragment {
         init();
         adapter = new GridAdapter(getActivity(),R.layout.item_calendar_grid,list);//그리드 뷰의 디자인의 객체를 생성
         gridView.setAdapter(adapter);//그리드 뷰의 객체에 그리드 뷰의 디자인을 적용
-        datetext.setText(date + ": "+ dateWeather +"℃");
+        datetext.setText(date + "  WEATHER:: "+ dateWeather);
 
         dialog.setContentView(view);
 
-       // list = ((MainPageActivity) getActivity()).getList();
+        // list = ((MainPageActivity) getActivity()).getList();
 
         return dialog;
     }
 
     private void init() {
 
-     //   okBTN = (Button) view.findViewById(R.id.ok_button);
+        //   okBTN = (Button) view.findViewById(R.id.ok_button);
 
 
         delBTN = (ImageButton) view.findViewById(R.id.delete_btn);
@@ -122,8 +122,8 @@ public class CalendarFragment extends DialogFragment {
                 int i=0;
                 for(int position=0 ; position < isCheck.length; position++ ) {
                     if (isCheck[position] == true) {//체크박스가 선택됐을 때
-                     dressItem di;
-                       di = list.get(position);
+                        dressItem di;
+                        di = list.get(position);
                         delete[i] = di.getImgURL(); //지울 이미지가 담김
                         total+=1;
                         i+=1;
@@ -150,7 +150,7 @@ public class CalendarFragment extends DialogFragment {
         builder.setNegativeButton("취소",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                       gridView.setAdapter(adapter);
+                        gridView.setAdapter(adapter);
                         for (int i=0; i <isCheck.length;i++){//체크상태 초기화
                             isCheck[i] = false;
                         }
@@ -201,7 +201,7 @@ public class CalendarFragment extends DialogFragment {
                 di.setImgURL( c.getString("coordy")); //코디
                 //di.setDressTag(c.getString("weather")); //날씨 정보
                 if(i==0){
-                  dateWeather = c.getString("weather");
+                    dateWeather = c.getString("weather");
 
                 }
                 list.add(di);
@@ -322,7 +322,7 @@ public class CalendarFragment extends DialogFragment {
             }
 
 
-           final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.check);
+            final CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.check);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.item_calendar2);
             TextView tv = (TextView) convertView.findViewById(R.id.item_calendar1);//카테고리 textview
 
@@ -345,8 +345,8 @@ public class CalendarFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
 
-            //        if (((CheckBox)v).isChecked()) {
-                        if (checkBox.isChecked()) {
+                    //        if (((CheckBox)v).isChecked()) {
+                    if (checkBox.isChecked()) {
                         isCheck[position] = true;
                     } else {
                         isCheck[position] = false;

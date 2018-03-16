@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#151414"
+    android:paddingBottom="8dp">
+
+
+    <ImageView
+        android:id="@+id/img_grab"
+        android:layout_width="@dimen/editor_size"
+        android:layout_height="@dimen/editor_size"
+        android:layout_margin="4dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="onGrabCut"
+        android:src="@drawable/ic_done_black_24dp"
+        app:layout_constraintEnd_toStartOf="@+id/img_fore"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="확정"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/img_grab"
+        app:layout_constraintStart_toStartOf="@+id/img_grab"
+        app:layout_constraintTop_toBottomOf="@+id/img_grab" />
+
+
+    <ImageView
+        android:id="@+id/img_fore"
+        android:layout_width="@dimen/editor_size"
+        android:layout_height="@dimen/editor_size"
+        android:layout_margin="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="onFlags"
+        android:src="@drawable/ic_brush"
+        app:layout_constraintEnd_toStartOf="@+id/img_back"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_grab" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="전경"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/img_fore"
+        app:layout_constraintStart_toStartOf="@+id/img_fore"
+        app:layout_constraintTop_toBottomOf="@+id/img_fore" />
+
+
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="@dimen/editor_size"
+        android:layout_height="@dimen/editor_size"
+        android:layout_margin="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="onFlags"
+        android:src="@drawable/ic_brush"
+        app:layout_constraintEnd_toStartOf="@+id/img_reset"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_fore" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="배경"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/img_back"
+        app:layout_constraintStart_toStartOf="@+id/img_back"
+        app:layout_constraintTop_toBottomOf="@+id/img_back" />
+
+    <ImageView
+        android:id="@+id/img_reset"
+        android:layout_width="@dimen/editor_size"
+        android:layout_height="@dimen/editor_size"
+        android:layout_margin="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="onReset"
+        android:padding="4dp"
+        android:src="@drawable/ic_eraser"
+        app:layout_constraintEnd_toStartOf="@+id/img_save"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_back" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="리셋"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/img_reset"
+        app:layout_constraintStart_toStartOf="@+id/img_reset"
+        app:layout_constraintTop_toBottomOf="@+id/img_reset" />
+
+    <ImageView
+        android:id="@+id/img_save"
+        android:layout_width="@dimen/editor_size"
+        android:layout_height="@dimen/editor_size"
+        android:layout_margin="4dp"
+        android:layout_marginTop="8dp"
+        android:onClick="save"
+        android:src="@drawable/ic_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_reset" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="저장"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/img_save"
+        app:layout_constraintStart_toStartOf="@+id/img_save"
+        app:layout_constraintTop_toBottomOf="@+id/img_save" />
+
+
+</android.support.constraint.ConstraintLayout>

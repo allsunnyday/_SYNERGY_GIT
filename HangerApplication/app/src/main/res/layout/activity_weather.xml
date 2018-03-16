@@ -34,7 +34,7 @@
             android:layout_gravity="left"
             android:layout_weight="1"
             android:padding="10dp"
-            android:text="현재 날씨 : "
+            android:text="Weather : "
             android:textColor="#000000"
 
             android:textSize="15dp"

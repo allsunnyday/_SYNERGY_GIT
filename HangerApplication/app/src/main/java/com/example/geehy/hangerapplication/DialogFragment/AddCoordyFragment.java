@@ -16,10 +16,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.AbstractWindowedCursor;
 import android.database.Cursor;
+import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
@@ -33,9 +33,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -91,7 +91,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
@@ -142,6 +141,7 @@ public class AddCoordyFragment extends DialogFragment{
     private String weight;
     private String height;
 
+    GestureDetector gestureDetector;
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener){
         this.onDismissListener = onDismissListener;
@@ -170,7 +170,6 @@ public class AddCoordyFragment extends DialogFragment{
         isShare=0;
         load();         //->사용자의 id와 기존의 path를 불러온다.
 
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.activity_add_coordy, null);
         codiLayout = (RelativeLayout)view.findViewById(R.id.codi_main_layout);
@@ -179,8 +178,6 @@ public class AddCoordyFragment extends DialogFragment{
                 R.array.categories, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categarySpinner.setAdapter(categoryAdapter);
-
-
         save = (ImageButton)view.findViewById(R.id.saveBtn);
         cancle = (ImageButton)view.findViewById(R.id.noBtn);
         share = (ImageButton)view.findViewById(R.id.shareButton);
@@ -193,11 +190,11 @@ public class AddCoordyFragment extends DialogFragment{
         dressview =(ImageView)view.findViewById(R.id.dress_View);
         accview =(ImageView)view.findViewById(R.id.acc_View);
 
-
         coordyname = (EditText)view.findViewById(R.id.addcoordy_name);
         gridView = (GridView)view.findViewById(R.id.add_gridview);
         addcodiAdapter = new AddCodiAdapter(getActivity(),R.layout.item_codi_gridview, list); //그리드 뷰 한개씩을 여기에 붙임
         init();
+
 
         gridView.setAdapter(addcodiAdapter);
         dialog.setContentView(view);
@@ -227,7 +224,6 @@ public class AddCoordyFragment extends DialogFragment{
 
             JSONObject jObject = new JSONObject(path);//php 결과 json형식으로 저장
             photos = jObject.getJSONArray("result");
-            //홈프래그먼트에서 받아온 path를 이용하여 다시한번 아이템들을 부른다. ->> 여기에서 브랜드/ 태그를 같이 추출할 수 있을 것으로 보여짐
             int i=0;
             index = i;
             list.clear();
@@ -238,7 +234,6 @@ public class AddCoordyFragment extends DialogFragment{
                         dressItem di = new dressItem();
                         di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
                         di.setCat1(c.getString("category"));
-                        di.getCat1().replace("\\", "");
                         String str[]=di.getCat1().split("/");
                         if(str[0].equals("TOP")){
                             list.add(di);
@@ -366,21 +361,21 @@ public class AddCoordyFragment extends DialogFragment{
                 if(spinnerNUMBER==0){ //top
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(500, 400)
+                            .override(550,500)
                             .into(topview);
                     selectTop=imgUri;
                 }
                 else if(spinnerNUMBER==2){ //outer
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(500, 400)
+                            .override(550,500)
                             .into(outerview);
                     selectOuter =imgUri;
                 }
                 else if(spinnerNUMBER==3){ //dress
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(500, 400)
+                            .override(550,500)
                             .into(dressview);
                     selectDress =imgUri;
 
@@ -388,25 +383,26 @@ public class AddCoordyFragment extends DialogFragment{
                 else if (spinnerNUMBER==4){ //acc
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(500, 400)
+                            .override(550,500)
                             .into(accview);
                     selectAcc =imgUri;
                 }
                 else{  //bottom
                     Glide.with(getActivity())
                             .load("http://218.38.52.180/Android_files/"+ imgUri)
-                            .override(500, 400)
+                            .override(550,500)
                             .into(bottomview);
                     selectBottom=imgUri;
                 }
             }
         });
 
+
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 picCapture(view);
-               // saveServer();
+                // saveServer();
                 Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
                 Toast.makeText(getActivity(),"이미지를 저장합니다.", Toast.LENGTH_SHORT).show();
 
@@ -441,18 +437,64 @@ public class AddCoordyFragment extends DialogFragment{
             }
         });
 
+        gestureDetector = new GestureDetector(getActivity().getApplicationContext(), new SimpleListener());
+
+        View.OnTouchListener gestureListener = new View.OnTouchListener(){
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                final int x = (int) event.getRawX();
+                final int y = (int) event.getRawY();
+
+                switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:
+                        RelativeLayout.LayoutParams lparams =(RelativeLayout.LayoutParams) v.getLayoutParams();
+                        xDelta = x - lparams.leftMargin;
+                        yDelta = y - lparams.topMargin;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        //Toast.makeText(getActivity(), "thanks", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)v.getLayoutParams();
+                        layoutParams.leftMargin = x - xDelta;
+                        layoutParams.topMargin = y - yDelta;
+                        layoutParams.rightMargin = 0;
+                        layoutParams.bottomMargin = 0;
+                        v.setLayoutParams(layoutParams);
+                        break;
+
+                }
+                codiLayout.invalidate();
+                return true;
+            }
+        };
+
+
+        topview.setOnTouchListener(gestureListener);
+        bottomview.setOnTouchListener(gestureListener);
+        outerview.setOnTouchListener(gestureListener);
+        dressview.setOnTouchListener(gestureListener);
+        accview.setOnTouchListener(gestureListener);
+/**/
 
 
 
-        topview.setOnTouchListener(OnTouchListener());
-        bottomview.setOnTouchListener(OnTouchListener());
-        outerview.setOnTouchListener(OnTouchListener());
-        dressview.setOnTouchListener(OnTouchListener());
-        accview.setOnTouchListener(OnTouchListener());
+    }
 
+    private class SimpleListener extends GestureDetector.SimpleOnGestureListener{
+        private final static String TAG = "simpleListrner";
 
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
 
+            Toast.makeText(getActivity().getApplicationContext(), "tap tap", Toast.LENGTH_SHORT).show();
 
+            return true;
+        }
     }
 
     private void picCapture(View view) {
@@ -535,44 +577,43 @@ public class AddCoordyFragment extends DialogFragment{
 
 
 
-    private View.OnTouchListener OnTouchListener() {
-
+ /*   private View.OnTouchListener OnTouchListener(){
         return new View.OnTouchListener() {
-                @SuppressLint("ClickableViewAccessibility")
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
-                    final int x = (int) event.getRawX();
-                    final int y = (int) event.getRawY();
+                final int x = (int) event.getRawX();
+                final int y = (int) event.getRawY();
 
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
-                        case MotionEvent.ACTION_DOWN:
-                            RelativeLayout.LayoutParams lparams =(RelativeLayout.LayoutParams) v.getLayoutParams();
-                            xDelta = x - lparams.leftMargin;
-                            yDelta = y - lparams.topMargin;
-                            break;
+                switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:
+                        RelativeLayout.LayoutParams lparams =(RelativeLayout.LayoutParams) v.getLayoutParams();
+                        xDelta = x - lparams.leftMargin;
+                        yDelta = y - lparams.topMargin;
+                        break;
 
-                        case MotionEvent.ACTION_UP:
-                            //Toast.makeText(getActivity(), "thanks", Toast.LENGTH_SHORT).show();
-                            break;
+                    case MotionEvent.ACTION_UP:
+                        //Toast.makeText(getActivity(), "thanks", Toast.LENGTH_SHORT).show();
+                        break;
 
-                        case MotionEvent.ACTION_MOVE:
-                            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)v.getLayoutParams();
-                            layoutParams.leftMargin = x - xDelta;
-                            layoutParams.topMargin = y - yDelta;
-                            layoutParams.rightMargin = 0;
-                            layoutParams.bottomMargin = 0;
-                            v.setLayoutParams(layoutParams);
-                            break;
+                    case MotionEvent.ACTION_MOVE:
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)v.getLayoutParams();
+                        layoutParams.leftMargin = x - xDelta;
+                        layoutParams.topMargin = y - yDelta;
+                        layoutParams.rightMargin = 0;
+                        layoutParams.bottomMargin = 0;
+                        v.setLayoutParams(layoutParams);
+                        break;
 
-                    }
-                    codiLayout.invalidate();
-                    return true;
                 }
-            };
+                codiLayout.invalidate();
+                return true;
+            }
+        };
+    }*/
 
 
-    }
 
 
     public class AddCodiAdapter extends BaseAdapter {

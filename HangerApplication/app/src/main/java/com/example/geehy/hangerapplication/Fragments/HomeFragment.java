@@ -72,6 +72,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment.newInstance;
+import android.app.ProgressDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -113,9 +114,10 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private int index =0 ;
     BackgroundTask task;
     BackgroundTask_delete task_delete;
-    progressbar bar;
+
     private Button Gallery2;
     private Uri grabcut_uri;
+    progressbar bar;
 
     public HomeFragment() {
     }
@@ -147,16 +149,16 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
     public void init() {
-        isVisible = false; //F : 안보임 T : 보임
-        isVisible_check = false; //F : 안보임 T : 보임
+       // isVisible = false; //F : 안보임 T : 보임
+       // isVisible_check = false; //F : 안보임 T : 보임
         gridView = (GridView) view.findViewById(R.id.home_gridview);//그리드 뷰의 객체를 가져오기
 
         //insertBTN = (Button) view.findViewById(R.id.floatingActionButton);
 
         insertLinearLayout = (LinearLayout) view.findViewById(R.id.home_insert_Layout);
-        Camera = (Button) view.findViewById(R.id.home_camera_btn);
-        Gallery = (Button) view.findViewById(R.id.home_gallery_btn);
-        Gallery2 = (Button) view.findViewById(R.id.home_grab_btn);
+        //Camera = (Button) view.findViewById(R.id.home_camera_btn);
+       //Gallery = (Button) view.findViewById(R.id.home_gallery_btn);
+        //Gallery2 = (Button) view.findViewById(R.id.home_grab_btn);
         fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         del = (FloatingActionButton) view.findViewById(R.id.floatingButton_delete);
         undo = (FloatingActionButton) view.findViewById(R.id.floatingButton_undo);
@@ -171,21 +173,26 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isVisible) {
-                    insertLinearLayout.setVisibility(View.GONE);
-                    isVisible = false;
-                } else {
-                    insertLinearLayout.setVisibility(View.VISIBLE);
-                    isVisible = true;
-                }
+//                if (isVisible) {
+//                    insertLinearLayout.setVisibility(View.GONE);
+//                    isVisible = false;
+//                } else {
+//                    insertLinearLayout.setVisibility(View.VISIBLE);
+//                    isVisible = true;
+//                }
+                Intent intent = new Intent(getContext(), GalleryActivity.class);
+                //intent.setType("image/*");//이게뭐지?
+                //intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                //intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, SIGNAL_toGallery);
             }
         });
-
+/*
         Gallery2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), GalleryActivity.class);
-                //intent.setType("image/*");//이게뭐지?
+                //intent.setType("image*//*");//이게뭐지?
                 //intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 //intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, SIGNAL_toGallery);
@@ -198,7 +205,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
+                intent.setType("image*//*");
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, SIGNAL_toGallery);
@@ -212,7 +219,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 Intent intent = new Intent(getContext(), CameraActivity.class);
                 startActivityForResult(intent, SIGNAL_toCamera);
             }
-        });
+        });*/
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -292,6 +299,11 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         if (requestCode == SIGNAL_toGallery) {
 
             if (resultCode == Activity.RESULT_OK) {
+
+                bar = new progressbar();
+                manager = getFragmentManager();
+                bar.show(getActivity().getSupportFragmentManager(), "progressbar");//dialogfragment 띄우기
+
                 grabcut_uri = Uri.parse(data.getStringExtra("grabcut_uri"));
                 //fp = data.getStringExtra("URI");
                 //파일 서버로 업로드 start
@@ -318,6 +330,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
 
                             //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
+                            bar.dismiss();
                             Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
                             getimg();
 
@@ -326,6 +339,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         @Override
                         public void onFailure(Call<UploadObject> call, Throwable t) {
                             Log.d(TAG, "Error " + t.getMessage());
+                            bar.dismiss();
                         }
                     });
 
@@ -615,7 +629,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 
-//************************************************* delete item ******************************************//
+    //************************************************* delete item ******************************************//
     public void delete_daily(){ //삭제하기
         task_delete = new BackgroundTask_delete();
         task_delete.execute();
@@ -686,7 +700,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 
-  //***********************************Home Fragment GridViewAdapter **************************************//
+    //***********************************Home Fragment GridViewAdapter **************************************//
     public class homeGridAdapter extends BaseAdapter {
         LayoutInflater layoutInflater;
         private Context context;
@@ -775,6 +789,4 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 }
-
-
 

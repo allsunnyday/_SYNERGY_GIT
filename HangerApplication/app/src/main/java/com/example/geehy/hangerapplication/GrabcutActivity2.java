@@ -77,6 +77,23 @@ public class GrabcutActivity2 extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.image_view);
 
+        ImageView img_FORE = (ImageView) findViewById(R.id.img_fore);
+        ImageView img_BACK = (ImageView) findViewById(R.id.img_back);
+
+        img_FORE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flags =1;
+            }
+        });
+
+        img_BACK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flags = 2;
+            }
+        });
+
         /**
          file_path = intent.getStringExtra("to_grab_filepath");
          BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -148,6 +165,9 @@ public class GrabcutActivity2 extends AppCompatActivity {
                 }
             });
 
+
+
+
     }
 
 
@@ -159,6 +179,7 @@ public class GrabcutActivity2 extends AppCompatActivity {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+/*
 
 
     public void onFlags(View view) {
@@ -173,6 +194,7 @@ public class GrabcutActivity2 extends AppCompatActivity {
             flags = 2;
         }
     }
+*/
 
     public void onReset(View view) {
         Log.d("onReset"," ");
@@ -272,7 +294,7 @@ public class GrabcutActivity2 extends AppCompatActivity {
 
     //GalleryActivity로 데이터 보내기
     public void save(View view){
-        //resultSetting(gcapp);
+        resultSetting(gcapp);
         Log.d("save()"," ");
         Intent data = new Intent(getApplicationContext(), GalleryActivity.class);
         //bm2 = makeBlackTransparent(bm);

@@ -57,13 +57,13 @@
 
         <ImageView
             android:id="@+id/codiinfo_top"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="false"
             android:layout_below="@+id/likebtn"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="false"
-            android:layout_margin="20dp"
+            android:layout_marginBottom="20dp"
             app:srcCompat="@drawable/tempimg" />
 
     </RelativeLayout>

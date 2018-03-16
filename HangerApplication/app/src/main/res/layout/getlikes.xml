@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="400dp"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/showWeather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:layout_marginTop="5dp"
+
+        android:text="♡ 나의 좋아요 ♡"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+    <GridView
+        android:id="@+id/getlikes_gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="100dp"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:padding="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"
+        android:choiceMode="multipleChoice" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:gravity="center"
+
+        android:background="#ffffff"
+        android:padding="10dp">
+
+
+
+    </RelativeLayout>
+</LinearLayout>

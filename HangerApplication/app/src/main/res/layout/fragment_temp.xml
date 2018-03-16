@@ -25,18 +25,18 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Shared Closet"
+                android:text="Today's Pick"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/getWeatherBTN"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_toRightOf="@+id/showWeather"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/showWeather"
                 android:background="@color/colorPrimary"
-                android:text="..."
+                android:text="my likes.."
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
 

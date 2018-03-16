@@ -40,7 +40,7 @@ class GCApplication
 {
 public:
     enum{ NOT_SET = 0, IN_PROCESS = 1, SET = 2 };
-    static const int radius = 10;
+    static const int radius = 7;
     static const int thickness = -1;
 
     GCApplication();

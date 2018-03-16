@@ -108,33 +108,33 @@ public class DashFragment extends Fragment {
         Log.d("CoordyPath:", path);
 
         try{
-           JSONObject jsonObject = new JSONObject(path);
-           coordies = jsonObject.getJSONArray("result");
-           int i;
-           coordyItemslist.clear();
-           for (i=0; i < coordies.length(); i++){
-               JSONObject jo = coordies.getJSONObject(i);
-               CoordyItem ci = new CoordyItem();
-               ci.setTopImgURL(jo.getString("topPath"));
-               ci.setBottomImgURL(jo.getString("bottomPath"));
-               ci.setCodiName(jo.getString("name"));
-               ci.setNo(jo.getInt("codi_no"));
-               ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
-               ci.setLikes(jo.getInt("hit"));
-               Log.d("isshared", jo.getString("isShare"));
-               if(jo.getString("isShare").equals("Y")){
-                   ci.setIsShare(1);
-               }
-               else{
-                   ci.setIsShare(0);
-               }
-               coordyItemslist.add(ci);
-               ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
-           }
-           numberOfCoordy = i;
-       }catch(JSONException e){
-           e.printStackTrace();
-       }
+            JSONObject jsonObject = new JSONObject(path);
+            coordies = jsonObject.getJSONArray("result");
+            int i;
+            coordyItemslist.clear();
+            for (i=0; i < coordies.length(); i++){
+                JSONObject jo = coordies.getJSONObject(i);
+                CoordyItem ci = new CoordyItem();
+                ci.setTopImgURL(jo.getString("topPath"));
+                ci.setBottomImgURL(jo.getString("bottomPath"));
+                ci.setCodiName(jo.getString("name"));
+                ci.setNo(jo.getInt("codi_no"));
+                ci.setFullCodiImgURL(jo.getString("fullCodiPath"));
+                ci.setLikes(jo.getInt("hit"));
+                Log.d("isshared", jo.getString("isShare"));
+                if(jo.getString("isShare").equals("Y")){
+                    ci.setIsShare(1);
+                }
+                else{
+                    ci.setIsShare(0);
+                }
+                coordyItemslist.add(ci);
+                ((MainPageActivity)getActivity()).setCoordylist(coordyItemslist);
+            }
+            numberOfCoordy = i;
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -185,7 +185,7 @@ public class DashFragment extends Fragment {
                 change();
                 coordyAdapter.notifyDataSetChanged();
 
-               // refreshFrag();
+                // refreshFrag();
             }
         });
 
@@ -220,10 +220,10 @@ public class DashFragment extends Fragment {
                     }
                 });
 
-                 //변경된 내용을 보여주기 위해서?
+                //변경된 내용을 보여주기 위해서?
 //                change();
 //                coordyAdapter.notifyDataSetChanged();
-            //    refreshFrag();
+                //    refreshFrag();
 
 
             }
@@ -264,7 +264,7 @@ public class DashFragment extends Fragment {
         protected String doInBackground (String...params){
             super.onPreExecute();
             String result; // 요청 결과를 저장할 변수.
-            RequestActivity requestHttpURLConnection = new RequestActivity(); //
+            RequestActivity requestHttpURLConnection = new RequestActivity();
             result = requestHttpURLConnection.request(url, json); // 해당 URL로 부터 결과물을 얻어온다.
             return result;   //--> onPostExecute()
         }
@@ -283,12 +283,12 @@ public class DashFragment extends Fragment {
     private void save(String s) {
         SharedPreferences.Editor editor = appData.edit(); // SharedPreferences 객체만으론 저장 불가능 Editor 사용
         Log.d("CoordyPath_save()",s);
-                                                            // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
-                                                            // 저장시킬 이름이 이미 존재하면 덮어씌움
-                                                            //  editor.putBoolean("SAVE_LOGIN_DATA", checkBox.isChecked());
+        // 에디터객체.put타입( 저장시킬 이름, 저장시킬 값 )
+        // 저장시킬 이름이 이미 존재하면 덮어씌움
+        //  editor.putBoolean("SAVE_LOGIN_DATA", checkBox.isChecked());
         editor.putString("CoordyPath", s);                  // CoordyPath라는 appdat에 넣음 >> 앱전체에서 사용할 수 있도록
-                                                            //    editor.putString("PWD", pwtext.getText().toString().trim());
-                                                            // apply, commit 을 안하면 변경된 내용이 저장되지 않음
+        //    editor.putString("PWD", pwtext.getText().toString().trim());
+        // apply, commit 을 안하면 변경된 내용이 저장되지 않음
         editor.apply();
     }
 
@@ -341,8 +341,8 @@ public class DashFragment extends Fragment {
 
             if(ci.getTopImgURL().equals("")||ci.getTopImgURL().equals("null")
                     || ci.getBottomImgURL().equals("")||ci.getBottomImgURL().equals("null")){
-                            imageViewTop.setImageResource(R.drawable.tempimg);
-                            //imageViewBottom.setImageResource(R.drawable.tempimg);
+                imageViewTop.setImageResource(R.drawable.tempimg);
+                //imageViewBottom.setImageResource(R.drawable.tempimg);
             }else{
                 Glide.with(getActivity())
                         .load("http://218.38.52.180/Android_files/"+ ci.getFullCodiImgURL())
@@ -362,5 +362,4 @@ public class DashFragment extends Fragment {
     }
 
 }
-
 

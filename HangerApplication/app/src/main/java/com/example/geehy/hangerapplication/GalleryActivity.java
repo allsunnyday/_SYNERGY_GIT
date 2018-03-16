@@ -217,11 +217,34 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("bitmap_1.크롭후", "" + photoUri);
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                 bmOptions.inJustDecodeBounds = false;
-                bmOptions.inSampleSize = 7; //추후 모든 사진을 같은 크기로 리사이징할수 있도록 변경, 글라이드 이용???
+                bmOptions.inSampleSize = 4; //추후 모든 사진을 같은 크기로 리사이징할수 있도록 변경, 글라이드 이용???
+                // 인터넷 사진일 경우 1
+                // 일반 카메라 사진일 경우 4
                 Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
                 bitmapUri = getImageUri(this, bitmap);
                 Log.d("bitmap_2.리사이징후", " " + bitmapUri);
                 Grab();//여기서 크롭된 좌표를 그랩에 보내주어야 한다......가 아니고 그냥 전체 이미지 받으면 되잖아?
+             /*   int width = imgMain.getWidth();
+                int height = imgMain.getHeight();
+
+                BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
+                bmpFactoryOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(mCurrentPhotoPath, bmpFactoryOptions);
+
+                int widthRatio = (int) Math.ceil(bmpFactoryOptions.outWidth / (float) width);
+                int heightRatio = (int) Math.ceil(bmpFactoryOptions.outHeight / (float) height);
+                if (heightRatio > 1 || widthRatio > 1) {
+                    if (heightRatio > widthRatio) {
+                        bmpFactoryOptions.inSampleSize = heightRatio;
+                    } else {
+                        bmpFactoryOptions.inSampleSize = widthRatio;
+                    }
+                }
+
+                bmpFactoryOptions.inJustDecodeBounds = false;
+                Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmpFactoryOptions);
+                bitmapUri = getImageUri(this, bitmap);
+                Grab();*/
             }catch (NullPointerException e){}
 
 

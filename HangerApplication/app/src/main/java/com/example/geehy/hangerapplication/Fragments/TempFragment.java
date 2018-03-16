@@ -37,6 +37,7 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import com.bumptech.glide.Glide;
 import com.example.geehy.hangerapplication.DialogFragment.CalendarFragment;
 import com.example.geehy.hangerapplication.DialogFragment.CodiInfoFragment;
+import com.example.geehy.hangerapplication.DialogFragment.SeeLikeFragment;
 import com.example.geehy.hangerapplication.DialogFragment.WeatherFragment;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
@@ -71,6 +72,7 @@ public class TempFragment extends Fragment {
     private SharedPreferences appData;
     private String id;
     private String likes;
+    private String info ="";
     BackgroundTask4 task3;
     private String sharedCodiPath="";
     private JSONArray coordies;
@@ -157,7 +159,7 @@ public class TempFragment extends Fragment {
 //                Bundle bundle = new Bundle();
                 CoordyItem cd = coordyItemslist.get(position);
                 like = cd.getFullCodiImgURL(); //누른 이미지
-
+                info = cd.getTall()+"/"+cd.getWeight();
                 if (gridView.isItemChecked(position)) { //좋아요 누른경우
                     saveToServer();
 
@@ -196,6 +198,29 @@ public class TempFragment extends Fragment {
             public void onClick(View view) {
                 keyword= searchText.getText().toString();
                 search();
+            }
+        });
+
+
+        weatherBTN.setOnClickListener(new View.OnClickListener() { //나의 좋아요 보기
+            @Override
+            public void onClick(View view) {
+                getLike();
+                if(!(likes.equals("no like"))) {
+
+                    SeeLikeFragment seeLikeFragment = new SeeLikeFragment();
+                    manager = getFragmentManager();
+                    seeLikeFragment.show(getActivity().getSupportFragmentManager(), "seeLikeFragment");//dialogfragment 띄우기
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("나의 좋아요가 없습니다.");
+                    builder.setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    builder.show();
+                }
             }
         });
 
@@ -373,7 +398,8 @@ public class TempFragment extends Fragment {
             jsonpost.put("Username", id+"_likesCodi"); //sharedpreference에 저장되었던 username 서버로 보내기(해당 유저 이미지 가져오기 위해)
             //   jsonpost.put("codino", userLikecoditem.getNo());
             jsonpost.put("codipath", like);
-
+            jsonpost.put("info", info);
+            Log.d("infotest",info);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -493,7 +519,7 @@ public class TempFragment extends Fragment {
         @Override
         protected void onPostExecute (String s) {
             super.onPostExecute(s);
-            Log.d("gett:", s);
+            Log.d("SearchTest:", s);
             if(!(s.equals("no path"))) {
                 save(s);
                 change();
@@ -526,9 +552,9 @@ public class TempFragment extends Fragment {
         private Context context;
         private int layout;
         private ArrayList<CoordyItem> list;
-       // private boolean isSelectLikeInAdapter;
-       // private int likesnum;
-       // private TextView numlikes;
+        // private boolean isSelectLikeInAdapter;
+        // private int likesnum;
+        // private TextView numlikes;
         private TextView  textView;
         private ImageView imageView;
 //        private CoordyItem ci;
@@ -542,7 +568,7 @@ public class TempFragment extends Fragment {
         }
 
 
-       // public boolean getIsSelectLikeInAdapter(){
+        // public boolean getIsSelectLikeInAdapter(){
 //            return this.isSelectLikeInAdapter;
 //        }
         @Override
@@ -573,9 +599,9 @@ public class TempFragment extends Fragment {
 //            numlikes = (TextView) convertView.findViewById(R.id.likeNumView);
 //            imageButton = (ImageButton)convertView.findViewById(R.id.imageButtonlike);
 
-           final CoordyItem ci = list.get(position);
+            final CoordyItem ci = list.get(position);
             Log.d("now_", ci.getNo() + " ");
-           // ci.setLikes(likesnum);
+            // ci.setLikes(likesnum);
             //numlikes.setText(likesnum+"명");
             if(ci.getFullCodiImgURL().equals("") || ci.getFullCodiImgURL().equals("null")){
                 imageView.setImageResource(R.drawable.tempimg);

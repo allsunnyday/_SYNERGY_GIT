@@ -122,6 +122,7 @@ public class CodiInfoFragment extends DialogFragment{
         Glide.with(getActivity())
                 .load("http://218.38.52.180/Android_files/"+codi)
                 .override(700, 1500)
+                .fitCenter()
                 .into(topView);
 //        Glide.with(getActivity())
 //                .load("http://218.38.52.180/Android_files/"+codi)

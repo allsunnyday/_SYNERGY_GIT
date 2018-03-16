@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<com.example.geehy.hangerapplication.gridview_home.LikebuttonLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/tempGrid_imgVIew"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="3dp"
+                android:background="@android:color/white"
+                app:srcCompat="@drawable/tempimg" />
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tempGrid_imgVIew"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="false">
+
+
+
+                <CheckBox android:id="@+id/check_like"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:background="@drawable/item_check"
+                    android:button="@null"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:clickable="false"/>
+
+
+                <TextView
+                    android:id="@+id/codiNameVIew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="16dp"
+                    android:layout_alignBottom="@+id/check_like"
+                    android:layout_toEndOf="@+id/check_like"
+                    android:text="누구" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</com.example.geehy.hangerapplication.gridview_home.LikebuttonLinearLayout>
