@@ -69,7 +69,7 @@ public class AccGridAdapter extends BaseAdapter {
         tempString+= ("카테고리 : 블라우스" + di.getCat1()  +"\n");
        // tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
         tempString+= ("계절 : 봄 ");
-        int[] tempSeason = di.getSeason();
+       // int[] tempSeason = di.getSeason();
     /*    for(int i = 0 ; i< tempSeason.length ; i++){
             if(tempSeason[i] == -1){
                 tempString+= ("미정 ");

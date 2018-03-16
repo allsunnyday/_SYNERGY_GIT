@@ -48,6 +48,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.geehy.hangerapplication.CameraActivity;
 import com.example.geehy.hangerapplication.DialogFragment.AddInfoFragment;
 import com.example.geehy.hangerapplication.DialogFragment.progressbar;
+import com.example.geehy.hangerapplication.GalleryActivity;
 import com.example.geehy.hangerapplication.MainPageActivity;
 import com.example.geehy.hangerapplication.R;
 import com.example.geehy.hangerapplication.RequestActivity;
@@ -113,6 +114,9 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     BackgroundTask task;
     BackgroundTask_delete task_delete;
     progressbar bar;
+    private Button Gallery2;
+    private Uri grabcut_uri;
+
     public HomeFragment() {
     }
 
@@ -152,6 +156,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         insertLinearLayout = (LinearLayout) view.findViewById(R.id.home_insert_Layout);
         Camera = (Button) view.findViewById(R.id.home_camera_btn);
         Gallery = (Button) view.findViewById(R.id.home_gallery_btn);
+        Gallery2 = (Button) view.findViewById(R.id.home_grab_btn);
         fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         del = (FloatingActionButton) view.findViewById(R.id.floatingButton_delete);
         undo = (FloatingActionButton) view.findViewById(R.id.floatingButton_undo);
@@ -173,6 +178,18 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                     insertLinearLayout.setVisibility(View.VISIBLE);
                     isVisible = true;
                 }
+            }
+        });
+
+        Gallery2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), GalleryActivity.class);
+                //intent.setType("image/*");//이게뭐지?
+                //intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                //intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, SIGNAL_toGallery);
+
             }
         });
 
@@ -272,25 +289,17 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == SIGNAL_toGallery) {
+
             if (resultCode == Activity.RESULT_OK) {
-
+                grabcut_uri = Uri.parse(data.getStringExtra("grabcut_uri"));
+                //fp = data.getStringExtra("URI");
                 //파일 서버로 업로드 start
-/*
-                circlebar_layout.setVisibility(View.VISIBLE); //progressBar 보여줌
-                circlebar.setVisibility(View.VISIBLE);
-*/
-
-                bar = new progressbar();
-                manager = getFragmentManager();
-                bar.show(getActivity().getSupportFragmentManager(), "progressbar");//dialogfragment 띄우기
-
-                uri = data.getData();
-                Log.d("uri_", uri +" ");
+                //uri = data.getData();
                 if (EasyPermissions.hasPermissions(getActivity().getApplication(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    String filePath = getRealPathFromURIPath(uri, getActivity());
-                    Log.d("filePath",filePath);
+                    //String filePath = getRealPathFromURIPath(uri, getActivity());
+                    //File file = new File(fp);
+                    String filePath = getRealPathFromURIPath(grabcut_uri, getActivity());
                     File file = new File(filePath);
                     Log.d(TAG, "name" + file.getName());
                     //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -301,9 +310,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                             .baseUrl(SERVER_PATH)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
-                    //////업로드를 위한  custom interface >> 별도로 설정해줘야한다
                     UploadImageInterface uploadImage = retrofit.create(UploadImageInterface.class);
-                    //////
                     Call<UploadObject> fileUpload = uploadImage.uploadFile(fileToUpload, name);
                     Log.d("testname", id + "+" + file.getName());
                     fileUpload.enqueue(new Callback<UploadObject>() {
@@ -311,10 +318,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         public void onResponse(Call<UploadObject> call, Response<UploadObject> response) {
 
                             //  Toast.makeText(getActivity().getApplication(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
-                            //  circlebar_layout.setVisibility(View.GONE);
-                            // circlebar.setVisibility(View.GONE); //progressBar 사라짐
-                            bar.dismiss();
-
                             Toast.makeText(getActivity().getApplication(), response.body().getSuccess(), Toast.LENGTH_LONG).show();
                             getimg();
 
@@ -323,14 +326,29 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                         @Override
                         public void onFailure(Call<UploadObject> call, Throwable t) {
                             Log.d(TAG, "Error " + t.getMessage());
-                            bar.dismiss();
-
                         }
                     });
+
+                    android.util.Log.d("HOME_TAG","TOTAL MEMORY : "+(Runtime.getRuntime().totalMemory() / (1024 * 1024)) + "MB");
+                    android.util.Log.d("HOME_TAG","MAX MEMORY : "+(Runtime.getRuntime().maxMemory() / (1024 * 1024)) + "MB");
+                    android.util.Log.d("HOME_TAG","FREE MEMORY : "+(Runtime.getRuntime().freeMemory() / (1024 * 1024)) + "MB");
+                    android.util.Log.d("HOME_TAG","ALLOCATION MEMORY : "+((Runtime.getRuntime().totalMemory() -Runtime.getRuntime().freeMemory()) / (1024 * 1024)) + "MB");
+
                 } else {
                     EasyPermissions.requestPermissions(this, getString(R.string.read_file), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
                 }//end
-
+/*
+                data_byte = data.getByteArrayExtra("data");
+                Log.d("Imgae Data : ", "Data : " + data.getData());
+                Log.d("Imgae Data : ", "Byte : " + data_byte);
+                dressItem di = new dressItem();
+                di.setSeason(new int[]{1, 2});
+                di.setImgURL(data.getData() + ""); //스트링을 넣기
+                di.setDressName("Dress " + (list.size()));
+                list.add(di);
+                //   adapter.notifyDataSetChanged();
+                ((MainPageActivity) getActivity()).setList(list);
+*/
 
             } else {
                 //실패
@@ -341,7 +359,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
                 Log.d("CameraDataSet", "Camera url : " + data.getStringExtra("URI").toString());
                 dressItem di = new dressItem();
-                di.setSeason(new int[]{1, 2});
+                //di.setSeason(new int[]{1, 2});
                 di.setImgURL(data.getStringExtra("URI").toString()); //스트링을 넣기
                 di.setDressName("Dress " + (list.size()));
                 list.add(di);
@@ -466,8 +484,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         builder.show();
     }
 
-    //이미지path 서버에서 가져오기
-    //username 서버로 보내기
+    //********************************Dress Item 이미지 서버에서 가져오기 **************************//
     private String sendObject() {
         JSONObject jsonpost = new JSONObject();
         try {
@@ -491,12 +508,14 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             for(i=0; i < photos.length(); i++){
                 JSONObject c = photos.getJSONObject(i);
                 dressItem di = new dressItem();
-                di.setSeason(new int[]{1, 2});
                 di.setCat1(c.getString("category"));
                 di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
                 di.setDressColor(c.getString("color"));
                 di.setBrand(c.getString("brand"));
                 di.setDressTag(c.getString("tag"));
+                if(!c.getString("season").equals("") || !c.getString("season").equals("null") ){
+                    di.setSeason(c.getString("season"));
+                }
                 list.add(di);
                 ((MainPageActivity) getActivity()).setList(list);
             }
@@ -702,7 +721,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             tempString+= (di.getCat1() + "\n");
             //tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
             tempString+= ("계절 : ");
-            int[] tempSeason = di.getSeason();
+            tempString+=(di.getSeason());
+           /* int[] tempSeason = di.getSeason();
             for(int i = 0 ; i< tempSeason.length ; i++){
                 if(tempSeason[i] == -1){
                     tempString+= ("미정 ");
@@ -719,7 +739,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 if(i != tempSeason.length -1){
                     tempString += ", ";
                 }
-            }
+            }*/
             tempString += "\n";
             tempString += ("#" + di.getDressTag()+ "\n" );
             tv.setText(tempString);

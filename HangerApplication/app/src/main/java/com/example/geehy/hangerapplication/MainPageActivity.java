@@ -134,7 +134,7 @@ public class MainPageActivity extends AppCompatActivity {
         for(int i = 0 ; i<5;i++){
             dressItem temp = new dressItem();
             temp.setDressName("Dress " + i);
-            temp.setSeason(new int[]{1, 2});
+           // temp.setSeason(new int[]{1, 2});
             list.add(temp);
         }
 

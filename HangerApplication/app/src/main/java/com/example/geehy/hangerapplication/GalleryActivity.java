@@ -118,6 +118,8 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
                 ".jpg",         /* suffix */
                 storageDir          /* directory */
         );
+
+        //".jpg"
         mCurrentPhotoPath = image.getAbsolutePath();
         //종료시 임시파일 제거
         image.deleteOnExit();
@@ -215,7 +217,7 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d("bitmap_1.크롭후", "" + photoUri);
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                 bmOptions.inJustDecodeBounds = false;
-                bmOptions.inSampleSize = 1; //추후 모든 사진을 같은 크기로 리사이징할수 있도록 변경, 글라이드 이용???
+                bmOptions.inSampleSize = 7; //추후 모든 사진을 같은 크기로 리사이징할수 있도록 변경, 글라이드 이용???
                 Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
                 bitmapUri = getImageUri(this, bitmap);
                 Log.d("bitmap_2.리사이징후", " " + bitmapUri);

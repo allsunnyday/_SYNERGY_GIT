@@ -61,7 +61,6 @@ public class GrabcutActivity2 extends AppCompatActivity {
     private Bitmap bm;
     private Bitmap bm2;
     private float s = 0;
-    private static int Eraser = 300;
     private String imageFilePath;
     private Uri bitmap_Uri;
     private Uri gracut_Uri;
@@ -109,7 +108,6 @@ public class GrabcutActivity2 extends AppCompatActivity {
         //showImage(gcapp);
         Log.d("img.주소",  " " + img.getNativeObjAddr());
 
-        if(Eraser ==300) {
             imageView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -149,7 +147,7 @@ public class GrabcutActivity2 extends AppCompatActivity {
                     return true;
                 }
             });
-        }
+
     }
 
 
@@ -169,7 +167,6 @@ public class GrabcutActivity2 extends AppCompatActivity {
         if ("범위".equals(button.getText().toString())) {
             flags = 0;
             resultSetting(gcapp);
-            Eraser = 301;
         } else if ("전경".equals(button.getText().toString())) {
             flags = 1;
         } else if ("배경".equals(button.getText().toString())) {

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -178,6 +179,14 @@ public class TempFragment extends Fragment {
 
         });
 
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity().getApplicationContext(), "꾸욱", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
 
 
 
@@ -202,7 +211,6 @@ public class TempFragment extends Fragment {
         int userWeight = Integer.parseInt(appData.getString("WEIGHT",""));
 
         Log.d("SharedCodiPath:", sharedCodiPath);
-
 
         try{
             Log.d("liketest",likes);
@@ -518,25 +526,25 @@ public class TempFragment extends Fragment {
         private Context context;
         private int layout;
         private ArrayList<CoordyItem> list;
-        private boolean isSelectLikeInAdapter;
-        private int likesnum;
-        private TextView numlikes;
+       // private boolean isSelectLikeInAdapter;
+       // private int likesnum;
+       // private TextView numlikes;
         private TextView  textView;
         private ImageView imageView;
-        private CoordyItem ci;
+//        private CoordyItem ci;
 
         public TempGridAdater(Context context, int layout, ArrayList<CoordyItem> list) {
             this.context  = context;
             this.layout = layout;
             this.list = list;
-            isSelectLikeInAdapter = false;
+            //isSelectLikeInAdapter = false;
             layoutInflater = ( LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         }
 
 
-        public boolean getIsSelectLikeInAdapter(){
-            return this.isSelectLikeInAdapter;
-        }
+       // public boolean getIsSelectLikeInAdapter(){
+//            return this.isSelectLikeInAdapter;
+//        }
         @Override
         public int getCount() {
 
@@ -565,18 +573,14 @@ public class TempFragment extends Fragment {
 //            numlikes = (TextView) convertView.findViewById(R.id.likeNumView);
 //            imageButton = (ImageButton)convertView.findViewById(R.id.imageButtonlike);
 
-            ci = list.get(position);
+           final CoordyItem ci = list.get(position);
             Log.d("now_", ci.getNo() + " ");
-            likesnum = ci.getLikes();
-            ci.setLikes(likesnum);
+           // ci.setLikes(likesnum);
             //numlikes.setText(likesnum+"명");
-            if(ci.getFullCodiImgURL().equals("")||ci.getFullCodiImgURL().equals("null")){
+            if(ci.getFullCodiImgURL().equals("") || ci.getFullCodiImgURL().equals("null")){
                 imageView.setImageResource(R.drawable.tempimg);
             }
             else{
-
-
-
                 textView.setText(ci.getTall() +"/"+ci.getWeight());
                 //numlikes.setText(ci.getLikes() + "명");
 
@@ -586,11 +590,8 @@ public class TempFragment extends Fragment {
                         .fitCenter()
                         .into(imageView);//보여줄 이미지 파일
 
-
-
                 if(!(likelist.isEmpty())){
                     for (int i =0; i <likelist.size(); i++) { //좋아요한 기록이 있는경우 좋아요가 눌린 상태로
-
                         if (ci.getFullCodiImgURL().equals(likelist.get(i))) {
                             gridView.setItemChecked(position, true);
                             Log.d("searchtest:", ci.getFullCodiImgURL());

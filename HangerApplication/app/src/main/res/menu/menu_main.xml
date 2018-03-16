@@ -21,7 +21,7 @@
     <item
         android:id="@+id/navigationfavorite"
         android:icon="@drawable/ic_favorite_border_black_24dp"
-        android:title="추천" />
+        android:title="공유" />
 
 
     <item

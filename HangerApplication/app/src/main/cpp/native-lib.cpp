@@ -17,6 +17,10 @@ const Scalar LIGHTBLUE = Scalar(255,255,160);
 const Scalar GREEN = Scalar(0,255,0);
 const Scalar WHITE = Scalar(255,255,255);
 
+JNIEnv* thisEnv;
+jobject thisObj;
+JavaVM  *jvm;
+
 static void getBinMask( const Mat& comMask, Mat& binMask )
 {
    // if(&comMask==NULL||&binMask==NULL){ return;}
@@ -120,7 +124,9 @@ void GCApplication::showImage(JNIEnv *env, jobject instance) const
     if( image->empty() )
         return;
 
-    Mat res(image->size(), CV_8UC3);
+    Mat *res= new Mat(image->size(), CV_8UC3);
+    //Mat *res = new Mat;
+
     Mat binMask;
 
     Mat white(image->size(), CV_8UC3); white.setTo(WHITE);
@@ -131,19 +137,19 @@ void GCApplication::showImage(JNIEnv *env, jobject instance) const
     Mat myimg(image->size(), CV_8UC3);
 
     if( !isInitialized ){
-        image->copyTo( res );
+        image->copyTo( *res );
     } ////한번도 사각형그리고 "확정"안눌렀으면 이미지 전체가 res에 복사되고 res가 showimage됨. 사용자에게는 아무일도 안일어난 것 처럼 보임
     else
     {
         getBinMask( mask, binMask );
-        image->copyTo( res, binMask );
+        image->copyTo( *res, binMask );
 
         white.copyTo(mymask, binMask); //mymask 전경=흰색, 배경=검은색
         bitwise_not(mymask,mymask_inv); //mymask_inv 전경 =검은색, 배경=흰색
 
         //res.copyTo(mymask_inv);
-        add(res,mymask_inv,myimg);
-        myimg.copyTo(res);
+        add(*res,mymask_inv,myimg);
+        myimg.copyTo(*res);
         //res.copyTo(mymask_inv);
 
         //image->copyTo(res,mymask_inv);
@@ -159,18 +165,27 @@ void GCApplication::showImage(JNIEnv *env, jobject instance) const
 
     vector<Point>::const_iterator it;
     for( it = bgdPxls.begin(); it != bgdPxls.end(); ++it )
-        circle( res, *it, radius, BLUE, thickness );
+        circle( *res, *it, radius, BLUE, thickness );
     for( it = fgdPxls.begin(); it != fgdPxls.end(); ++it )
-        circle( res, *it, radius, RED, thickness );
+        circle( *res, *it, radius, RED, thickness );
     for( it = prBgdPxls.begin(); it != prBgdPxls.end(); ++it )
-        circle( res, *it, radius, LIGHTBLUE, thickness );
+        circle( *res, *it, radius, LIGHTBLUE, thickness );
     for( it = prFgdPxls.begin(); it != prFgdPxls.end(); ++it )
-        circle( res, *it, radius, PINK, thickness );
+        circle( *res, *it, radius, PINK, thickness );
 
     if( rectState == IN_PROCESS || rectState == SET )//사각형 드래그를 하는 중이거나 사각형 드래그를 끝냈으면
-        rectangle( res, Point( rect.x, rect.y ), Point(rect.x + rect.width, rect.y + rect.height ), GREEN, 2);
-    long img = (long) &res;
-    env->CallVoidMethod(instance,showId,img);
+        rectangle( *res, Point( rect.x, rect.y ), Point(rect.x + rect.width, rect.y + rect.height ), GREEN, 2);
+    long long*img = new long long;
+    *img = (long long)res;
+
+    if(*img!=0&&*img!=NULL)
+        env->CallVoidMethod(instance,showId,*img);
+
+    delete img;
+    res->release();
+
+    //long img = (long) &res;
+    //env->CallVoidMethod(instance,showId,img);
 }
 
 void GCApplication::setRectInMask()
@@ -321,20 +336,24 @@ Java_com_example_geehy_hangerapplication_GrabcutActivity2_initGrabCut(JNIEnv *en
                                                                      jlong image) {
 
     // TODO
-    //if(env==NULL||instance==NULL||image==NULL){return 0;}
-    //if(image==NULL){return 0;}
+
+    thisEnv=env;
+    thisObj=instance;
+    env->GetJavaVM(&jvm);
+
     Mat *img = (Mat *) image ;
     GCApplication *gcapp = new GCApplication();
 
-    jclass jc = env->GetObjectClass(instance);
-    jmethodID showId = env->GetMethodID(jc, "showImage", "(J)V"); //자바 메소드 showImage의 리턴타입:void, 파라미터:long
 
+    jvm->AttachCurrentThread(&thisEnv, 0); //this is important to avoid threading errors
+    jclass jc = thisEnv->GetObjectClass(thisObj);
+    jmethodID showId = thisEnv->GetMethodID(jc, "showImage", "(J)V");
     gcapp->setImageAndShowId(img, showId);
-    gcapp->showImage(env,instance);
+    gcapp->showImage(thisEnv, thisObj);
 
     //env->DeleteLocalRef(instance); //추가
     //env->DeleteLocalRef(jc); //추가
-    env->DeleteLocalRef(instance);
+
     return gcapp;
 
 
