@@ -484,6 +484,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         builder.show();
     }
 
+
     //********************************Dress Item 이미지 서버에서 가져오기 **************************//
     private String sendObject() {
         JSONObject jsonpost = new JSONObject();
@@ -511,8 +512,12 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 di.setCat1(c.getString("category"));
                 di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
                 di.setDressColor(c.getString("color"));
-                di.setBrand(c.getString("brand"));
-                di.setDressTag(c.getString("tag"));
+                if(!c.getString("brand").equals("") || !c.getString("brand").equals("null") ) {
+                    di.setBrand(c.getString("brand"));
+                }
+                if(!c.getString("tag").equals("") || !c.getString("tag").equals("null") ) {
+                    di.setDressTag(c.getString("tag"));
+                }
                 if(!c.getString("season").equals("") || !c.getString("season").equals("null") ){
                     di.setSeason(c.getString("season"));
                 }
@@ -541,6 +546,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         // apply, commit 을 안하면 변경된 내용이 저장되지 않음
         editor.apply();
     }
+
 
 
     public void getimg(){ //사진 가져오기
@@ -609,7 +615,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 
-
+//************************************************* delete item ******************************************//
     public void delete_daily(){ //삭제하기
         task_delete = new BackgroundTask_delete();
         task_delete.execute();
@@ -680,7 +686,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
 
 
-    //가져온 이미지 gridview에 set
+  //***********************************Home Fragment GridViewAdapter **************************************//
     public class homeGridAdapter extends BaseAdapter {
         LayoutInflater layoutInflater;
         private Context context;
@@ -720,28 +726,16 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
             tempString+= (di.getCat1() + "\n");
             //tempString+= ("옷 색깔: " + di.getDressColor()+ "\n" );
-            tempString+= ("계절 : ");
-            tempString+=(di.getSeason());
-           /* int[] tempSeason = di.getSeason();
-            for(int i = 0 ; i< tempSeason.length ; i++){
-                if(tempSeason[i] == -1){
-                    tempString+= ("미정 ");
-                }else if(tempSeason[i] ==0){
-                    tempString+= ("봄");
-                }else if(tempSeason[i] ==1){
-                    tempString+= ("여름");
-                }else if(tempSeason[i] ==2){
-                    tempString+= ("가을");
-                }else if(tempSeason[i] ==3){
-                    tempString+= ("겨울");
-                }
 
-                if(i != tempSeason.length -1){
-                    tempString += ", ";
-                }
-            }*/
+            if(di.getSeason().equals("season")){
+                tempString += ("SEASON");
+            }
+            else {
+                tempString += (di.getSeason());
+            }
+
             tempString += "\n";
-            tempString += ("#" + di.getDressTag()+ "\n" );
+            tempString += ("#" + di.getDressTag() + "\n" );
             tv.setText(tempString);
 
 

@@ -170,6 +170,7 @@ public class AddCoordyFragment extends DialogFragment{
         isShare=0;
         load();         //->사용자의 id와 기존의 path를 불러온다.
 
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.activity_add_coordy, null);
         codiLayout = (RelativeLayout)view.findViewById(R.id.codi_main_layout);
@@ -178,6 +179,8 @@ public class AddCoordyFragment extends DialogFragment{
                 R.array.categories, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categarySpinner.setAdapter(categoryAdapter);
+
+
         save = (ImageButton)view.findViewById(R.id.saveBtn);
         cancle = (ImageButton)view.findViewById(R.id.noBtn);
         share = (ImageButton)view.findViewById(R.id.shareButton);
@@ -189,8 +192,6 @@ public class AddCoordyFragment extends DialogFragment{
         outerview =(ImageView)view.findViewById(R.id.outer_View);
         dressview =(ImageView)view.findViewById(R.id.dress_View);
         accview =(ImageView)view.findViewById(R.id.acc_View);
-
-
 
 
         coordyname = (EditText)view.findViewById(R.id.addcoordy_name);
@@ -237,6 +238,7 @@ public class AddCoordyFragment extends DialogFragment{
                         dressItem di = new dressItem();
                         di.setImgURL( c.getString("path")); //서버에서 가져온 파일 경로 (이름) 저장
                         di.setCat1(c.getString("category"));
+                        di.getCat1().replace("\\", "");
                         String str[]=di.getCat1().split("/");
                         if(str[0].equals("TOP")){
                             list.add(di);

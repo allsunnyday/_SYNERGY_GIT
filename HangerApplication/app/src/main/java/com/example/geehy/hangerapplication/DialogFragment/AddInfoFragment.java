@@ -50,8 +50,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AddInfoFragment extends DialogFragment {
     private static dressItem dress;
-    private static String dressTag;
-    private static String dressBrand;
+    private static String dressTag="";
+    private static String dressBrand="";
     private static String dressColor;
     private static String imgurl;
     private static String category;
@@ -83,7 +83,7 @@ public class AddInfoFragment extends DialogFragment {
     private EditText tagText;
     private AutoCompleteTextView brandText;
 
-    private final String[] brands = {"zara","uniqlo","flymodel","66girls" ,"nice","h&m"}; //브랜드 및 쇼핑몰 이름>>  영문만 지원됨
+    private final String[] brands = {"zara","uniqlo","flymodel","66girls" ,"nice","h&m", "mixxo", "팜므파탈", "스타일난다"}; //브랜드 및 쇼핑몰 이름>>  영문만 지원됨
 
 
     public static AddInfoFragment newInstance(dressItem ds) {
@@ -136,6 +136,7 @@ public class AddInfoFragment extends DialogFragment {
         colorView1 = (TextView)view.findViewById(R.id.colorview1);
         tagText = (EditText)view.findViewById(R.id.AddPost_HashTag_Edittext);
         brandText = (AutoCompleteTextView)view.findViewById(R.id.brandEditText);
+/*
 
         if(!dressTag.equals("") || !dressTag.equals("null")) {
             tagText.setText(dressTag);
@@ -149,14 +150,15 @@ public class AddInfoFragment extends DialogFragment {
         else{
             brandText.setText("");
         }
+*/
 
 
         brandText.setAdapter(  //현재 영어에 한해서만  자동완성 기능이 이루어지고 있음
                 new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_dropdown_item_1line, brands));
 
-        //색깔 초기화
 
 
+        //*************************** 최초의 dialog create 할 때, 이미지의 색상을 추출 ********************************//
         int defaultValue = 0x000000;
         colorView1.setBackgroundColor(defaultValue);
         colortext.setBackgroundColor(defaultValue);
@@ -187,8 +189,6 @@ public class AddInfoFragment extends DialogFragment {
                                         vibantColor = String.format("#%06X", (0xFFFFFF & vibrant));
                                         mutedColor = String.format("#%06X", (0xFFFFFF & muted));
                                         // #000000 이런 식으로 값을 변환 -> 서버에 스트링으로 저장할 수 있음
-                                        Log.d("color value", vibantColor);
-                                        Log.d("color value", mutedColor);
 
                                         colorView1.setBackgroundColor(vibrant);
                                         colorView1.setText(vibantColor);
@@ -196,7 +196,6 @@ public class AddInfoFragment extends DialogFragment {
                                         colortext.setBackgroundColor(muted);
 
                                         dress.setDressColor(vibrant+","+muted);
-                                        Log.d("why why why ", dress.getDressColor());
                                         task2 = new BackgroundTask2();
                                         task2.execute();
 
@@ -219,7 +218,8 @@ public class AddInfoFragment extends DialogFragment {
           //      return;
           //  }
         }
-        else if(!dressColor.equals("null")) {
+        //******************************************* 이미 서버에 색상을 가지고 있다면 ********************************//
+        else if(! dressColor.equals("null")) {
             //int defaultValue = 0x000000;
             //int vibant;
             try {
@@ -232,18 +232,26 @@ public class AddInfoFragment extends DialogFragment {
                 colortext.setText(mutedColor);
                 colorView1.setBackgroundColor(v);
                 colortext.setBackgroundColor(m);
-                Log.d("color setting", "already set color");
             }catch (NumberFormatException e){
                 Log.d("numberFormatExcetion", "error");
             }catch (NullPointerException e){
                 Log.d("null point exception", "null ");
             }
 
-
         }
 
-
         categorytext.setText(category);
+        if(dressTag.equals("null")) {
+            brandText.setText("");
+        }
+        else{
+            brandText.setText(dressTag);
+        }
+        if(dressTag.equals("null")) {
+            tagText.setText("");
+        }else {
+            tagText.setText(dressBrand);
+        }
         Event();
     }
 
@@ -269,20 +277,7 @@ public class AddInfoFragment extends DialogFragment {
                         .commit();
             }
         });
-/*
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(
-                        getContext().getApplicationContext(), // 현재 화면의 제어권자
-                        GrabcutActivity.class); // 다음 넘어갈 클래스 지정
-                startActivity(intent); // 다음 화면으로 넘어간다
-
-            }
-
-        });
-  */
         seasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
 
@@ -300,8 +295,8 @@ public class AddInfoFragment extends DialogFragment {
 
     }
 
-
-    private String sendObject(){ //편집할 내용 json으로
+//************************************ add info 편집한 내용을 서버에 저장 ************************************//
+    private String sendObject(){
         JSONObject jsonpost = new JSONObject();
         try{
             appData =   this.getActivity().getSharedPreferences("appData", MODE_PRIVATE);
@@ -355,7 +350,7 @@ public class AddInfoFragment extends DialogFragment {
         }
     }
 
-
+//*********************************************최초에 한번 color 정보를 서버에 보냄 *************************************//
     private String sendObject_color(){ //편집할 내용 json으로
         JSONObject jsonpost2 = new JSONObject();
         try{
